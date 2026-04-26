@@ -1,0 +1,12 @@
+# depslib dependency file v1.0
+1777224335 source:c:\users\jessica\documents\unlam\1c2026\algoritmos y estructuras de datos\tp\caravana_del_desierto\main.c
+	"config.h"
+
+1777224396 c:\users\jessica\documents\unlam\1c2026\algoritmos y estructuras de datos\tp\caravana_del_desierto\config.h
+	<stdio.h>
+	<stdlib.h>
+	<string.h>
+
+1777224231 source:c:\users\jessica\documents\unlam\1c2026\algoritmos y estructuras de datos\tp\caravana_del_desierto\config.c
+	"config.h"
+
