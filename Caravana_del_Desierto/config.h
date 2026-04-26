@@ -1,13 +1,7 @@
 #ifndef CONFIG_H_INCLUDED
 #define CONFIG_H_INCLUDED
 
-#include <stdio.h>
-#include <stdlib.h>
-#include <string.h>
-
-#define ERR_ARCH 0
-#define MAX_BUF 128
-#define TODO_OK 1
+#include "constantes.h"
 
 #define CAMPO_1 "cantidad_posiciones"
 #define CAMPO_2 "vidas_inicio"
@@ -33,7 +27,8 @@ typedef struct
 
 ///podemos pedir la configuracion tambien por pantalla agregando en el menu
 ///la opcion configuracion, y que cargue el archivo. No lo dice en el enunciado
-///pero puede sumarnos y es relativamente facil
+///pero puede sumarnos y es relativamente facil. hice la carga de config para que
+///no interese el orden en el que se indiquen los parametros para usarlo en ese caso.
 
 //int crearArchConfig(const char* nombreArch, tConfig* config); //si pedimos por pantalla los parametros
 int cargarConfig(const char* nombreArch, tConfig* c);
