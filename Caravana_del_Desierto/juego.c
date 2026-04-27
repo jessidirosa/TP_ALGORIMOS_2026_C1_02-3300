@@ -1,6 +1,7 @@
 #include "juego.h"
+#include "tablero.h"
 
-void menu()
+void menu(tConfig *c)
 {
     unsigned opcion;
 
@@ -22,7 +23,7 @@ void menu()
     {
     case 1:
         system("cls");
-//        iniciarPartida();
+        iniciarPartida(c);
         break;
 
     case 2:
@@ -35,16 +36,19 @@ void menu()
     }
 }
 
-void iniciarPartida()
+void iniciarPartida(tConfig *c)
 {
-    int dado;
+    //int dado;
     //tCola colaMovimiento;
     //tJugador jugador;
     //tTablero tablero;
+    /*implementacion TXT*/
+
 
 
     // identificarJugador(); //funcion de jugador.h donde se hace la gestion de jugadores(no seria lo mismo que el jugador del juego)
     //inicializarJugador(&jugador); //inicializar la estructura del jugador.
+    generarTablero_solucionTXT(c); //solucion en TXT antes de hacerlo con listas
     //generarTablero(); //funcion de tablero.h
     //posicionarJugadorEnInicio(&jugador,&tablero); //poner a jugador en I --> poner [I J]
     //crearBandidos(); //poner los bandidos al azar en el tablero segun config.max_bandidos
@@ -55,7 +59,7 @@ void iniciarPartida()
     //{
         //if (jugador.pierdeTurno == 0)  //si el turno no esta perdido, juega el jugador
         //{
-            dado = tirarDado();
+            //dado = tirarDado();
             //dir = elegirDireccion();
             //encolar(); //mov del jugador
             //registrarMovimiento(dado,dir);// en la cola/lista para mostrar al final de la partida

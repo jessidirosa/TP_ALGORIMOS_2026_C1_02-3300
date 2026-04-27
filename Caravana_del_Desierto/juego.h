@@ -3,6 +3,7 @@
 
 #include "constantes.h"
 #include "cola.h"
+#include "config.h"
 
 /*typedef struct
 {
@@ -30,8 +31,8 @@
 } tMovimiento;*/
 
 
-void menu();
-//void iniciarPartida(); //maquetado
+void menu(tConfig *c);
+void iniciarPartida(tConfig *c); //maquetado
 //int juegoSigue();
 int tirarDado();
 

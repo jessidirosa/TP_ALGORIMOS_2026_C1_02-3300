@@ -13,6 +13,6 @@ int main()
         printf("error al abrir archivo");
 
 
-    menu();
+    menu(&config);
     return 0;
 }
