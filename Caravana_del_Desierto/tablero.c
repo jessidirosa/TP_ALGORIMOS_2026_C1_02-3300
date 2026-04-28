@@ -1,7 +1,6 @@
 #include "tablero.h"
 #include "config.h"
 #include "constantes.h"
-
 void generarTablero_solucionTXT(tConfig *c)
 {
 

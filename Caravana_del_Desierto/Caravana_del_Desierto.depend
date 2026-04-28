@@ -68,7 +68,7 @@
 1777324278 c:\github pau\tp_algorimos_2026_c1_02-3300\caravana_del_desierto\config.h
 	"constantes.h"
 
-1777324278 c:\github pau\tp_algorimos_2026_c1_02-3300\caravana_del_desierto\constantes.h
+1777335184 c:\github pau\tp_algorimos_2026_c1_02-3300\caravana_del_desierto\constantes.h
 	<stdio.h>
 	<stdlib.h>
 	<string.h>
@@ -87,11 +87,18 @@
 	"config.h"
 	"juego.h"
 
-1777328689 source:c:\github pau\tp_algorimos_2026_c1_02-3300\caravana_del_desierto\tablero.c
+1777335685 source:c:\github pau\tp_algorimos_2026_c1_02-3300\caravana_del_desierto\tablero.c
 	"tablero.h"
 	"config.h"
 	"constantes.h"
 
 1777328566 c:\github pau\tp_algorimos_2026_c1_02-3300\caravana_del_desierto\tablero.h
 	"config.h"
+
+1777335673 source:c:\github pau\tp_algorimos_2026_c1_02-3300\caravana_del_desierto\lista.c
+	"lista.h"
+
+1777335657 c:\github pau\tp_algorimos_2026_c1_02-3300\caravana_del_desierto\lista.h
+	"cola.h"
+	"constantes.h"
 
