@@ -89,3 +89,15 @@ int tirarDado()
 /*int juegoSigue(tJugador* jugador) {
     return (jugador->vidas > 0 && jugador->posicion != salida);
 }*/
+
+
+void mostrarRanking(const char* archivo)
+{
+    FILE* pf = fopen(archivo, "rb");
+    if(!pf)
+        return;
+
+    tRanking jugador;
+
+
+}
