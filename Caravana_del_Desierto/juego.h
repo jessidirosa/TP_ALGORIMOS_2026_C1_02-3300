@@ -40,7 +40,8 @@ typedef struct
 
 void menu(tConfig *c);
 void mostrarRanking(const char* archivo);
-
+int compararPuntosJugadores(const void* a, const void* b);
+void mostrarPuntosJugadores(const void* n);
 
 void iniciarPartida(tConfig *c); //maquetado
 //int juegoSigue();

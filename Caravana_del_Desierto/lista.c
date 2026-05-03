@@ -192,7 +192,7 @@ int ordenarLista(t_lista* pl, int cmp(const void*, const void*))
 }
 
 
-int insertarOrdenado(t_lista* pl, const void* dato, unsigned tam, int sinprimero, void accion(void*, const void*), int cmp(const void*, const void*))
+int insertarOrdenado(t_lista* pl, const void* dato, unsigned tam, int sinDup, void accion(void*, const void*), int cmp(const void*, const void*))
 {
     tNodo* nue;
 
@@ -226,3 +226,11 @@ int insertarOrdenado(t_lista* pl, const void* dato, unsigned tam, int sinprimero
     return TODO_OK;
 }
 
+void mostrarLista(tLista* l, void accion(const void* dato))
+{
+    while((*l))
+    {
+        accion((*l)->dato);
+        l = &(*l)->sig;
+    }
+}

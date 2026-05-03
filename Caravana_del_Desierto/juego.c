@@ -91,13 +91,40 @@ int tirarDado()
 }*/
 
 
-void mostrarRanking(const char* archivo)
+void mostrarRanking(const char* archivo) // le pasamos el archivo de jugadores con los puntos ya acumulados en el
 {
     FILE* pf = fopen(archivo, "rb");
     if(!pf)
         return;
 
     tRanking jugador;
+    tLista lista;
 
+    crearLista(&lista);
 
+    fread(&jugador, sizeof(tRanking), 1, pf);
+    while(!feof(pf))
+    {
+        insertarOrdenado(&lista, &jugador, sizeof(tRanking), 0, NULL, compararPuntosJugadores);
+        fread(&jugador, sizeof(tRanking), 1, pf);
+    }
+
+    printf("\n---JUGADOR--- ---PUNTAJE---\n")
+    mostrarLista(&lista, mostrarPuntosJugadores);
+    fclose(pf);
 }
+
+int compararPuntosJugadores(const void* a, const void* b)
+{
+    tRanking* jug1 = (tRanking*)a;
+    tRanking* jug2 = (tRanking*)b;
+
+    return jug2->puntos - jug1->puntos;
+}
+
+void mostrarPuntosJugadores(const void* n)
+{
+    tRanking* jug = (tRanking*)n;
+    printf("%15s%-d\n", jug->nombre, jug->puntos);
+}
+
