@@ -1,5 +1,6 @@
 #include "juego.h"
 #include "tablero.h"
+#include "lista.h"
 
 void menu(tConfig *c)
 {
@@ -28,7 +29,7 @@ void menu(tConfig *c)
 
     case 2:
         system("cls");
-//        verRanking();
+        //mostrarRanking();
         break;
 
     case 3:
@@ -109,7 +110,7 @@ void mostrarRanking(const char* archivo) // le pasamos el archivo de jugadores c
         fread(&jugador, sizeof(tRanking), 1, pf);
     }
 
-    printf("\n---JUGADOR--- ---PUNTAJE---\n")
+    printf("\n---JUGADOR--- ---PUNTAJE---\n");
     mostrarLista(&lista, mostrarPuntosJugadores);
     fclose(pf);
 }

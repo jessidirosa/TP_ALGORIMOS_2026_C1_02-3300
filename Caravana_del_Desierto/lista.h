@@ -6,6 +6,7 @@
 #define EXITO 0
 #define LISTA_VACIA 10
 #define POS_INVALIDA -2
+#define DUPLICADO 3
 
 typedef tNodo* tLista;
 void crearLista(tLista *lista);
