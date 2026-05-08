@@ -63,7 +63,7 @@ int insertarFinalLista(tLista *plista,const void* dato, unsigned tamDato)
     return EXITO;
 }
 
-int sacarFinalpioLista(tLista *plista,void* dato,unsigned tamDato)
+int sacarFinalLista(tLista *plista,void* dato,unsigned tamDato)
 {
     while((*plista)->sig)
         plista = &(*plista)->sig;
@@ -199,10 +199,10 @@ int insertarOrdenado(tLista* pl, const void* dato, unsigned tam, int sinDup, voi
     while((*pl) && cmp((*pl)->dato, dato) < 0)
         pl = &(*pl)->sig;
 
-    if((*pl) && !cmp((*pl)->dato, dato) && sinDup)
+    if((*pl) && cmp((*pl)->dato, dato) == 0 && sinDup == 0)
     {
-        if(accion)
-            accion((void*)dato, (*pl)->dato);
+        if(accion) //accion != NULL
+            accion((*pl)->dato,dato);
 
         return DUPLICADO;
     }

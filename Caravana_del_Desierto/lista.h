@@ -14,7 +14,7 @@ int insertarPrincipioLista(tLista *plista, const void* dato, unsigned tamDato);
 int verPrincipioLista(const tLista *plista, void* dato, unsigned tamDato);
 int sacarPrincipioLista(tLista *plista, void* dato, unsigned tamDato);
 int insertarFinalLista(tLista *plista,const void* dato, unsigned tamDato);
-int sacarFinalpioLista(tLista *plista,void* dato,unsigned tamDato);
+int sacarFinalLista(tLista *plista,void* dato,unsigned tamDato);
 int verFinalLista(const tLista *plista, void* dato, unsigned tamDato);
 int insertarPosicionLista(tLista *lista, const void* dato, unsigned tamDato, unsigned pos);
 int sacarPosicionLista(tLista *plista, void* dato, unsigned tamDato, unsigned pos);
