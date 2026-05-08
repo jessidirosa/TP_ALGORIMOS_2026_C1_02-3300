@@ -30,24 +30,24 @@
     int direccion;
 
 } tMovimiento;*/
-
+/*
 typedef struct
 {
     //char* nombre;
-    int id_jugador;
     int puntos;
     int movimientos;
-}tRanking; //este se utilizaría para el archivo de jugadores y para mostrar el ranking
+}tRanking; //actualmente la logia funciona sin esta estructura*/
 
 typedef struct {
     int id_jugador;
     int id_partida;
     int puntaje;
     int movimientos;
-} tRegistroPartida; //se ultiliza para gurdar el contenido del archivo binario "ARCH_PARTIDAS"
+} tRegistroPartida; //se ultiliza para gurdar el contenido del archivo binario "ARCH_PARTIDAS" y mostrar el ranking
 
 
 void menu(tConfig *c);
+void registrarJugador();
 void mostrarRanking(const char* archivo);
 int casoPruebaBIN(const char* archivo);
 int compararPuntosJugadores(const void* a, const void* b);

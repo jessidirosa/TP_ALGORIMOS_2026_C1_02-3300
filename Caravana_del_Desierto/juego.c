@@ -24,6 +24,7 @@ void menu(tConfig *c)
     {
     case 1:
         system("cls");
+        registrarJugador();
         iniciarPartida(c);
         break;
 
@@ -37,7 +38,13 @@ void menu(tConfig *c)
         break;
     }
 }
-
+void registrarJugador()
+{
+    char nombreJugador[100];
+    printf("\nIngrese su nombre: ");
+    scanf(" %[^\n]",nombreJugador); // [^\n] permite leer espacios hasta presionar Enter y El espacio antes de % es limpia cualquier '\n' pendiente en el buffer
+    printf("\nBienvenido/a %s", nombreJugador);
+}
 void iniciarPartida(tConfig *c)
 {
     //int dado;
@@ -132,7 +139,6 @@ void mostrarRanking(const char* archivo) // le pasamos el archivo de partidas
     if(!pf)
         return;
 
-    tRanking jugador;
     tRegistroPartida partida;
     tLista lista;
 
@@ -177,14 +183,6 @@ void mostrarTop(tLista *pLista,int top)
 }
 
 
-void copiarEnRanking (void* datoLista, void* jugador)
-{
-    tRegistroPartida* datoL = (tRegistroPartida*)datoLista;
-    tRanking* ranking = (tRanking*)jugador;
-
-
-
-}
 void acumularDuplicados(void* datoLista, const void* datoAInsertar)
 {
     tRegistroPartida* dI = (tRegistroPartida*)datoAInsertar;
