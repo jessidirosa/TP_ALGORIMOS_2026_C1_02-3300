@@ -102,3 +102,52 @@
 	"cola.h"
 	"constantes.h"
 
+1777385763 source:c:\repos\tp_algorimos_2026_c1_02-3300\caravana_del_desierto\cola.c
+	"cola.h"
+
+1777385763 c:\repos\tp_algorimos_2026_c1_02-3300\caravana_del_desierto\cola.h
+	<stdio.h>
+	<stdlib.h>
+	<string.h>
+
+1777385763 source:c:\repos\tp_algorimos_2026_c1_02-3300\caravana_del_desierto\config.c
+	"config.h"
+
+1777385763 c:\repos\tp_algorimos_2026_c1_02-3300\caravana_del_desierto\config.h
+	"constantes.h"
+
+1777385763 c:\repos\tp_algorimos_2026_c1_02-3300\caravana_del_desierto\constantes.h
+	<stdio.h>
+	<stdlib.h>
+	<string.h>
+	<time.h>
+
+1777385763 source:c:\repos\tp_algorimos_2026_c1_02-3300\caravana_del_desierto\main.c
+	"config.h"
+	"juego.h"
+
+1778107036 c:\repos\tp_algorimos_2026_c1_02-3300\caravana_del_desierto\juego.h
+	"constantes.h"
+	"cola.h"
+	"config.h"
+
+1777385763 source:c:\repos\tp_algorimos_2026_c1_02-3300\caravana_del_desierto\tablero.c
+	"tablero.h"
+	"config.h"
+	"constantes.h"
+
+1777385763 c:\repos\tp_algorimos_2026_c1_02-3300\caravana_del_desierto\tablero.h
+	"config.h"
+
+1778110827 source:c:\repos\tp_algorimos_2026_c1_02-3300\caravana_del_desierto\juego.c
+	"juego.h"
+	"tablero.h"
+	"lista.h"
+
+1778110897 c:\repos\tp_algorimos_2026_c1_02-3300\caravana_del_desierto\lista.h
+	"cola.h"
+	"constantes.h"
+
+1778110877 source:c:\repos\tp_algorimos_2026_c1_02-3300\caravana_del_desierto\lista.c
+	"lista.h"
+

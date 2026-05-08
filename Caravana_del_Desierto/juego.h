@@ -30,8 +30,19 @@
 
 } tMovimiento;*/
 
+typedef struct
+{
+    char* nombre;
+    int puntos;
+
+}tRanking; //este se utilizaría para el archivo de jugadores y para mostrar el ranking
+
 
 void menu(tConfig *c);
+void mostrarRanking(const char* archivo);
+int compararPuntosJugadores(const void* a, const void* b);
+void mostrarPuntosJugadores(const void* n);
+
 void iniciarPartida(tConfig *c); //maquetado
 //int juegoSigue();
 int tirarDado();
