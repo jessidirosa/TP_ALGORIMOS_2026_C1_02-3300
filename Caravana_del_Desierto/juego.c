@@ -6,21 +6,51 @@ void menu(tConfig *c)
 {
     unsigned opcion;
 
-    printf("------CARAVANA DEL DESIERTO------\n\n");
-    printf("Seleccione la opcion deseada:\n");
-    printf("1 - Iniciar partida\n");
-    printf("2 - Ver ranking\n");
-    printf("3 - Salir\n");
-    //4 - configurar partida
-
-    scanf("%u", &opcion);
-    while(opcion != 1 && opcion != 2 && opcion != 3)
+    do
     {
-        printf("Ingrese una opcion valida: ");
-        scanf("%u", &opcion);
-    }
+        printf("------CARAVANA DEL DESIERTO------\n\n");
+        printf("Seleccione la opcion deseada:\n");
+        printf("1 - Iniciar partida\n");
+        printf("2 - Ver ranking\n");
+        printf("3 - Salir\n");
+        //4 - configurar partida
 
-    switch (opcion)
+        opcion = ingresar(TAM_OP);
+
+        while(!opcionValida(opcion))
+        {
+            printf("Ingrese una opcion valida: ");
+            opcion = ingresar(TAM_OP);
+        }
+
+        ejecutarOpcion(opcion,c);
+
+        system("pause");
+        system("cls");
+    }
+    while(opcion != SALIR);
+
+}
+
+int opcionValida(unsigned op)
+{
+    return op >= OPCION1 && op <= SALIR;
+}
+
+int ingresar(unsigned tam)
+{
+    char ingreso[tam];
+    fgets(ingreso,tam,stdin);
+    if (strchr(ingreso, '\n') == NULL)
+    {
+        while (getchar() != '\n');
+    }
+    return atoi(ingreso);
+}
+
+void ejecutarOpcion(unsigned opcion,tConfig* c)
+{
+   switch (opcion)
     {
     case 1:
         system("cls");
@@ -38,6 +68,7 @@ void menu(tConfig *c)
         break;
     }
 }
+
 void registrarJugador()
 {
     char nombreJugador[100];

@@ -234,3 +234,38 @@ void mostrarLista(tLista* l, void accion(const void* dato))
         l = &(*l)->sig;
     }
 }
+
+int ReducirAUnolosDuplicados(tLista* lista, int cmp(const void*,const void*), void accion (void*, const void*))
+{
+    tNodo** pclave = lista, **pl;
+    tNodo* elim;
+
+
+    if(*lista == NULL)
+        return LISTA_VACIA;
+
+    while(*pclave != NULL)
+    {
+        pl = pclave;
+        pl = &((*pl)->sig);
+
+        while(*pl != NULL)
+        {
+            if(cmp((*pclave)->dato,(*pl)->dato) == 0)
+            {
+                accion((*pclave)->dato,(*pl)->dato);
+                elim = *pl;
+                *pl = elim->sig;
+                free(elim->dato);
+                free(elim);
+            }
+            else
+                pl = &((*pl)->sig);
+
+        }
+        pclave = &((*pclave)->sig);
+    }
+    return TODO_OK;
+}
+
+

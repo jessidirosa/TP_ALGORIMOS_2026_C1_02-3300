@@ -27,32 +27,39 @@
 1777240584 c:\users\user\documents\github\tp_algorimos_2026_c1_02-3300\caravana_del_desierto\config.h
 	"constantes.h"
 
-1777240584 c:\users\user\documents\github\tp_algorimos_2026_c1_02-3300\caravana_del_desierto\constantes.h
+1778375260 c:\users\user\documents\github\tp_algorimos_2026_c1_02-3300\caravana_del_desierto\constantes.h
 	<stdio.h>
 	<stdlib.h>
 	<string.h>
 	<time.h>
 
-1777260063 source:c:\users\user\documents\github\tp_algorimos_2026_c1_02-3300\caravana_del_desierto\juego.c
+1778374026 source:c:\users\user\documents\github\tp_algorimos_2026_c1_02-3300\caravana_del_desierto\juego.c
 	"juego.h"
+	"tablero.h"
+	"lista.h"
 
-1777260056 c:\users\user\documents\github\tp_algorimos_2026_c1_02-3300\caravana_del_desierto\juego.h
+1778375260 c:\users\user\documents\github\tp_algorimos_2026_c1_02-3300\caravana_del_desierto\juego.h
 	"constantes.h"
 	"cola.h"
+	"config.h"
+	"lista.h"
 
-1777258717 source:c:\users\user\documents\github\tp_algorimos_2026_c1_02-3300\caravana_del_desierto\main.c
+1777563758 source:c:\users\user\documents\github\tp_algorimos_2026_c1_02-3300\caravana_del_desierto\main.c
 	"config.h"
 	"juego.h"
 
 1777258922 source:c:\users\user\documents\github\tp_algorimos_2026_c1_02-3300\caravana_del_desierto\cola.c
 	"cola.h"
 
-1777258930 c:\users\user\documents\github\tp_algorimos_2026_c1_02-3300\caravana_del_desierto\cola.h
+1778375260 c:\users\user\documents\github\tp_algorimos_2026_c1_02-3300\caravana_del_desierto\cola.h
 	<stdio.h>
 	<stdlib.h>
 	<string.h>
 
-1777259897 source:c:\users\user\documents\github\tp_algorimos_2026_c1_02-3300\caravana_del_desierto\tablero.c
+1778373937 source:c:\users\user\documents\github\tp_algorimos_2026_c1_02-3300\caravana_del_desierto\tablero.c
+	"tablero.h"
+	"config.h"
+	"constantes.h"
 
 1777324278 source:c:\github pau\tp_algorimos_2026_c1_02-3300\caravana_del_desierto\cola.c
 	"cola.h"
@@ -151,5 +158,15 @@
 	"constantes.h"
 
 1778110877 source:c:\repos\tp_algorimos_2026_c1_02-3300\caravana_del_desierto\lista.c
+	"lista.h"
+
+1778375260 c:\users\user\documents\github\tp_algorimos_2026_c1_02-3300\caravana_del_desierto\lista.h
+	"cola.h"
+	"constantes.h"
+
+1777563758 c:\users\user\documents\github\tp_algorimos_2026_c1_02-3300\caravana_del_desierto\tablero.h
+	"config.h"
+
+1778291450 source:c:\users\user\documents\github\tp_algorimos_2026_c1_02-3300\caravana_del_desierto\lista.c
 	"lista.h"
 

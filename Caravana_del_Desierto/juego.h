@@ -6,6 +6,7 @@
 #include "config.h"
 #include "lista.h"
 
+
 /*typedef struct
 {
     tNodo* pos;
@@ -55,7 +56,9 @@ void mostrarPuntosJugadores(const void* n);
 int compararIDJugadores(const void* a, const void* b);
 void acumularDuplicados(void* datoLista, const void* datoAInsertar);
 void mostrarTop(tLista *pLista,int top);
-
+int ingresar(unsigned tam);
+int opcionValida(unsigned opcion);
+void ejecutarOpcion(unsigned opcion,tConfig* c);
 
 
 void iniciarPartida(tConfig *c); //maquetado

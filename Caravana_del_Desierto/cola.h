@@ -11,7 +11,7 @@
 #define COLA_VACIA 3
 #define COLA_NOLLENA 4
 #define COLA_NOVACIA 5
-#define SIN_MEM 0;
+#define SIN_MEM 0
 #define MIN(a,b) (a < b ? a : b)
 
 
