@@ -63,7 +63,7 @@ int insertarFinalLista(tLista *plista,const void* dato, unsigned tamDato)
     return EXITO;
 }
 
-int sacarFinalpioLista(tLista *plista,void* dato,unsigned tamDato)
+int sacarFinalLista(tLista *plista,void* dato,unsigned tamDato)
 {
     while((*plista)->sig)
         plista = &(*plista)->sig;
@@ -162,7 +162,7 @@ int ordenarLista(tLista* pl, int cmp(const void*, const void*))
     tNodo* aux;
 
     if(!(*pl))
-        return VACIA;
+        return COLA_VACIA;
 
     while((*pl))
     {
@@ -199,10 +199,14 @@ int insertarOrdenado(tLista* pl, const void* dato, unsigned tam, int sinDup, voi
     while((*pl) && cmp((*pl)->dato, dato) < 0)
         pl = &(*pl)->sig;
 
+<<<<<<< HEAD
     if((*pl) && !cmp((*pl)->dato, dato) && sinDup)
+=======
+    if((*pl) && cmp((*pl)->dato, dato) == 0 && sinDup == 0)
+>>>>>>> 5f343b94048d3365f5e4886eda73024427a99785
     {
-        if(accion)
-            accion((void*)dato, (*pl)->dato);
+        if(accion) //accion != NULL
+            accion((*pl)->dato,dato);
 
         return DUPLICADO;
     }
@@ -234,3 +238,38 @@ void mostrarLista(tLista* l, void accion(const void* dato))
         l = &(*l)->sig;
     }
 }
+
+int ReducirAUnolosDuplicados(tLista* lista, int cmp(const void*,const void*), void accion (void*, const void*))
+{
+    tNodo** pclave = lista, **pl;
+    tNodo* elim;
+
+
+    if(*lista == NULL)
+        return LISTA_VACIA;
+
+    while(*pclave != NULL)
+    {
+        pl = pclave;
+        pl = &((*pl)->sig);
+
+        while(*pl != NULL)
+        {
+            if(cmp((*pclave)->dato,(*pl)->dato) == 0)
+            {
+                accion((*pclave)->dato,(*pl)->dato);
+                elim = *pl;
+                *pl = elim->sig;
+                free(elim->dato);
+                free(elim);
+            }
+            else
+                pl = &((*pl)->sig);
+
+        }
+        pclave = &((*pclave)->sig);
+    }
+    return TODO_OK;
+}
+
+

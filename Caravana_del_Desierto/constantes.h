@@ -9,8 +9,17 @@
 #define ERR_ARCH 0
 #define MAX_BUF 128
 #define TODO_OK 1
+<<<<<<< HEAD
 #define VACIA 0
 #define DUPLICADO 3
+=======
+#define TOP 3
+
+#define TAM_OP 3
+#define OPCION1 1
+#define OPCION2 2
+#define SALIR  3
+>>>>>>> 5f343b94048d3365f5e4886eda73024427a99785
 
 #define ARCH_CONFIG "config.txt"
 #define ARCH_TABLERO "caravana.txt"

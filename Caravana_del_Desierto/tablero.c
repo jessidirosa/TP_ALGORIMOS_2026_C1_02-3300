@@ -36,6 +36,10 @@ int mostrarTablero_solucionTXT()
         printf("%s",linea);
     }
     fclose(pf);
+<<<<<<< HEAD
+=======
+
+>>>>>>> 5f343b94048d3365f5e4886eda73024427a99785
     return TODO_OK;
 }
 void colocarElemAleatorios_solucionTXT(char tablero[], int n, char elemento, int cantidad) {
@@ -62,5 +66,9 @@ int guardarTablero_solucionTXT(char tablero[], int n) {
     }
     printf("\nTablero generado");
     fclose(f);
+<<<<<<< HEAD
+=======
+
+>>>>>>> 5f343b94048d3365f5e4886eda73024427a99785
     return TODO_OK;
 }
