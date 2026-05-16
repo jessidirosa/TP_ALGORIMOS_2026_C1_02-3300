@@ -1,5 +1,5 @@
 # depslib dependency file v1.0
-1777226782 source:c:\users\jessica\documents\unlam\1c2026\algoritmos y estructuras de datos\tp\caravana_del_desierto\main.c
+1777823638 source:c:\users\jessica\documents\unlam\1c2026\algoritmos y estructuras de datos\tp\caravana_del_desierto\main.c
 	"config.h"
 	"juego.h"
 
@@ -9,17 +9,21 @@
 1777224231 source:c:\users\jessica\documents\unlam\1c2026\algoritmos y estructuras de datos\tp\caravana_del_desierto\config.c
 	"config.h"
 
-1777226819 c:\users\jessica\documents\unlam\1c2026\algoritmos y estructuras de datos\tp\caravana_del_desierto\constantes.h
+1777826189 c:\users\jessica\documents\unlam\1c2026\algoritmos y estructuras de datos\tp\caravana_del_desierto\constantes.h
 	<stdio.h>
 	<stdlib.h>
 	<string.h>
 	<time.h>
 
-1777226133 c:\users\jessica\documents\unlam\1c2026\algoritmos y estructuras de datos\tp\caravana_del_desierto\juego.h
+1777826142 c:\users\jessica\documents\unlam\1c2026\algoritmos y estructuras de datos\tp\caravana_del_desierto\juego.h
 	"constantes.h"
+	"cola.h"
+	"config.h"
+	"lista.h"
 
-1777226680 source:c:\users\jessica\documents\unlam\1c2026\algoritmos y estructuras de datos\tp\caravana_del_desierto\juego.c
+1777826148 source:c:\users\jessica\documents\unlam\1c2026\algoritmos y estructuras de datos\tp\caravana_del_desierto\juego.c
 	"juego.h"
+	"tablero.h"
 
 1777240584 source:c:\users\user\documents\github\tp_algorimos_2026_c1_02-3300\caravana_del_desierto\config.c
 	"config.h"
@@ -101,4 +105,27 @@
 1777335657 c:\github pau\tp_algorimos_2026_c1_02-3300\caravana_del_desierto\lista.h
 	"cola.h"
 	"constantes.h"
+
+1777823638 source:c:\users\jessica\documents\unlam\1c2026\algoritmos y estructuras de datos\tp\caravana_del_desierto\cola.c
+	"cola.h"
+
+1777823638 c:\users\jessica\documents\unlam\1c2026\algoritmos y estructuras de datos\tp\caravana_del_desierto\cola.h
+	<stdio.h>
+	<stdlib.h>
+	<string.h>
+
+1777823638 source:c:\users\jessica\documents\unlam\1c2026\algoritmos y estructuras de datos\tp\caravana_del_desierto\tablero.c
+	"tablero.h"
+	"config.h"
+	"constantes.h"
+
+1777823638 c:\users\jessica\documents\unlam\1c2026\algoritmos y estructuras de datos\tp\caravana_del_desierto\tablero.h
+	"config.h"
+
+1777825964 c:\users\jessica\documents\unlam\1c2026\algoritmos y estructuras de datos\tp\caravana_del_desierto\lista.h
+	"cola.h"
+	"constantes.h"
+
+1777826180 source:c:\users\jessica\documents\unlam\1c2026\algoritmos y estructuras de datos\tp\caravana_del_desierto\lista.c
+	"lista.h"
 

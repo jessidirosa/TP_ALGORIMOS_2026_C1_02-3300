@@ -5,7 +5,7 @@ void generarTablero_solucionTXT(tConfig *c)
 {
 
     char tablero[100];
-    for(int i=0; i< c->cantidad_posiciones;i++)
+    for(int i=0; i< (int)c->cantidad_posiciones;i++)
     {
         tablero[i]='.';
     }
@@ -36,6 +36,7 @@ int mostrarTablero_solucionTXT()
         printf("%s",linea);
     }
     fclose(pf);
+    return TODO_OK;
 }
 void colocarElemAleatorios_solucionTXT(char tablero[], int n, char elemento, int cantidad) {
     int puestos = 0;
@@ -61,4 +62,5 @@ int guardarTablero_solucionTXT(char tablero[], int n) {
     }
     printf("\nTablero generado");
     fclose(f);
+    return TODO_OK;
 }

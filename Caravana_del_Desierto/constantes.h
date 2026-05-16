@@ -9,6 +9,8 @@
 #define ERR_ARCH 0
 #define MAX_BUF 128
 #define TODO_OK 1
+#define VACIA 0
+#define DUPLICADO 3
 
 #define ARCH_CONFIG "config.txt"
 #define ARCH_TABLERO "caravana.txt"

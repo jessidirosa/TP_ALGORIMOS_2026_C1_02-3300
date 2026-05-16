@@ -4,6 +4,7 @@
 #include "constantes.h"
 #include "cola.h"
 #include "config.h"
+#include "lista.h"
 
 /*typedef struct
 {

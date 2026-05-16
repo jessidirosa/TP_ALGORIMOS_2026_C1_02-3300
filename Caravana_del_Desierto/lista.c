@@ -155,7 +155,7 @@ void recorrerLista( tLista *pLista, void accion(void*, void*), void *param)
 }
 
 
-int ordenarLista(t_lista* pl, int cmp(const void*, const void*))
+int ordenarLista(tLista* pl, int cmp(const void*, const void*))
 {
     tNodo** menor = pl;
     tNodo** pivot;
@@ -192,14 +192,14 @@ int ordenarLista(t_lista* pl, int cmp(const void*, const void*))
 }
 
 
-int insertarOrdenado(t_lista* pl, const void* dato, unsigned tam, int sinDup, void accion(void*, const void*), int cmp(const void*, const void*))
+int insertarOrdenado(tLista* pl, const void* dato, unsigned tam, int sinDup, void accion(void*, const void*), int cmp(const void*, const void*))
 {
     tNodo* nue;
 
     while((*pl) && cmp((*pl)->dato, dato) < 0)
         pl = &(*pl)->sig;
 
-    if((*pl) && !cmp((*pl)->dato, dato) && sinprimero)
+    if((*pl) && !cmp((*pl)->dato, dato) && sinDup)
     {
         if(accion)
             accion((void*)dato, (*pl)->dato);
