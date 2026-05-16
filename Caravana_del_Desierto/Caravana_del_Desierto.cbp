@@ -48,6 +48,10 @@
 			<Option compilerVar="CC" />
 		</Unit>
 		<Unit filename="lista.h" />
+		<Unit filename="lista_doble.c">
+			<Option compilerVar="CC" />
+		</Unit>
+		<Unit filename="lista_doble.h" />
 		<Unit filename="main.c">
 			<Option compilerVar="CC" />
 		</Unit>

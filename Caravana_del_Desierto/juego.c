@@ -86,8 +86,10 @@ void iniciarPartida(tConfig *c)
 
 
 
+
     // identificarJugador(); //funcion de jugador.h donde se hace la gestion de jugadores(no seria lo mismo que el jugador del juego)
     //inicializarJugador(&jugador); //inicializar la estructura del jugador.
+    generarTablero(c);
     generarTablero_solucionTXT(c); //solucion en TXT antes de hacerlo con listas
     //generarTablero(); //funcion de tablero.h
     //posicionarJugadorEnInicio(&jugador,&tablero); //poner a jugador en I --> poner [I J]
@@ -183,14 +185,12 @@ void mostrarRanking(const char* archivo) // le pasamos el archivo de partidas
         fread(&partida, sizeof(tRegistroPartida), 1, pf);
     }
 
-<<<<<<< HEAD
+
     printf("\n---JUGADOR--- ---PUNTAJE---\n");
     mostrarLista(&lista, mostrarPuntosJugadores);
-=======
     //deberiamos hacer una funcion si queremos gurdar el ranking en la estructura tRanking, por ahora solo se muestra por consola
     printf("\n---JUGADOR--- ---PUNTAJE---\n");
     mostrarTop(&lista,TOP);
->>>>>>> 5f343b94048d3365f5e4886eda73024427a99785
     fclose(pf);
 }
 

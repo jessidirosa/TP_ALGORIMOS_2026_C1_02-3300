@@ -5,19 +5,17 @@
 #include "cola.h"
 #include "config.h"
 #include "lista.h"
-<<<<<<< HEAD
-=======
+#include "lista_doble.h"
 
->>>>>>> 5f343b94048d3365f5e4886eda73024427a99785
 
-/*typedef struct
+typedef struct
 {
     tNodo* pos;
     int vidas;
     int puntos;
     int protegido;
     int pierdeTurno;
-} tJugador;*/
+} tJugador;
 
 /*typedef struct
 {
@@ -34,13 +32,7 @@
     int direccion;
 
 } tMovimiento;*/
-/*
-typedef struct
-{
-    //char* nombre;
-    int puntos;
-    int movimientos;
-}tRanking; //actualmente la logia funciona sin esta estructura*/
+
 
 typedef struct {
     int id_jugador;

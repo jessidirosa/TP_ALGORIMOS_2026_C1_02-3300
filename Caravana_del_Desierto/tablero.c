@@ -36,10 +36,6 @@ int mostrarTablero_solucionTXT()
         printf("%s",linea);
     }
     fclose(pf);
-<<<<<<< HEAD
-=======
-
->>>>>>> 5f343b94048d3365f5e4886eda73024427a99785
     return TODO_OK;
 }
 void colocarElemAleatorios_solucionTXT(char tablero[], int n, char elemento, int cantidad) {
@@ -66,9 +62,44 @@ int guardarTablero_solucionTXT(char tablero[], int n) {
     }
     printf("\nTablero generado");
     fclose(f);
-<<<<<<< HEAD
-=======
-
->>>>>>> 5f343b94048d3365f5e4886eda73024427a99785
     return TODO_OK;
+}
+
+
+void generarTablero(tConfig* c, tLista* l)
+{
+    char casillasEspec[] = {'.', 'B', 'O', 'P', 'V', 'T', 'I', 'S'};
+    char* casilla = casillasEspec;
+    int i;
+    int vacias = c->cantidad_posiciones - c->maximo_bandidos - c->maximo_oasis - c->maximo_premios - c->maximo_tormentas - c->maximo_vidas_extra;
+
+    for(i=0; i<vacias; i++)
+        insertarEnPosicRelListaD(l, casilla, sizeof(char), rand() % i); ///implementar
+
+    casilla++;
+    for(i=0; i<c->maximo_bandidos; i++)
+        insertarEnPosicRelListaD(l, casilla, sizeof(char), rand() % i); ///implementar
+
+    casilla++;
+    for(i=0; i<c->maximo_oasis; i++)
+        insertarEnPosicRelListaD(l, casilla, sizeof(char), rand() % i); ///implementar
+
+    casilla++;
+    for(i=0; i<c->maximo_premios; i++)
+        insertarEnPosicRelListaD(l, casilla, sizeof(char), rand() % i); ///implementar
+
+    casilla++;
+    for(i=0; i<c->maximo_vidas_extra; i++)
+        insertarEnPosicRelListaD(l, casilla, sizeof(char), rand() % i); ///implementar
+
+    casilla++;
+    for(i=0; i<c->maximo_tormentas; i++)
+        insertarEnPosicRelListaD(l, casilla, sizeof(char), rand() % i); ///implementar
+
+    casilla++;
+    insertarEnPosicRelListaD(l, casilla, sizeof(char), 0); ///implementar
+    casilla++;
+    insertarAlFinalListaD(l, casilla, sizeof(char)); ///implementar
+
+    cargarArchCaravana(l); ///implementar
 }

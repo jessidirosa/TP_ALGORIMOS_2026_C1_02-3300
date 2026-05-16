@@ -199,11 +199,9 @@ int insertarOrdenado(tLista* pl, const void* dato, unsigned tam, int sinDup, voi
     while((*pl) && cmp((*pl)->dato, dato) < 0)
         pl = &(*pl)->sig;
 
-<<<<<<< HEAD
-    if((*pl) && !cmp((*pl)->dato, dato) && sinDup)
-=======
+//    if((*pl) && !cmp((*pl)->dato, dato) && sinDup)
+
     if((*pl) && cmp((*pl)->dato, dato) == 0 && sinDup == 0)
->>>>>>> 5f343b94048d3365f5e4886eda73024427a99785
     {
         if(accion) //accion != NULL
             accion((*pl)->dato,dato);
@@ -271,5 +269,7 @@ int ReducirAUnolosDuplicados(tLista* lista, int cmp(const void*,const void*), vo
     }
     return TODO_OK;
 }
+
+
 
 

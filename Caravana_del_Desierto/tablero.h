@@ -1,6 +1,7 @@
 #ifndef TABLERO_H_INCLUDED
 #define TABLERO_H_INCLUDED
 #include "config.h"
+#include "lista_doble.h"
 
 //void generarTablero();
 //crearTablero();
