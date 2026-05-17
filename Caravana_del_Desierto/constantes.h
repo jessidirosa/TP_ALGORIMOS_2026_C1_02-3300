@@ -12,7 +12,8 @@
 #define VACIA 0
 #define DUPLICADO 3
 #define TOP 3
-
+#define SIN_MEM 0
+#define NO_ENCONTRADO 0
 #define TAM_OP 3
 #define OPCION1 1
 #define OPCION2 2

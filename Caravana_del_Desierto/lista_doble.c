@@ -1,52 +1,170 @@
 #include "lista_doble.h"
 #include "constantes.h"
 
-void crearLista(tLista* l)
+void crearListaD(tListaD* l)
 {
     *l = NULL;
 }
 
-int insertarEnPosicRelListaD(tLista* l, const void* dato, unsigned tam, int pos)
+int insertarEnPosicRelListaD(tListaD* l, const void* dato, unsigned tam, int pos)
 {
     tNodoD* pAct = *l;
-    tNodoD* auxAnt, * auxSig;
+    tNodoD* auxAnt;
+    int i;
+    tNodoD* nue = malloc(sizeof(tNodoD));
+    if(!nue)
+        return SIN_MEM;
 
+    nue->dato = malloc(tam);
+    if(!nue->dato)
+    {
+        free(nue);
+        return SIN_MEM;
+    }
+
+    memcpy(nue->dato, dato, tam);
+    nue->tam = tam;
+
+    if(!pAct)
+    {
+        (*l) = nue;
+        auxAnt = (*l);
+        nue->ant = (*l);
+        nue->sig = (*l);
+        return TODO_OK;
+    }
+
+    auxAnt = pAct->ant;
+
+    for(i=0; i<pos; i++)
+        pAct = pAct->sig;
+
+    auxAnt = pAct->ant;
+
+    auxAnt->sig = nue;
+    pAct->ant = nue;
+
+    nue->ant = auxAnt;
+    nue->sig = pAct;
+
+    return TODO_OK;
+}
+
+int insertarAlInicioListaD(tListaD* l, const void* dato, unsigned tam)
+{
+    tNodoD* pAct = *l;
+    tNodoD* auxAnt;
+    tNodoD* nue = malloc(sizeof(tNodoD));
+    if(!nue)
+        return SIN_MEM;
+
+    nue->dato = malloc(tam);
+    if(!nue->dato)
+    {
+        free(nue);
+        return SIN_MEM;
+    }
+
+    memcpy(nue->dato, dato, tam);
+    nue->tam = tam;
+
+    if(!pAct)
+    {
+        (*l) = nue;
+        auxAnt = (*l);
+        nue->ant = (*l);
+        nue->sig = (*l);
+        return TODO_OK;
+    }
+
+    auxAnt = pAct->ant;
+
+    auxAnt->sig = nue;
+    pAct->ant = nue;
+
+    nue->ant = auxAnt;
+    nue->sig = pAct;
+    (*l) = nue;
+
+    return TODO_OK;
+
+}
+
+int insertarAlFinalListaD(tListaD* l, const void* dato, unsigned tam)
+{
+    tNodoD* pAct = *l;
+    tNodoD* auxAnt;
+    tNodoD* nue = malloc(sizeof(tNodoD));
+    if(!nue)
+        return SIN_MEM;
+
+    nue->dato = malloc(tam);
+    if(!nue->dato)
+    {
+        free(nue);
+        return SIN_MEM;
+    }
+
+    memcpy(nue->dato, dato, tam);
+    nue->tam = tam;
+
+    if(!pAct)
+    {
+        (*l) = nue;
+        auxAnt = (*l);
+        nue->ant = (*l);
+        nue->sig = (*l);
+        return TODO_OK;
+    }
+
+    auxAnt = pAct->ant;
+
+    auxAnt->sig = nue;
+    pAct->ant = nue;
+
+    nue->ant = auxAnt;
+    nue->sig = pAct;
+
+    return TODO_OK;
 
 }
 
 
-void recorrerListaDobleDerAIzq(const tLista* l, void accion(const void*))
+
+void recorrerListaDobleDerAIzq(const tListaD* l, void accion(const void*))
 {
-    tNodo* act = *l;
+   tNodoD* act = *l;
+    tNodoD* ini = act;
 
-    while(act && act->sig)
-        act = act->sig;
+    accion(act->dato);
+    act = act->ant;
 
-    while(act)
+    while(act != ini)
     {
         accion(act->dato);
         act = act->ant;
     }
 }
 
-void recorrerListaDobleIzqADer(const tLista* l, void accion(const void*))
+void recorrerListaDobleIzqADer(const tListaD* l, void accion(const void*))
 {
-    tNodo* act = *l;
+    tNodoD* act = *l;
+    tNodoD* ini = act;
 
-    while(act && act->ant)
-        act = act->ant;
+    accion(act->dato);
+    act = act->sig;
 
-    while(act)
+    while(act != ini)
     {
         accion(act->dato);
         act = act->sig;
     }
 }
 
-int eliminarDeListaDobleOrd(tLista* l, unsigned tam, void* dato, int cmp(const void*, const void*))
+int eliminarDeListaDobleOrd(tListaD* l, unsigned tam, void* dato, int cmp(const void*, const void*))
 {
-    tNodo* act = *l;
-    tNodo* auxAnt, *auxSig;
+    tNodoD* act = *l;
+    tNodoD* auxAnt, *auxSig;
 
     while(cmp(dato, act->dato) > 0 && act->sig)
         act = act->sig;

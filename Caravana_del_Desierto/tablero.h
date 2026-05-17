@@ -3,7 +3,8 @@
 #include "config.h"
 #include "lista_doble.h"
 
-//void generarTablero();
+int generarTablero(tConfig* c, tListaD* l);
+void mostrarTablero(const void* l);
 //crearTablero();
 //distribuirElementos();
 //int tableroTieneSolucion();

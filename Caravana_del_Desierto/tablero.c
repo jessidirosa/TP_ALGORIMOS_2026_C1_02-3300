@@ -5,7 +5,7 @@ void generarTablero_solucionTXT(tConfig *c)
 {
 
     char tablero[100];
-    for(int i=0; i< (int)c->cantidad_posiciones;i++)
+    for(int i=0; i< (int)c->cantidad_posiciones; i++)
     {
         tablero[i]='.';
     }
@@ -38,26 +38,31 @@ int mostrarTablero_solucionTXT()
     fclose(pf);
     return TODO_OK;
 }
-void colocarElemAleatorios_solucionTXT(char tablero[], int n, char elemento, int cantidad) {
+void colocarElemAleatorios_solucionTXT(char tablero[], int n, char elemento, int cantidad)
+{
     int puestos = 0;
 
-    while (puestos < cantidad) {
+    while (puestos < cantidad)
+    {
         int pos = rand() % n;
 
-        if (tablero[pos] == '.' && pos != 0 && pos != n - 1) {
+        if (tablero[pos] == '.' && pos != 0 && pos != n - 1)
+        {
             tablero[pos] = elemento;
             puestos++;
         }
     }
 }
-int guardarTablero_solucionTXT(char tablero[], int n) {
+int guardarTablero_solucionTXT(char tablero[], int n)
+{
     FILE *f = fopen(ARCH_TABLERO, "w");
     if(!f)
     {
         printf("\nError al abrir el archivo caravana.txt al generarse");
         return ERR_ARCH;
     }
-    for (int i = 0; i < n; i++) {
+    for (int i = 0; i < n; i++)
+    {
         fprintf(f, "%02d:%c\n", i + 1, tablero[i]);
     }
     printf("\nTablero generado");
@@ -66,40 +71,98 @@ int guardarTablero_solucionTXT(char tablero[], int n) {
 }
 
 
-void generarTablero(tConfig* c, tLista* l)
+int generarTablero(tConfig* c, tListaD* l)
 {
     char casillasEspec[] = {'.', 'B', 'O', 'P', 'V', 'T', 'I', 'S'};
     char* casilla = casillasEspec;
-    int i;
-    int vacias = c->cantidad_posiciones - c->maximo_bandidos - c->maximo_oasis - c->maximo_premios - c->maximo_tormentas - c->maximo_vidas_extra;
+    unsigned i = 0, cantInsertados = 0;
+    unsigned vacias = c->cantidad_posiciones - c->maximo_bandidos - c->maximo_oasis - c->maximo_premios - c->maximo_tormentas - c->maximo_vidas_extra - 2;
 
-    for(i=0; i<vacias; i++)
-        insertarEnPosicRelListaD(l, casilla, sizeof(char), rand() % i); ///implementar
+    while(i<vacias && insertarEnPosicRelListaD(l, casilla, sizeof(char), rand() % (cantInsertados + 1)))
+    {
+        i++;
+        cantInsertados++;
+    }
+
+
+    if(i < vacias)
+        return SIN_MEM;
+
+    i = 0;
+    casilla++;
+    while(i<c->maximo_bandidos &&  insertarEnPosicRelListaD(l, casilla, sizeof(char), rand() % (cantInsertados + 1)))
+    {
+        i++;
+        cantInsertados++;
+    }
+
+
+    if(i < c->maximo_bandidos)
+        return SIN_MEM;
+
+    i = 0;
+    casilla++;
+    while(i<c->maximo_oasis &&  insertarEnPosicRelListaD(l, casilla, sizeof(char), rand() % (cantInsertados + 1)))
+    {
+        i++;
+        cantInsertados++;
+    }
+
+
+    if(i < c->maximo_oasis)
+        return SIN_MEM;
+
+    i = 0;
+    casilla++;
+    while(i<c->maximo_premios &&  insertarEnPosicRelListaD(l, casilla, sizeof(char), rand() % (cantInsertados + 1)))
+    {
+        i++;
+        cantInsertados++;
+    }
+
+
+    if(i < c->maximo_premios)
+        return SIN_MEM;
+
+    i = 0;
+    casilla++;
+    while(i<c->maximo_vidas_extra &&  insertarEnPosicRelListaD(l, casilla, sizeof(char), rand() % (cantInsertados + 1)))
+    {
+        i++;
+        cantInsertados++;
+    }
+
+
+    if(i < c->maximo_vidas_extra)
+        return SIN_MEM;
+
+    i = 0;
+    casilla++;
+    while(i<c->maximo_tormentas &&  insertarEnPosicRelListaD(l, casilla, sizeof(char), rand() % (cantInsertados + 1)))
+    {
+        i++;
+        cantInsertados++;
+    }
+
+
+    if(i < c->maximo_tormentas)
+        return SIN_MEM;
 
     casilla++;
-    for(i=0; i<c->maximo_bandidos; i++)
-        insertarEnPosicRelListaD(l, casilla, sizeof(char), rand() % i); ///implementar
+    if(!insertarAlInicioListaD(l, casilla, sizeof(char)))
+        return SIN_MEM;
 
     casilla++;
-    for(i=0; i<c->maximo_oasis; i++)
-        insertarEnPosicRelListaD(l, casilla, sizeof(char), rand() % i); ///implementar
+    if(!insertarAlFinalListaD(l, casilla, sizeof(char)))
+        return SIN_MEM;
 
-    casilla++;
-    for(i=0; i<c->maximo_premios; i++)
-        insertarEnPosicRelListaD(l, casilla, sizeof(char), rand() % i); ///implementar
+    ///implementar:
+//    cargarArchCaravana(l);
 
-    casilla++;
-    for(i=0; i<c->maximo_vidas_extra; i++)
-        insertarEnPosicRelListaD(l, casilla, sizeof(char), rand() % i); ///implementar
+    return TODO_OK;
+}
 
-    casilla++;
-    for(i=0; i<c->maximo_tormentas; i++)
-        insertarEnPosicRelListaD(l, casilla, sizeof(char), rand() % i); ///implementar
-
-    casilla++;
-    insertarEnPosicRelListaD(l, casilla, sizeof(char), 0); ///implementar
-    casilla++;
-    insertarAlFinalListaD(l, casilla, sizeof(char)); ///implementar
-
-    cargarArchCaravana(l); ///implementar
+void mostrarTablero(const void* l)
+{
+    printf("[%c] ", *(char*)l);
 }

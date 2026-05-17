@@ -60,7 +60,7 @@ void ejecutarOpcion(unsigned opcion,tConfig* c)
 
     case 2:
         system("cls");
-        casoPruebaBIN(ARCH_PARTIDAS);///ELMINAR ESTE ARCHIVO, ES SOLO PARA PROBAR EL RANKING
+//        casoPruebaBIN(ARCH_PARTIDAS);///ELMINAR ESTE ARCHIVO, ES SOLO PARA PROBAR EL RANKING
         mostrarRanking(ARCH_PARTIDAS);
         break;
 
@@ -83,13 +83,14 @@ void iniciarPartida(tConfig *c)
     //tJugador jugador;
     //tTablero tablero;
     /*implementacion TXT*/
+    tListaD ruta;
 
-
+    crearListaD(&ruta);
 
 
     // identificarJugador(); //funcion de jugador.h donde se hace la gestion de jugadores(no seria lo mismo que el jugador del juego)
     //inicializarJugador(&jugador); //inicializar la estructura del jugador.
-    generarTablero(c);
+    generarTablero(c, &ruta);
     generarTablero_solucionTXT(c); //solucion en TXT antes de hacerlo con listas
     //generarTablero(); //funcion de tablero.h
     //posicionarJugadorEnInicio(&jugador,&tablero); //poner a jugador en I --> poner [I J]
@@ -131,39 +132,39 @@ int tirarDado()
 /*int juegoSigue(tJugador* jugador) {
     return (jugador->vidas > 0 && jugador->posicion != salida);
 }*/
-
-int casoPruebaBIN(const char* archivo) ///ELIMINAR ESTA FUNCION ES SOLO DE PRUEBA
-{
-    tRegistroPartida partidas[10] = {
-        {1, 1, 150, 45},
-        {2, 2, 200, 80},
-        {1, 3, 120, 30},
-        {3, 4, 250, 30},
-        {4, 5, 20, 30},
-        {5, 6, 400, 80},
-        {1, 7, 400, 80},
-        {2, 8, 100, 10},
-        {3, 9, 100, 5},
-        {1, 10, 400, 80},
-    };
-    FILE *pf = fopen(archivo, "wb");
-
-    if (pf == NULL) {
-        perror("Error al abrir el archivo de prueba de carga de datos en arcivo bin");
-        return 1;
-    }
-
-    size_t escritos = fwrite(partidas, sizeof(tRegistroPartida), 10, pf);
-
-    if (escritos == 10) {
-        printf("Éxito: Se guardaron %zu registros correctamente.\n", escritos);
-    } else {
-        printf("Error: Solo se guardaron %zu registros.\n", escritos);
-    }
-
-    fclose(pf);
-    return 0;
-}
+//
+//int casoPruebaBIN(const char* archivo) ///ELIMINAR ESTA FUNCION ES SOLO DE PRUEBA
+//{
+//    tRegistroPartida partidas[10] = {
+//        {1, 1, 150, 45},
+//        {2, 2, 200, 80},
+//        {1, 3, 120, 30},
+//        {3, 4, 250, 30},
+//        {4, 5, 20, 30},
+//        {5, 6, 400, 80},
+//        {1, 7, 400, 80},
+//        {2, 8, 100, 10},
+//        {3, 9, 100, 5},
+//        {1, 10, 400, 80},
+//    };
+//    FILE *pf = fopen(archivo, "wb");
+//
+//    if (pf == NULL) {
+//        perror("Error al abrir el archivo de prueba de carga de datos en arcivo bin");
+//        return 1;
+//    }
+//
+//    size_t escritos = fwrite(partidas, sizeof(tRegistroPartida), 10, pf);
+//
+//    if (escritos == 10) {
+//        printf("Éxito: Se guardaron %zu registros correctamente.\n", escritos);
+//    } else {
+//        printf("Error: Solo se guardaron %zu registros.\n", escritos);
+//    }
+//
+//    fclose(pf);
+//    return 0;
+//}
 
 void mostrarRanking(const char* archivo) // le pasamos el archivo de partidas
 {
@@ -245,10 +246,10 @@ int compararPuntosJugadores(const void* a, const void* b)
 
     return jug2->puntaje - jug1->puntaje;//return jug2->puntos - jug1->puntos;
 }
-/*
+
 void mostrarPuntosJugadores(const void* n)
 {
-    tRanking* jug = (tRanking*)n;
-    printf("%15s%-d\n", jug->nombre, jug->puntos);
+    tRegistroPartida* jug = (tRegistroPartida*)n;
+    printf("%d%-d\n", jug->id_jugador, jug->puntaje); ///MODIFICAR ESTO, SOLO LO PUSE ASI PARA QUE FUNCIONE
 }
-*/
+
