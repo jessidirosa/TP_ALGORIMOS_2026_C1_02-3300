@@ -177,10 +177,10 @@ tNodoD* moverJugador(tNodoD *jugador, int pasos, char dir)
     {
         if (dir == 'A')
         {
-            // chequeo si el siguiente es Inicio (ciruclar) = estoy en Salida
+            // chequeo si el siguiente es Inicio
             if (((tCasilla*)(jugador->sig->dato))->tipo == 'I')
             {
-                // reboto: los pasos restantes van hacia atras
+                // reboto hacia atras
                 int restantes = pasos - i - 1;
                 printf("Rebotaste en la Salida! Retrocedes %d casillero(s).\n", restantes);
                 dir = 'R';
@@ -192,7 +192,7 @@ tNodoD* moverJugador(tNodoD *jugador, int pasos, char dir)
         }
         else
         {
-            // chequeo si el anterior es Salida (circular) = estoy en Inicio
+            // chequeo si el anterior es Salida
             if (((tCasilla*)(jugador->ant->dato))->tipo == 'S')
             {
                 // reboto: los pasos restantes van hacia adelante
@@ -207,7 +207,6 @@ tNodoD* moverJugador(tNodoD *jugador, int pasos, char dir)
         }
     }
 
-    // marcar nuevo nodo
     ((tCasilla*)(jugador->dato))->tieneJ = 1;
 
     return jugador;
