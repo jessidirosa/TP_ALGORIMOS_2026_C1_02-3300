@@ -146,18 +146,20 @@ void recorrerListaDobleDerAIzq(const tListaD* l, void accion(const void*))
     }
 }
 
-void recorrerListaDobleIzqADer(const tListaD* l, void accion(const void*))
+void recorrerListaDobleIzqADer(const tListaD* l, void accion(const void*,int))
 {
     tNodoD* act = *l;
     tNodoD* ini = act;
+    int num=1;
 
-    accion(act->dato);
+    accion(act->dato,num);
     act = act->sig;
 
     while(act != ini)
     {
-        accion(act->dato);
+        accion(act->dato,num);
         act = act->sig;
+        num++;
     }
 }
 

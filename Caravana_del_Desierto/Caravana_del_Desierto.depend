@@ -211,3 +211,62 @@
 	"lista_doble.h"
 	"constantes.h"
 
+1779194382 source:c:\users\paulanyszta\documents\github\tp_algorimos_2026_c1_02-3300\caravana_del_desierto\cola.c
+	"cola.h"
+
+1779194382 c:\users\paulanyszta\documents\github\tp_algorimos_2026_c1_02-3300\caravana_del_desierto\cola.h
+	<stdio.h>
+	<stdlib.h>
+	<string.h>
+
+1779194382 source:c:\users\paulanyszta\documents\github\tp_algorimos_2026_c1_02-3300\caravana_del_desierto\config.c
+	"config.h"
+
+1779194382 c:\users\paulanyszta\documents\github\tp_algorimos_2026_c1_02-3300\caravana_del_desierto\config.h
+	"constantes.h"
+
+1779194382 c:\users\paulanyszta\documents\github\tp_algorimos_2026_c1_02-3300\caravana_del_desierto\constantes.h
+	<stdio.h>
+	<stdlib.h>
+	<string.h>
+	<time.h>
+
+1779230872 source:c:\users\paulanyszta\documents\github\tp_algorimos_2026_c1_02-3300\caravana_del_desierto\juego.c
+	"juego.h"
+	"tablero.h"
+	"lista.h"
+
+1779230110 c:\users\paulanyszta\documents\github\tp_algorimos_2026_c1_02-3300\caravana_del_desierto\juego.h
+	"constantes.h"
+	"cola.h"
+	"config.h"
+	"lista.h"
+	"lista_doble.h"
+
+1779194382 c:\users\paulanyszta\documents\github\tp_algorimos_2026_c1_02-3300\caravana_del_desierto\lista.h
+	"cola.h"
+	"constantes.h"
+
+1779224741 c:\users\paulanyszta\documents\github\tp_algorimos_2026_c1_02-3300\caravana_del_desierto\lista_doble.h
+
+1779229452 c:\users\paulanyszta\documents\github\tp_algorimos_2026_c1_02-3300\caravana_del_desierto\tablero.h
+	"config.h"
+	"lista_doble.h"
+
+1779194382 source:c:\users\paulanyszta\documents\github\tp_algorimos_2026_c1_02-3300\caravana_del_desierto\lista.c
+	"lista.h"
+
+1779224758 source:c:\users\paulanyszta\documents\github\tp_algorimos_2026_c1_02-3300\caravana_del_desierto\lista_doble.c
+	"lista_doble.h"
+	"constantes.h"
+
+1779230507 source:c:\users\paulanyszta\documents\github\tp_algorimos_2026_c1_02-3300\caravana_del_desierto\tablero.c
+	"tablero.h"
+	"config.h"
+	"constantes.h"
+
+1779225698 source:c:\users\paulanyszta\documents\github\tp_algorimos_2026_c1_02-3300\caravana_del_desierto\main.c
+	"config.h"
+	"juego.h"
+	"tablero.h"
+

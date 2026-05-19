@@ -54,7 +54,8 @@ void mostrarTop(tLista *pLista,int top);
 int ingresar(unsigned tam);
 int opcionValida(unsigned opcion);
 void ejecutarOpcion(unsigned opcion,tConfig* c);
-
+tNodoD* posicionarJugadorEnInicio(tListaD *l);
+tNodoD* moverJugador(tNodoD *jugador, int pasos, char dir);
 
 void iniciarPartida(tConfig *c); //maquetado
 //int juegoSigue();

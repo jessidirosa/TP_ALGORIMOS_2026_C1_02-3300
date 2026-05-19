@@ -3,8 +3,13 @@
 #include "config.h"
 #include "lista_doble.h"
 
+typedef struct {
+    char tipo;    // 'I', 'S', '.', 'B', 'O', 'P', 'V', 'T'
+    int  tieneJ;  // 0 = no hay jugador, 1 = jugador acá
+} tCasilla;
+
 int generarTablero(tConfig* c, tListaD* l);
-void mostrarTablero(const void* l);
+void mostrarTablero(const void* l,int num);
 //crearTablero();
 //distribuirElementos();
 //int tableroTieneSolucion();

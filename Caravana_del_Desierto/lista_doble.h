@@ -14,7 +14,7 @@ typedef tNodoD* tListaD;
 
 void crearListaD(tListaD* l);
 int insertarEnPosicRelListaD(tListaD* l, const void* dato, unsigned tam, int pos);
-void recorrerListaDobleIzqADer(const tListaD* l, void accion(const void*));
+void recorrerListaDobleIzqADer(const tListaD* l, void accion(const void*,int));
 int eliminarDeListaDobleOrd(tListaD* l, unsigned tam, void* dato, int cmp(const void*, const void*));
 //void recorrerListaDobleDerAIzq(const tListaD* l, void accion(const void*));
 int insertarEnPosicRelListaD(tListaD* l, const void* dato, unsigned tam, int pos);

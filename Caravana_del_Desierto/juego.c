@@ -74,8 +74,9 @@ void registrarJugador()
     char nombreJugador[100];
     printf("\nIngrese su nombre: ");
     scanf(" %[^\n]",nombreJugador); // [^\n] permite leer espacios hasta presionar Enter y El espacio antes de % es limpia cualquier '\n' pendiente en el buffer
-    printf("\nBienvenido/a %s", nombreJugador);
+    printf("\nBienvenido/a %s\n", nombreJugador);
 }
+
 void iniciarPartida(tConfig *c)
 {
     //int dado;
@@ -84,6 +85,9 @@ void iniciarPartida(tConfig *c)
     //tTablero tablero;
     /*implementacion TXT*/
     tListaD ruta;
+    tNodoD *nodoJugador = NULL;
+    int dado;
+    char dir;
 
     crearListaD(&ruta);
 
@@ -91,10 +95,28 @@ void iniciarPartida(tConfig *c)
     // identificarJugador(); //funcion de jugador.h donde se hace la gestion de jugadores(no seria lo mismo que el jugador del juego)
     //inicializarJugador(&jugador); //inicializar la estructura del jugador.
     generarTablero(c, &ruta);
-    generarTablero_solucionTXT(c); //solucion en TXT antes de hacerlo con listas
-    //generarTablero(); //funcion de tablero.h
-    //posicionarJugadorEnInicio(&jugador,&tablero); //poner a jugador en I --> poner [I J]
-    //crearBandidos(); //poner los bandidos al azar en el tablero segun config.max_bandidos
+    nodoJugador = posicionarJugadorEnInicio(&ruta); //poner a jugador en I --> poner [I J]
+    recorrerListaDobleIzqADer(&ruta,mostrarTablero);
+    printf("\n\n");
+    for(int i=0; i<10;i++) ///ESTE FOR NO IRIA, ES PARA PROBAR JUGAR UN RATO
+    {
+        dado = tirarDado();
+        printf("\nTiraste el dado: %d\n", dado);
+
+        printf("Hacia donde queres moverte? (A = Avanzar / R = Retroceder): ");
+        scanf(" %c", &dir);
+        while(dir != 'A' && dir != 'R')
+        {
+            printf("Direccion invalida. Ingresa A o R: ");
+            scanf(" %c", &dir);
+        }
+
+        nodoJugador = moverJugador(nodoJugador, dado, dir);
+        recorrerListaDobleIzqADer(&ruta, mostrarTablero);
+        printf("\n");
+    }
+
+
     //crearCola(&colaMovimiento);
 
 
@@ -127,6 +149,75 @@ void iniciarPartida(tConfig *c)
 int tirarDado()
 {
     return(rand() % 6 + 1);
+}
+
+tNodoD* moverJugador(tNodoD *jugador, int pasos, char dir)
+{
+    if (!jugador)
+    {
+        printf("Error: jugador no inicializado.\n");
+        return NULL;
+    }
+    if (pasos < 1 || pasos > 6)
+    {
+        printf("Error: dado invalido (%d). Debe ser 1-6.\n", pasos);
+        return NULL;
+    }
+    if (dir != 'A' && dir != 'R')
+    {
+        printf("Error: direccion invalida ('%c').\n", dir);
+        return NULL;
+    }
+
+    // salir del nodo actual
+    ((tCasilla*)(jugador->dato))->tieneJ = 0;
+
+    int i;
+    for (i = 0; i < pasos; i++)
+    {
+        if (dir == 'A')
+        {
+            // chequeo si el siguiente es Inicio (ciruclar) = estoy en Salida
+            if (((tCasilla*)(jugador->sig->dato))->tipo == 'I')
+            {
+                // reboto: los pasos restantes van hacia atras
+                int restantes = pasos - i - 1;
+                printf("Rebotaste en la Salida! Retrocedes %d casillero(s).\n", restantes);
+                dir = 'R';
+                i = -1;  // el for suma 1, arranca en 0
+                pasos = restantes;
+                continue;
+            }
+            jugador = jugador->sig;
+        }
+        else
+        {
+            // chequeo si el anterior es Salida (circular) = estoy en Inicio
+            if (((tCasilla*)(jugador->ant->dato))->tipo == 'S')
+            {
+                // reboto: los pasos restantes van hacia adelante
+                int restantes = pasos - i - 1;
+                printf("Rebotaste en el Inicio! Avanzas %d casillero(s).\n", restantes);
+                dir = 'A';
+                i = -1;
+                pasos = restantes;
+                continue;
+            }
+            jugador = jugador->ant;
+        }
+    }
+
+    // marcar nuevo nodo
+    ((tCasilla*)(jugador->dato))->tieneJ = 1;
+
+    return jugador;
+}
+
+tNodoD* posicionarJugadorEnInicio(tListaD *l)
+{
+    tNodoD *act = *l;
+    ((tCasilla*)(act->dato))->tieneJ = 1;
+    return act;
 }
 
 /*int juegoSigue(tJugador* jugador) {

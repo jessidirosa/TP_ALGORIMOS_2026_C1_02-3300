@@ -73,12 +73,15 @@ int guardarTablero_solucionTXT(char tablero[], int n)
 
 int generarTablero(tConfig* c, tListaD* l)
 {
-    char casillasEspec[] = {'.', 'B', 'O', 'P', 'V', 'T', 'I', 'S'};
-    char* casilla = casillasEspec;
+    tCasilla cas;
+    cas.tieneJ = 0;
+    //char casillasEspec[] = {'.', 'B', 'O', 'P', 'V', 'T', 'I', 'S'};
+   // char* casilla = casillasEspec;
     unsigned i = 0, cantInsertados = 0;
     unsigned vacias = c->cantidad_posiciones - c->maximo_bandidos - c->maximo_oasis - c->maximo_premios - c->maximo_tormentas - c->maximo_vidas_extra - 2;
 
-    while(i<vacias && insertarEnPosicRelListaD(l, casilla, sizeof(char), rand() % (cantInsertados + 1)))
+    cas.tipo = '.';
+    while(i<vacias && insertarEnPosicRelListaD(l, &cas, sizeof(tCasilla), rand() % (cantInsertados + 1)))
     {
         i++;
         cantInsertados++;
@@ -89,8 +92,8 @@ int generarTablero(tConfig* c, tListaD* l)
         return SIN_MEM;
 
     i = 0;
-    casilla++;
-    while(i<c->maximo_bandidos &&  insertarEnPosicRelListaD(l, casilla, sizeof(char), rand() % (cantInsertados + 1)))
+    cas.tipo = 'B';
+    while(i<c->maximo_bandidos &&  insertarEnPosicRelListaD(l, &cas, sizeof(tCasilla), rand() % (cantInsertados + 1)))
     {
         i++;
         cantInsertados++;
@@ -101,8 +104,8 @@ int generarTablero(tConfig* c, tListaD* l)
         return SIN_MEM;
 
     i = 0;
-    casilla++;
-    while(i<c->maximo_oasis &&  insertarEnPosicRelListaD(l, casilla, sizeof(char), rand() % (cantInsertados + 1)))
+    cas.tipo = 'O';
+    while(i<c->maximo_oasis &&  insertarEnPosicRelListaD(l, &cas, sizeof(tCasilla), rand() % (cantInsertados + 1)))
     {
         i++;
         cantInsertados++;
@@ -113,8 +116,8 @@ int generarTablero(tConfig* c, tListaD* l)
         return SIN_MEM;
 
     i = 0;
-    casilla++;
-    while(i<c->maximo_premios &&  insertarEnPosicRelListaD(l, casilla, sizeof(char), rand() % (cantInsertados + 1)))
+    cas.tipo = 'P';
+    while(i<c->maximo_premios &&  insertarEnPosicRelListaD(l, &cas, sizeof(tCasilla), rand() % (cantInsertados + 1)))
     {
         i++;
         cantInsertados++;
@@ -125,8 +128,8 @@ int generarTablero(tConfig* c, tListaD* l)
         return SIN_MEM;
 
     i = 0;
-    casilla++;
-    while(i<c->maximo_vidas_extra &&  insertarEnPosicRelListaD(l, casilla, sizeof(char), rand() % (cantInsertados + 1)))
+    cas.tipo = 'V';
+    while(i<c->maximo_vidas_extra &&  insertarEnPosicRelListaD(l, &cas, sizeof(tCasilla), rand() % (cantInsertados + 1)))
     {
         i++;
         cantInsertados++;
@@ -137,8 +140,8 @@ int generarTablero(tConfig* c, tListaD* l)
         return SIN_MEM;
 
     i = 0;
-    casilla++;
-    while(i<c->maximo_tormentas &&  insertarEnPosicRelListaD(l, casilla, sizeof(char), rand() % (cantInsertados + 1)))
+    cas.tipo = 'T';
+    while(i<c->maximo_tormentas &&  insertarEnPosicRelListaD(l, &cas, sizeof(tCasilla), rand() % (cantInsertados + 1)))
     {
         i++;
         cantInsertados++;
@@ -148,12 +151,12 @@ int generarTablero(tConfig* c, tListaD* l)
     if(i < c->maximo_tormentas)
         return SIN_MEM;
 
-    casilla++;
-    if(!insertarAlInicioListaD(l, casilla, sizeof(char)))
+    cas.tipo = 'I';
+    if(!insertarAlInicioListaD(l, &cas, sizeof(tCasilla)))
         return SIN_MEM;
 
-    casilla++;
-    if(!insertarAlFinalListaD(l, casilla, sizeof(char)))
+    cas.tipo = 'S';
+    if(!insertarAlFinalListaD(l, &cas, sizeof(tCasilla)))
         return SIN_MEM;
 
     ///implementar:
@@ -162,7 +165,17 @@ int generarTablero(tConfig* c, tListaD* l)
     return TODO_OK;
 }
 
-void mostrarTablero(const void* l)
+void mostrarTablero(const void* dato, int num)
 {
-    printf("[%c] ", *(char*)l);
+    tCasilla* c = (tCasilla*)dato;
+
+    if (c->tieneJ)
+    {
+        if (c->tipo == '.')
+            printf("%.2d:J  <--\n", num);
+        else
+            printf("%.2d:[%c J]  <--\n", num, c->tipo);
+    }
+    else
+        printf("%.2d:%c\n", num, c->tipo);
 }
