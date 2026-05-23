@@ -19,14 +19,7 @@ int main()
     tListaD l;
     crearListaD(&l);
 
-    if(!generarTablero(&config, &l))
-        printf("no se pudo generar el tablero\n");
-    else
-    {
-        printf("Ruta:\n");
-        recorrerListaDobleIzqADer(&l, mostrarTablero);
-        printf("\n\n");
-    }
+
 
     menu(&config);
     return 0;

@@ -6,6 +6,7 @@
 typedef struct {
     char tipo;    // 'I', 'S', '.', 'B', 'O', 'P', 'V', 'T'
     int  tieneJ;  // 0 = no hay jugador, 1 = jugador acá
+    int tieneB; //0 no, 1 si
 } tCasilla;
 
 int generarTablero(tConfig* c, tListaD* l);

@@ -5,6 +5,7 @@
 #include <stdlib.h>
 #include <string.h>
 #include <time.h>
+#include <windows.h>
 
 #define ERR_ARCH 0
 #define MAX_BUF 128
@@ -18,6 +19,8 @@
 #define OPCION1 1
 #define OPCION2 2
 #define SALIR  3
+#define GAME_OVER 100
+#define ERROR -1
 #define ARCH_CONFIG "config.txt"
 #define ARCH_TABLERO "caravana.txt"
 #define ARCH_PARTIDAS "partidas.dat"

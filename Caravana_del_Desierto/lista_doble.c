@@ -153,6 +153,7 @@ void recorrerListaDobleIzqADer(const tListaD* l, void accion(const void*,int))
     int num=1;
 
     accion(act->dato,num);
+    num++;
     act = act->sig;
 
     while(act != ini)

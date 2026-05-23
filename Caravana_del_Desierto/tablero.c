@@ -75,8 +75,8 @@ int generarTablero(tConfig* c, tListaD* l)
 {
     tCasilla cas;
     cas.tieneJ = 0;
-    //char casillasEspec[] = {'.', 'B', 'O', 'P', 'V', 'T', 'I', 'S'};
-   // char* casilla = casillasEspec;
+    cas.tieneB = 0;
+
     unsigned i = 0, cantInsertados = 0;
     unsigned vacias = c->cantidad_posiciones - c->maximo_bandidos - c->maximo_oasis - c->maximo_premios - c->maximo_tormentas - c->maximo_vidas_extra - 2;
 
@@ -86,7 +86,6 @@ int generarTablero(tConfig* c, tListaD* l)
         i++;
         cantInsertados++;
     }
-
 
     if(i < vacias)
         return SIN_MEM;

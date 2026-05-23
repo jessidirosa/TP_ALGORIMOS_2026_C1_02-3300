@@ -10,11 +10,10 @@
 
 typedef struct
 {
-    tNodo* pos;
     int vidas;
     int puntos;
-    int protegido;
-    int pierdeTurno;
+    int protegido; //0 no 1 si
+    int pierdeTurno; //0 no 1 si
 } tJugador;
 
 /*typedef struct
@@ -56,6 +55,8 @@ int opcionValida(unsigned opcion);
 void ejecutarOpcion(unsigned opcion,tConfig* c);
 tNodoD* posicionarJugadorEnInicio(tListaD *l);
 tNodoD* moverJugador(tNodoD *jugador, int pasos, char dir);
+int analizarJuego(tNodoD *nodo, tJugador *jugador, tNodoD *nodoInicio,tNodoD** nodoJugador);
+int iniciarCaracteristicasJugador(tJugador *jugador,tConfig *conf);
 
 void iniciarPartida(tConfig *c); //maquetado
 //int juegoSigue();
