@@ -87,8 +87,8 @@ void iniciarPartida(tConfig *c)
     /*implementacion TXT*/
     tListaD ruta;
     tNodoD *nodoJugador = NULL, *nodoCampamento;
-    int dado,game_over = 1,turno =1;
-    char dir,enter;
+    int dado,game_over = 1,turno =1,enter;
+    char dir;
     iniciarCaracteristicasJugador(&jugador,c);
     crearListaD(&ruta);
 
@@ -102,31 +102,40 @@ void iniciarPartida(tConfig *c)
     nodoCampamento = nodoJugador;
 
 
-    printf("+===========================================================+\n");
-    printf("|              CARAVANA DEL DESIERTO  ~  Dia %-2d             |\n", turno);
-    printf("+===========================================================+\n");
-    printf("Vidas: %d | Puntos: %d | Protegido: %s\n",
-           jugador.vidas, jugador.puntos, jugador.protegido ? "Si" : "No");
-    printf("\n");
-    recorrerListaDobleIzqADer(&ruta,mostrarTablero);
+
 
 
 
     while(jugador.vidas != 0 && game_over)
     {
 
+        printf("\n");
+        printf("+===========================================================+\n");
+        printf("|              CARAVANA DEL DESIERTO  ~  Dia %-2d             |\n", turno);
+        printf("+===========================================================+\n");
+        printf("Vidas: %d | Puntos: %d | Protegido: %s\n",
+               jugador.vidas, jugador.puntos, jugador.protegido ? "Si" : "No");
+        printf("\n");
+        recorrerListaDobleIzqADer(&ruta,mostrarTablero);
+        printf("\n");
+
         if(jugador.pierdeTurno)
         {
             printf("Perdes este turno por la Tormenta de Arena!\n");
             jugador.pierdeTurno = 0;
-            printf("Presiona ENTER para continuar...");
-            getchar();
+            printf("Presiona 0 para continuar...");
+            scanf(" %d",&enter);
+            system("cls");
+            printf("+===========================================================+\n");
+            printf("|          CARAVANA DEL DESIERTO  ~  Resultado Dia %-2d      |\n", turno);
+            printf("+===========================================================+\n\n");
+            printf("Una lagartija te alquilo la cueva por 2 monedas de oro\n");
+            turno++;
         }
         else
         {
             if(jugador.protegido)
             {
-                printf("La proteccion del Oasis expiro.\n");
                 jugador.protegido = 0;
             }
 
@@ -141,20 +150,16 @@ void iniciarPartida(tConfig *c)
             }
 
             system("cls");
-
-            turno++;
             printf("+===========================================================+\n");
-            printf("|              CARAVANA DEL DESIERTO  ~  Dia %-2d             |\n", turno);
-            printf("+===========================================================+\n");
-            printf("Vidas: %d | Puntos: %d | Protegido: %s\n",
-               jugador.vidas, jugador.puntos, jugador.protegido ? "Si" : "No");
+            printf("|          CARAVANA DEL DESIERTO  ~  Resultado Dia %-2d      |\n", turno);
+            printf("+===========================================================+\n\n");
 
-            recorrerListaDobleIzqADer(&ruta, mostrarTablero);
             nodoJugador = moverJugador(nodoJugador, dado, dir);
-            if(analizarJuego(nodoJugador,&jugador,nodoCampamento,&nodoJugador) == GAME_OVER)
+
+            if(analizarJuego(nodoJugador, &jugador, nodoCampamento, &nodoJugador) == GAME_OVER)
                 game_over = 0;
 
-
+            turno++;
         }
 
     }
@@ -195,6 +200,7 @@ int analizarJuego(tNodoD *nodo, tJugador *jugador, tNodoD *nodoInicio,tNodoD** n
     switch (cas->tipo)
     {
         case '.':
+            printf("Fue un dia tranquilo como para tomar mates y comer chipas...\n");
             break;
 
          case 'P':
@@ -243,10 +249,9 @@ int analizarJuego(tNodoD *nodo, tJugador *jugador, tNodoD *nodoInicio,tNodoD** n
                 else
                 {
                     jugador->vidas--;
-                    printf("Un Bandido te atrapo! Perdes una vida. Vidas: %d\n", jugador->vidas);
                     if (jugador->vidas == 0)
                     {
-                        printf("No tenes mas vidas. Fin de la partida.\n");
+                        printf("Un Bandido te atrapo! No tenes mas vidas. Fin de la partida.\n");
                         return GAME_OVER;
                     }
                     // volver al inicio
@@ -254,10 +259,12 @@ int analizarJuego(tNodoD *nodo, tJugador *jugador, tNodoD *nodoInicio,tNodoD** n
                     ((tCasilla*)nodoInicio->dato)->tieneJ = 1;
                     *nodoJugador = nodoInicio;
                     cas->tipo = '.'; // el bandido es eliminado
-                    printf("Volviste al Campamento Inicial.\n");
+                    printf("Un Bandido te atrapo! Perdes una vida. Vidas: %d. Volviste al Campamento Inicial.\n",jugador->vidas);
                 }
             }
             break;
+
+
     }
     return EXITO;
 
