@@ -164,7 +164,7 @@ int generarTablero(tConfig* c, tListaD* l)
     return TODO_OK;
 }
 
-void mostrarTablero(const void* dato, int num)
+/*void mostrarTablero(const void* dato, int num)
 {
     tCasilla* c = (tCasilla*)dato;
 
@@ -177,4 +177,53 @@ void mostrarTablero(const void* dato, int num)
     }
     else
         printf("%.2d:%c\n", num, c->tipo);
+}*/
+
+void mostrarTablero(const void* dato, int num)
+{
+    tCasilla* c = (tCasilla*)dato;
+    int i = 0;
+    int impreso = 0;
+
+    printf("%.2d:", num);
+
+    if (c->tieneJ || c->tieneB > 0)
+    {
+        printf("[");
+
+        if (c->tipo != '.')
+        {
+            printf("%c", c->tipo);
+            impreso = 1;
+        }
+
+        if (c->tieneJ)
+        {
+            if (impreso)
+                printf(" ");
+            printf("J");
+            impreso = 1;
+        }
+
+        i = 0;
+        while (i < c->tieneB)
+        {
+            if (impreso) printf(" ");
+            printf("B");
+            impreso = 1;
+            i++;
+        }
+
+        printf("]");
+
+        if (c->tieneJ)
+        {
+            printf("  <--");
+        }
+        printf("\n");
+    }
+    else
+    {
+        printf("%c\n", c->tipo);
+    }
 }

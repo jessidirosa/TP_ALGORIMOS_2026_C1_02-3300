@@ -42,6 +42,7 @@ int encolar(tCola* c,const void* d, unsigned cantBytes)
     }
 
     memcpy(nue->dato,d,cantBytes);
+    nue->tam = cantBytes;
     nue->sig = NULL;
 
     if(c->pri == NULL)

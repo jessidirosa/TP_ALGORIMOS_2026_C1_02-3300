@@ -4,67 +4,104 @@
 	<ActiveTarget name="Debug" />
 	<File name="main.c" open="1" top="0" tabpos="1" split="0" active="1" splitpos="0" zoom_1="0" zoom_2="0">
 		<Cursor>
-			<Cursor1 position="685" topLine="0" />
+			<Cursor1 position="672" topLine="3" />
 		</Cursor>
 	</File>
-	<File name="tablero.h" open="1" top="0" tabpos="6" split="0" active="1" splitpos="0" zoom_1="0" zoom_2="0">
+	<File name="animacion.c" open="0" top="0" tabpos="13" split="0" active="1" splitpos="0" zoom_1="0" zoom_2="0">
 		<Cursor>
-			<Cursor1 position="271" topLine="0" />
+			<Cursor1 position="1885" topLine="18" />
 		</Cursor>
 	</File>
-	<File name="config.h" open="1" top="0" tabpos="12" split="0" active="1" splitpos="0" zoom_1="0" zoom_2="0">
+	<File name="tablero.c" open="1" top="0" tabpos="6" split="0" active="1" splitpos="0" zoom_1="0" zoom_2="0">
 		<Cursor>
-			<Cursor1 position="0" topLine="0" />
+			<Cursor1 position="4209" topLine="0" />
 		</Cursor>
+		<Folding>
+			<Collapse line="4" />
+			<Collapse line="24" />
+			<Collapse line="41" />
+			<Collapse line="56" />
+			<Collapse line="167" />
+		</Folding>
 	</File>
-	<File name="lista_doble.c" open="1" top="0" tabpos="7" split="0" active="1" splitpos="0" zoom_1="0" zoom_2="0">
+	<File name="juego.c" open="1" top="1" tabpos="2" split="0" active="1" splitpos="0" zoom_1="-1" zoom_2="0">
 		<Cursor>
-			<Cursor1 position="2716" topLine="135" />
+			<Cursor1 position="1980" topLine="27" />
 		</Cursor>
+		<Folding>
+			<Collapse line="36" />
+			<Collapse line="41" />
+			<Collapse line="52" />
+			<Collapse line="73" />
+			<Collapse line="180" />
+			<Collapse line="321" />
+			<Collapse line="328" />
+			<Collapse line="373" />
+			<Collapse line="402" />
+			<Collapse line="427" />
+			<Collapse line="438" />
+			<Collapse line="446" />
+			<Collapse line="454" />
+		</Folding>
 	</File>
-	<File name="animacion.c" open="1" top="0" tabpos="13" split="0" active="1" splitpos="0" zoom_1="0" zoom_2="0">
+	<File name="constantes.h" open="1" top="0" tabpos="8" split="0" active="1" splitpos="0" zoom_1="0" zoom_2="0">
 		<Cursor>
-			<Cursor1 position="1885" topLine="1" />
-		</Cursor>
-	</File>
-	<File name="lista.c" open="1" top="0" tabpos="4" split="0" active="1" splitpos="0" zoom_1="0" zoom_2="0">
-		<Cursor>
-			<Cursor1 position="4567" topLine="204" />
-		</Cursor>
-	</File>
-	<File name="constantes.h" open="1" top="0" tabpos="10" split="0" active="1" splitpos="0" zoom_1="0" zoom_2="0">
-		<Cursor>
-			<Cursor1 position="436" topLine="0" />
-		</Cursor>
-	</File>
-	<File name="config.c" open="1" top="0" tabpos="11" split="0" active="1" splitpos="0" zoom_1="0" zoom_2="0">
-		<Cursor>
-			<Cursor1 position="27" topLine="4" />
-		</Cursor>
-	</File>
-	<File name="tablero.c" open="1" top="0" tabpos="8" split="0" active="1" splitpos="0" zoom_1="0" zoom_2="0">
-		<Cursor>
-			<Cursor1 position="4284" topLine="142" />
-		</Cursor>
-	</File>
-	<File name="juego.c" open="1" top="0" tabpos="2" split="0" active="1" splitpos="0" zoom_1="0" zoom_2="0">
-		<Cursor>
-			<Cursor1 position="2614" topLine="98" />
-		</Cursor>
-	</File>
-	<File name="lista_doble.h" open="1" top="0" tabpos="9" split="0" active="1" splitpos="0" zoom_1="0" zoom_2="0">
-		<Cursor>
-			<Cursor1 position="190" topLine="0" />
-		</Cursor>
-	</File>
-	<File name="lista.h" open="1" top="1" tabpos="5" split="0" active="1" splitpos="0" zoom_1="0" zoom_2="0">
-		<Cursor>
-			<Cursor1 position="1470" topLine="0" />
+			<Cursor1 position="420" topLine="11" />
 		</Cursor>
 	</File>
 	<File name="juego.h" open="1" top="0" tabpos="3" split="0" active="1" splitpos="0" zoom_1="0" zoom_2="0">
 		<Cursor>
-			<Cursor1 position="1475" topLine="28" />
+			<Cursor1 position="1610" topLine="29" />
+		</Cursor>
+	</File>
+	<File name="lista_doble.h" open="1" top="0" tabpos="7" split="0" active="1" splitpos="0" zoom_1="0" zoom_2="0">
+		<Cursor>
+			<Cursor1 position="190" topLine="2" />
+		</Cursor>
+	</File>
+	<File name="lista.c" open="0" top="0" tabpos="4" split="0" active="1" splitpos="0" zoom_1="0" zoom_2="0">
+		<Cursor>
+			<Cursor1 position="4567" topLine="184" />
+		</Cursor>
+		<Folding>
+			<Collapse line="195" />
+			<Collapse line="231" />
+			<Collapse line="240" />
+		</Folding>
+	</File>
+	<File name="lista_doble.c" open="1" top="0" tabpos="5" split="0" active="1" splitpos="0" zoom_1="0" zoom_2="0">
+		<Cursor>
+			<Cursor1 position="2707" topLine="95" />
+		</Cursor>
+		<Folding>
+			<Collapse line="4" />
+			<Collapse line="93" />
+			<Collapse line="134" />
+			<Collapse line="170" />
+		</Folding>
+	</File>
+	<File name="config.c" open="0" top="0" tabpos="11" split="0" active="1" splitpos="0" zoom_1="0" zoom_2="0">
+		<Cursor>
+			<Cursor1 position="27" topLine="0" />
+		</Cursor>
+		<Folding>
+			<Collapse line="3" />
+			<Collapse line="17" />
+		</Folding>
+	</File>
+	<File name="tablero.h" open="1" top="0" tabpos="4" split="0" active="1" splitpos="0" zoom_1="0" zoom_2="0">
+		<Cursor>
+			<Cursor1 position="409" topLine="3" />
+		</Cursor>
+	</File>
+	<File name="lista.h" open="0" top="0" tabpos="5" split="0" active="1" splitpos="0" zoom_1="0" zoom_2="0">
+		<Cursor>
+			<Cursor1 position="1470" topLine="0" />
+		</Cursor>
+	</File>
+	<File name="config.h" open="0" top="0" tabpos="12" split="0" active="1" splitpos="0" zoom_1="0" zoom_2="0">
+		<Cursor>
+			<Cursor1 position="0" topLine="0" />
 		</Cursor>
 	</File>
 </CodeBlocks_layout_file>

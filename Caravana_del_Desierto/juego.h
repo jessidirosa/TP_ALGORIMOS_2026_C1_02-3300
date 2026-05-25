@@ -16,21 +16,21 @@ typedef struct
     int pierdeTurno; //0 no 1 si
 } tJugador;
 
-/*typedef struct
+typedef struct
 {
-    tNodo* pos;
+    tNodoD* pos;
     int activo; // 1 = vivo, 0 = eliminado
 
-} tBandido;*/
+} tBandido;
 
-/*typedef struct
+typedef struct
 {
-    void* tipoJugador;
-    unsigned tamTipo;
+    char tipoJugador;
+    tNodoD* pos;
     int pasos;
-    int direccion;
+    char direccion;
 
-} tMovimiento;*/
+} tMovimiento;
 
 
 typedef struct {
@@ -55,11 +55,18 @@ int opcionValida(unsigned opcion);
 void ejecutarOpcion(unsigned opcion,tConfig* c);
 tNodoD* posicionarJugadorEnInicio(tListaD *l);
 tNodoD* moverJugador(tNodoD *jugador, int pasos, char dir);
-int analizarJuego(tNodoD *nodo, tJugador *jugador, tNodoD *nodoInicio,tNodoD** nodoJugador);
+int analizarJuego(tNodoD *nodo, tJugador *jugador, tNodoD *nodoInicio,tNodoD** nodoJugador, tBandido* bandidos, int cantB);
 int iniciarCaracteristicasJugador(tJugador *jugador,tConfig *conf);
 
 void iniciarPartida(tConfig *c); //maquetado
 int tirarDado();
 
 
+void posicionarBandidosEnRuta(tBandido* bandidos,tListaD* ruta);
+void guardarMovimiento(tMovimiento* movimiento,tNodoD* nodo,char dir,int dado,char tipo);
+void determinarMovimientosBandidos(tBandido* bandidos,int cantB,tNodoD* nodoJugador,tCola* colaMovimiento,int dado);
+void calcularDistanciaMinima(tNodoD* posB,tNodoD* posJ,char* dir);
+void eliminarBandido(tBandido* bandidos, int cantB, tNodoD* nodoColision);
+tBandido* buscarBandidoPorPosicion(tBandido* bandidos, int cantB, tNodoD* posBuscada);
+void moverBandidos(tBandido* bandidos,tMovimiento* movimiento, int cantB);
 #endif // JUEGO_H_INCLUDED
