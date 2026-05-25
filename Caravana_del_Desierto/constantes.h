@@ -20,7 +20,7 @@
 #define OPCION2 2
 #define SALIR  3
 #define GAME_OVER 100
-#define ERROR -1
+#define _ERROR -1
 #define ARCH_CONFIG "config.txt"
 #define ARCH_TABLERO "caravana.txt"
 #define ARCH_PARTIDAS "partidas.dat"

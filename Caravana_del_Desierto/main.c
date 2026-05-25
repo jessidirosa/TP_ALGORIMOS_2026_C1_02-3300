@@ -19,8 +19,6 @@ int main()
     tListaD l;
     crearListaD(&l);
 
-
-
     menu(&config);
     return 0;
 }

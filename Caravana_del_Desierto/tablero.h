@@ -11,8 +11,6 @@ typedef struct {
 
 int generarTablero(tConfig* c, tListaD* l);
 void mostrarTablero(const void* l,int num);
-//crearTablero();
-//distribuirElementos();
 //int tableroTieneSolucion();
 // int guardarTablero(); //en caravana.txt
 

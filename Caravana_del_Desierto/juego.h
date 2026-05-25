@@ -59,7 +59,6 @@ int analizarJuego(tNodoD *nodo, tJugador *jugador, tNodoD *nodoInicio,tNodoD** n
 int iniciarCaracteristicasJugador(tJugador *jugador,tConfig *conf);
 
 void iniciarPartida(tConfig *c); //maquetado
-//int juegoSigue();
 int tirarDado();
 
 

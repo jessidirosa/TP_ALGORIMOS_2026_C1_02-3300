@@ -75,7 +75,11 @@ void registrarJugador()
     char nombreJugador[100];
     printf("\nIngrese su nombre: ");
     scanf(" %[^\n]",nombreJugador); // [^\n] permite leer espacios hasta presionar Enter y El espacio antes de % es limpia cualquier '\n' pendiente en el buffer
+
+    // identificarJugador(); //funcion de jugador.h donde se hace la gestion de jugadores(no seria lo mismo que el jugador del juego)
+
     printf("\nBienvenido/a %s\n", nombreJugador);
+
 }
 
 void iniciarPartida(tConfig *c)
@@ -83,7 +87,6 @@ void iniciarPartida(tConfig *c)
     //int dado;
     //tCola colaMovimiento;
     tJugador jugador;
-    //tTablero tablero;
     /*implementacion TXT*/
     tListaD ruta;
     tNodoD *nodoJugador = NULL, *nodoCampamento;
@@ -93,15 +96,11 @@ void iniciarPartida(tConfig *c)
     crearListaD(&ruta);
 
 
-    // identificarJugador(); //funcion de jugador.h donde se hace la gestion de jugadores(no seria lo mismo que el jugador del juego)
-    //inicializarJugador(&jugador); //inicializar la estructura del jugador.
     if(!generarTablero(c, &ruta))
         printf("no se pudo generar el tablero\n");
 
     nodoJugador = posicionarJugadorEnInicio(&ruta); //poner a jugador en I --> poner [I J]
     nodoCampamento = nodoJugador;
-
-
 
 
 
@@ -134,11 +133,6 @@ void iniciarPartida(tConfig *c)
         }
         else
         {
-            if(jugador.protegido)
-            {
-                jugador.protegido = 0;
-            }
-
             dado = tirarDado();
             printf("Tiraste el dado: %d\n", dado);
             printf("Hacia donde queres moverte? (A = Avanzar / R = Retroceder): ");
@@ -168,17 +162,15 @@ void iniciarPartida(tConfig *c)
     if(jugador.vidas == 0)
         printf("Perdiste! Puntos finales: %d\n", jugador.puntos);
     else
-        printf("Juego terminado! Puntos finales: %d\n", jugador.puntos);
-
+    {
+        printf("Llegaste a la Salida! Sobreviviste al desierto.\n");
+        printf("=== ¡VICTORIA! ===\n");
+        printf("Puntos conseguidos: %d | Vidas sobrantes: %d\n", jugador.puntos, jugador.vidas);
+    }
 
 
         //determinarMovimientoBandidos();
         //encolar(); //mov del bandido
-
-        //determinarNuevoEstado();
-
-        //mostrarTablero();
-        //mostrarEstadoJugador();
 
     //mostrarHistorial(); //mostrar los movimientos hechos durante la partida
     //guardarPartida(); // en partidas.dat
@@ -194,7 +186,7 @@ int analizarJuego(tNodoD *nodo, tJugador *jugador, tNodoD *nodoInicio,tNodoD** n
 {
     tCasilla *cas;
     if(!nodo || !jugador)
-        return ERROR;
+        return _ERROR;
     cas = (tCasilla*)nodo->dato;
 
     switch (cas->tipo)
@@ -263,9 +255,13 @@ int analizarJuego(tNodoD *nodo, tJugador *jugador, tNodoD *nodoInicio,tNodoD** n
                 }
             }
             break;
+        case 'S':
+            return GAME_OVER;
+            break;
 
 
     }
+    system("pause");
     return EXITO;
 
 }
@@ -332,16 +328,14 @@ tNodoD* posicionarJugadorEnInicio(tListaD *l)
 int iniciarCaracteristicasJugador(tJugador *jugador,tConfig *conf)
 {
     if(!jugador || !conf)
-        return ERROR;
+        return _ERROR;
     jugador->vidas = (int)conf->vidas_inicio;
     jugador->pierdeTurno = 0;
     jugador->protegido = 0;
     jugador->puntos = 0;
     return EXITO;
 }
-/*int juegoSigue(tJugador* jugador) {
-    return (jugador->vidas > 0 && jugador->posicion != salida);
-}*/
+
 //
 //int casoPruebaBIN(const char* archivo) ///ELIMINAR ESTA FUNCION ES SOLO DE PRUEBA
 //{
