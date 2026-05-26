@@ -41,13 +41,13 @@
 	<time.h>
 	<windows.h>
 
-1779750032 source:c:\users\user\documents\github\tp_algorimos_2026_c1_02-3300\caravana_del_desierto\juego.c
+1779767097 source:c:\users\user\documents\github\tp_algorimos_2026_c1_02-3300\caravana_del_desierto\juego.c
 	"juego.h"
 	"tablero.h"
 	"lista.h"
 	"animacion.h"
 
-1779749284 c:\users\user\documents\github\tp_algorimos_2026_c1_02-3300\caravana_del_desierto\juego.h
+1779760637 c:\users\user\documents\github\tp_algorimos_2026_c1_02-3300\caravana_del_desierto\juego.h
 	"constantes.h"
 	"cola.h"
 	"config.h"
@@ -67,7 +67,7 @@
 	<stdlib.h>
 	<string.h>
 
-1779742971 source:c:\users\user\documents\github\tp_algorimos_2026_c1_02-3300\caravana_del_desierto\tablero.c
+1779760221 source:c:\users\user\documents\github\tp_algorimos_2026_c1_02-3300\caravana_del_desierto\tablero.c
 	"tablero.h"
 	"config.h"
 	"constantes.h"

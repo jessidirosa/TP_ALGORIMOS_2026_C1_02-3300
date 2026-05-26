@@ -32,7 +32,6 @@ typedef struct
 
 } tMovimiento;
 
-
 typedef struct {
     int id_jugador;
     int id_partida;
@@ -61,7 +60,7 @@ int iniciarCaracteristicasJugador(tJugador *jugador,tConfig *conf);
 void iniciarPartida(tConfig *c); //maquetado
 int tirarDado();
 
-
+//MOV BANDIDOS
 void posicionarBandidosEnRuta(tBandido* bandidos,tListaD* ruta);
 void guardarMovimiento(tMovimiento* movimiento,tNodoD* nodo,char dir,int dado,char tipo);
 void determinarMovimientosBandidos(tBandido* bandidos,int cantB,tNodoD* nodoJugador,tCola* colaMovimiento,int dado);
@@ -69,4 +68,8 @@ void calcularDistanciaMinima(tNodoD* posB,tNodoD* posJ,char* dir);
 void eliminarBandido(tBandido* bandidos, int cantB, tNodoD* nodoColision);
 tBandido* buscarBandidoPorPosicion(tBandido* bandidos, int cantB, tNodoD* posBuscada);
 void moverBandidos(tBandido* bandidos,tMovimiento* movimiento, int cantB);
+
+//GUARDAR HISTORIAL DE MOVIMIENTOS
+void registrarMovimientoEnHistorial(tCola* historialMov, int pasos, char direccion);
+int mostrarHistorialMovimientos(tCola* historialMov);
 #endif // JUEGO_H_INCLUDED

@@ -84,7 +84,7 @@ void registrarJugador()
 
 void iniciarPartida(tConfig *c)
 {
-    tCola colaMovimiento; //HACER
+    tCola colaMovimiento, historialMov;
     tJugador jugador;
     tMovimiento movimiento;
     /*implementacion TXT*/
@@ -93,24 +93,24 @@ void iniciarPartida(tConfig *c)
     int dado,game_over = 1,turno =1,enter;
     char dir;
     tBandido bandidos[c->maximo_bandidos];
+
     iniciarCaracteristicasJugador(&jugador,c);
+
     crearListaD(&ruta);
     crearCola(&colaMovimiento);
+    crearCola(&historialMov);
 
     if(!generarTablero(c, &ruta))
         printf("no se pudo generar el tablero\n");
 
 
-        ///probar
     posicionarBandidosEnRuta(bandidos,&ruta); //guarda la direccion de cada bandido en la ruta
-
 
     nodoJugador = posicionarJugadorEnInicio(&ruta); //poner a jugador en I --> poner [I J]
     nodoCampamento = nodoJugador;
 
     while(jugador.vidas != 0 && game_over)
     {
-
         printf("\n");
         printf("+===========================================================+\n");
         printf("|              CARAVANA DEL DESIERTO  ~  Dia %-2d             |\n", turno);
@@ -164,7 +164,11 @@ void iniciarPartida(tConfig *c)
             {
                 desencolar(&colaMovimiento,&movimiento,sizeof(tMovimiento));
                 if(movimiento.tipoJugador == 'J' )
+                {
                     nodoJugador = moverJugador(nodoJugador, movimiento.pasos, movimiento.direccion);
+                    registrarMovimientoEnHistorial(&historialMov,movimiento.pasos,movimiento.direccion);
+                }
+
                 else
                     moverBandidos(bandidos,&movimiento, c->maximo_bandidos);
 
@@ -200,7 +204,7 @@ void iniciarPartida(tConfig *c)
         printf("Puntos conseguidos: %d | Vidas sobrantes: %d\n", jugador.puntos, jugador.vidas);
     }
 
-    //mostrarHistorial(); //mostrar los movimientos hechos durante la partida
+    mostrarHistorialMovimientos(&historialMov); //mostrar los movimientos hechos durante la partida
     //guardarPartida(); // en partidas.dat
 
 }
@@ -286,6 +290,7 @@ int analizarJuego(tNodoD *nodo, tJugador *jugador, tNodoD *nodoInicio,tNodoD** n
     return resultado;
 
 }
+
 tNodoD* moverJugador(tNodoD *nodo, int pasos, char dir)
 {
     int i=0,tope=0,restantes;
@@ -346,15 +351,12 @@ tNodoD* posicionarJugadorEnInicio(tListaD *l)
     return act;
 }
 
-
-
 void posicionarBandidosEnRuta(tBandido* bandidos,tListaD* ruta)
 {
     tNodoD* actual = *ruta;
 
     if(!actual)
         return;
-
 
     do
     {
@@ -477,6 +479,39 @@ tBandido* buscarBandidoPorPosicion(tBandido* bandidos, int cantB, tNodoD* posBus
 
 ///----------------------------
 
+void registrarMovimientoEnHistorial(tCola* historialMov, int pasos, char direccion)
+{
+   char hmov[5];
+    char dirFormateada;
+
+    if (direccion == 'A')
+        dirFormateada = 'F';
+    else
+        dirFormateada = 'B';
+
+    sprintf(hmov, "%c%d", dirFormateada, pasos);
+
+    encolar(historialMov, hmov, sizeof(hmov));
+}
+
+int mostrarHistorialMovimientos(tCola* historialMov)
+{
+   char hmov[5];
+   int i = 1, cantMov = 0;
+    printf("+===========================================================+\n");
+    printf("|            Historial de movimientos del Jugador            |\n");
+    printf("+===========================================================+\n\n");
+   while(colaVacia(historialMov) == COLA_NOVACIA)
+   {
+        desencolar(historialMov,hmov,sizeof(hmov));
+        printf("%.2d: %s\n",i,hmov);
+        cantMov += atoi(hmov + 1); //para guardar en partidas.dat
+        i++;
+   }
+
+   return cantMov;
+
+}
 
 
 
