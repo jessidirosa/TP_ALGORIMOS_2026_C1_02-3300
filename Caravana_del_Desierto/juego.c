@@ -136,7 +136,30 @@ void iniciarPartida(tConfig *c)
         }
         else
         {
-            //TURNO JUGADOR
+            //primero movemos bandidos
+            printf("+===========================================================+\n");
+            printf("|          Los bandidos estan calculando sus pasos...       |\n");
+            printf("+===========================================================+\n\n");
+            printf("Cuidado, se estan moviendo a distintas velocidades para atraparte!\n");
+            system("pause");
+
+            //sacamos argumento "dado" ya qe calculamos aleatorio por cada bandido
+            determinarMovimientosBandidos(bandidos, c->maximo_bandidos, nodoJugador, &colaMovimiento);
+            while(colaVacia(&colaMovimiento) == COLA_NOVACIA)
+            {
+                desencolar(&colaMovimiento,&movimiento,sizeof(tMovimiento));
+                moverBandidos(bandidos,&movimiento, c->maximo_bandidos);
+            }
+
+            //mostramos el tablero actualizado para que el jugador decida
+            system("cls");
+            printf("+===========================================================+\n");
+            printf("|        Posiciones tras el movimiento de los bandidos:     |\n");
+            printf("+===========================================================+\n\n");
+            recorrerListaDobleIzqADer(&ruta, mostrarTablero);
+            printf("\n\n");
+
+            //turno del jugador
             dado = tirarDado();
             printf("+===========================================================+\n");
             printf("|                  Tiraste el dado:          %d              |\n", dado);
@@ -148,44 +171,27 @@ void iniciarPartida(tConfig *c)
                 printf("Direccion invalida. Ingresa A o R: ");
                 scanf(" %c", &dir);
             }
+
+            //movemos al jugador
             guardarMovimiento(&movimiento,nodoJugador,dir,dado,'J');
             encolar(&colaMovimiento,&movimiento,sizeof(tMovimiento));
-
-            //TURNO DE LOS BANDIDOS
-            dado = tirarDado();
-            printf("+===========================================================+\n");
-            printf("|                  Los bandidos tiraron el dado:       %d    |\n", dado);
-            printf("+===========================================================+\n\n");
-            printf("Cuidado, trataran de atraparte.\n");
-            determinarMovimientosBandidos(bandidos,c->maximo_bandidos,nodoJugador,&colaMovimiento,dado);
-            system("pause");
 
             while(colaVacia(&colaMovimiento) == COLA_NOVACIA)
             {
                 desencolar(&colaMovimiento,&movimiento,sizeof(tMovimiento));
-                if(movimiento.tipoJugador == 'J' )
-                {
-                    nodoJugador = moverJugador(nodoJugador, movimiento.pasos, movimiento.direccion);
-                    registrarMovimientoEnHistorial(&historialMov,movimiento.pasos,movimiento.direccion);
-                }
-
-                else
-                    moverBandidos(bandidos,&movimiento, c->maximo_bandidos);
-
+                nodoJugador = moverJugador(nodoJugador, movimiento.pasos, movimiento.direccion);
+                registrarMovimientoEnHistorial(&historialMov,movimiento.pasos,movimiento.direccion);
             }
+
+            // 3. RESULTADOS DEL DÍA
             system("cls");
             printf("+===========================================================+\n");
-            printf("|                Posiciones tras los movimientos:            |\n");
+            printf("|          CARAVANA DEL DESIERTO  ~  Resultado Dia %-2d       |\n", turno);
             printf("+===========================================================+\n\n");
+
+            // Opcional: Mostrar cómo quedó todo tras tu movimiento antes de analizar
             recorrerListaDobleIzqADer(&ruta, mostrarTablero);
             printf("\n\n");
-            system("pause");
-
-            system("cls");
-            printf("+===========================================================+\n");
-            printf("|          CARAVANA DEL DESIERTO  ~  Resultado Dia %-2d      |\n", turno);
-            printf("+===========================================================+\n\n");
-
 
             if(analizarJuego(nodoJugador, &jugador, nodoCampamento, &nodoJugador,bandidos, c->maximo_bandidos) == GAME_OVER)
                 game_over = 0;
@@ -379,17 +385,18 @@ void guardarMovimiento(tMovimiento* movimiento,tNodoD* nodo,char dir,int dado,ch
     movimiento->direccion = dir;
 }
 
-void determinarMovimientosBandidos(tBandido* bandidos,int cantB,tNodoD* nodoJugador,tCola* colaMovimiento,int dado)
+void determinarMovimientosBandidos(tBandido* bandidos, int cantB, tNodoD* nodoJugador, tCola* colaMovimiento)
 {
-    int i;
+    int i, pasosAleatorios;
     char dir;
     tMovimiento movimiento;
 
     for(i = 0; i < cantB; i++){
         if(bandidos->activo){
-            calcularDistanciaMinima(bandidos->pos,nodoJugador,&dir);
-            guardarMovimiento(&movimiento,bandidos->pos,dir,dado,'B');
-            encolar(colaMovimiento,&movimiento,sizeof(tMovimiento));
+            calcularDistanciaMinima(bandidos->pos, nodoJugador, &dir);
+            pasosAleatorios = (rand() % 3) + 1; //movimientos aleatorios por cada bandido
+            guardarMovimiento(&movimiento, bandidos->pos, dir, pasosAleatorios, 'B');
+            encolar(colaMovimiento, &movimiento, sizeof(tMovimiento));
         }
         bandidos++;
     }
@@ -410,7 +417,7 @@ void calcularDistanciaMinima(tNodoD* posB,tNodoD* posJ,char* dir)
         *dir = 'A';
 }
 
-void moverBandidos(tBandido* bandidos,tMovimiento* movimiento,int cantB)
+void moverBandidos(tBandido* bandidos, tMovimiento* movimiento, int cantB)
 {
     tNodoD* actual = movimiento->pos;
     int i = 0;
@@ -419,17 +426,20 @@ void moverBandidos(tBandido* bandidos,tMovimiento* movimiento,int cantB)
 
     if (bandidoEncontrado != NULL)
     {
-
         if (((tCasilla*)(actual->dato))->tieneB > 0)
             ((tCasilla*)(actual->dato))->tieneB--;
 
-
         i = 0;
 
-        if (movimiento->direccion == 'A')
+        if (movimiento->direccion == 'A') // El bandido avanza
         {
             while (i < movimiento->pasos)
             {
+                // para que los bandidos no se muevan al final ni a la casilla que esta el jugador
+                if (actual->sig == NULL || actual->sig->sig == NULL || ((tCasilla*)(actual->sig->dato))->tieneJ == 1)
+                {
+                    break;
+                }
                 actual = actual->sig;
                 i++;
             }
@@ -438,6 +448,11 @@ void moverBandidos(tBandido* bandidos,tMovimiento* movimiento,int cantB)
         {
             while (i < movimiento->pasos)
             {
+                // para que los bandidos no se muevan al inicio ni a la casilla que esta el jugador
+                if (actual->ant == NULL || actual->ant->ant == NULL || ((tCasilla*)(actual->ant->dato))->tieneJ == 1)
+                {
+                    break;
+                }
                 actual = actual->ant;
                 i++;
             }
@@ -446,7 +461,6 @@ void moverBandidos(tBandido* bandidos,tMovimiento* movimiento,int cantB)
         bandidoEncontrado->pos = actual;
         ((tCasilla*)(actual->dato))->tieneB++;
     }
-
 }
 
 void eliminarBandido(tBandido* bandidos, int cantB, tNodoD* nodoColision)

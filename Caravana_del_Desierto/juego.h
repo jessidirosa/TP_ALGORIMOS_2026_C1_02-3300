@@ -63,7 +63,7 @@ int tirarDado();
 //MOV BANDIDOS
 void posicionarBandidosEnRuta(tBandido* bandidos,tListaD* ruta);
 void guardarMovimiento(tMovimiento* movimiento,tNodoD* nodo,char dir,int dado,char tipo);
-void determinarMovimientosBandidos(tBandido* bandidos,int cantB,tNodoD* nodoJugador,tCola* colaMovimiento,int dado);
+void determinarMovimientosBandidos(tBandido* bandidos,int cantB,tNodoD* nodoJugador,tCola* colaMovimiento);
 void calcularDistanciaMinima(tNodoD* posB,tNodoD* posJ,char* dir);
 void eliminarBandido(tBandido* bandidos, int cantB, tNodoD* nodoColision);
 tBandido* buscarBandidoPorPosicion(tBandido* bandidos, int cantB, tNodoD* posBuscada);
