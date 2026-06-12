@@ -2,7 +2,7 @@
 #include "tablero.h"
 #include "lista.h"
 #include "animacion.h"
-
+//----------Manejo del MENU----------
 void menu(tConfig *c)
 {
     unsigned opcion;
@@ -70,6 +70,8 @@ void ejecutarOpcion(unsigned opcion,tConfig* c)
     }
 }
 
+//------------JUEGO--------------
+
 void registrarJugador()
 {
     char nombreJugador[100];
@@ -125,14 +127,15 @@ void iniciarPartida(tConfig *c)
         {
             printf("Perdes este turno por la Tormenta de Arena!\n");
             jugador.pierdeTurno = 0;
-            printf("Presiona 0 para continuar...");
-            scanf(" %d",&enter);
             system("cls");
             printf("+===========================================================+\n");
             printf("|          CARAVANA DEL DESIERTO  ~  Resultado Dia %-2d      |\n", turno);
             printf("+===========================================================+\n\n");
             printf("Una lagartija te alquilo la cueva por 2 monedas de oro\n");
             turno++;
+            printf("Presiona 0 para continuar...");
+            scanf(" %d",&enter);
+            system("cls");
         }
         else
         {
@@ -164,12 +167,26 @@ void iniciarPartida(tConfig *c)
             printf("+===========================================================+\n");
             printf("|                  Tiraste el dado:          %d              |\n", dado);
             printf("+===========================================================+\n\n");
-            printf("Hacia donde queres moverte? (A = Avanzar / R = Retroceder): ");
-            scanf(" %c", &dir);
-            while(dir != 'A' && dir != 'R')
+            if(calcularDistanciaAlInicio(nodoJugador) >= dado)
             {
+                printf("Hacia donde queres moverte? (A = Avanzar / R = Retroceder): ");
+                scanf(" %c", &dir);
+                while(dir != 'A' && dir != 'R')
+                {
                 printf("Direccion invalida. Ingresa A o R: ");
                 scanf(" %c", &dir);
+                }
+            }
+            else
+            {
+                printf("Solo puedes avanzar. Ingresa A (A = Avanzar): ");
+                scanf(" %c", &dir);
+                while(dir != 'A')
+                {
+                printf("Direccion invalida. Ingresa A: ");
+                scanf(" %c", &dir);
+                }
+
             }
 
             //movemos al jugador
@@ -224,73 +241,92 @@ int analizarJuego(tNodoD *nodo, tJugador *jugador, tNodoD *nodoInicio,tNodoD** n
 {
     tCasilla *cas = (tCasilla*)nodo->dato;
     int resultado = EXITO;
+    int oasisUsado = 0;
 
     if (cas->tieneB > 0)
     {
-        if (jugador->protegido)
+        if (cas->tipo == 'O' && cas->tieneB == 1)
         {
-            printf("Bandido! Pero el Oasis te protegio.\n");
-            jugador->protegido = 0;
+            printf("Llegaste a un Oasis con un Bandido! El Oasis te protegio al instante.\n");
+            cas->tieneB--;
+            eliminarBandido(bandidos, cantB, nodo);
+            oasisUsado = 1;
         }
         else
         {
-            jugador->vidas--;
-            if (jugador->vidas == 0)
+            if (jugador->protegido && cas->tipo != 'T')
             {
-                printf("Un Bandido te atrapo! No tenes mas vidas. Fin de la partida.\n");
-                resultado = GAME_OVER;
+                jugador->protegido = 0; // Se consume el escudo
+                cas->tieneB--;
+                eliminarBandido(bandidos, cantB, nodo);
             }
-            else
+            if (cas->tieneB > 0) //si hay otro badnido en la casilla,MUERO
             {
-                ((tCasilla*)nodo->dato)->tieneJ = 0;
-                ((tCasilla*)nodoInicio->dato)->tieneJ = 1;
-                *nodoJugador = nodoInicio;
-
-                cas->tieneB--; // El bandido es eliminado del tablero
-                eliminarBandido(bandidos,cantB,nodo); //Elimina al bandido del vector
-                printf("Un Bandido te atrapo! Perdes una vida. Vidas: %d. Volviste al Campamento Inicial.\n", jugador->vidas);
-            }
-        }
-    }
-    else
-    {
-        switch (cas->tipo)
-        {
-            case '.':
-                printf("Fue un dia tranquilo como para tomar mates y comer chipas...\n");
-                break;
-            case 'P':
-                jugador->puntos++;
-                printf("Capturaste un Premio! Puntos: %d\n", jugador->puntos);
-                cas->tipo = '.';
-                break;
-            case 'V':
-                jugador->vidas++;
-                printf("Capturaste una Vida Extra! Vidas: %d\n", jugador->vidas);
-                cas->tipo = '.';
-                break;
-            case 'O':
-                jugador->protegido = 1;
-                printf("Llegaste a un Oasis! Estas protegido el proximo turno.\n");
-                break;
-            case 'T':
-                if (jugador->protegido)
+                jugador->vidas--;
+                if (jugador->vidas == 0)
                 {
-                    printf("Tormenta de Arena! Pero el Oasis te protegio.\n");
-                    jugador->protegido = 0;
+
+                    printf("Un Bandido te atrapo! No tenes mas vidas. Fin de la partida.\n");
+                    return GAME_OVER;
                 }
                 else
                 {
-                    jugador->pierdeTurno = 1;
-                    printf("Tormenta de Arena! Perdes el proximo turno.\n");
+
+                    cas->tieneJ = 0;
+                    cas->tieneB--;
+                    eliminarBandido(bandidos, cantB, nodo);
+
+                    ((tCasilla*)nodoInicio->dato)->tieneJ = 1;
+                    *nodoJugador = nodoInicio;
+
+                    printf("Un Bandido te atrapo! Perdes una vida. Vidas: %d. Volviste al Campamento Inicial.\n", jugador->vidas);
+                    return EXITO;
                 }
-                break;
-            case 'S':
-                printf("Llegaste a la Salida! Sobreviviste al desierto.\n");
-                resultado = GAME_OVER;
-                break;
+            }
         }
     }
+
+    // Solo si sobrevivio y sigue en la casilla
+    switch (cas->tipo)
+    {
+        case '.':
+            printf("Fue un dia tranquilo como para tomar mates y comer chipas...\n");
+            break;
+        case 'P':
+            jugador->puntos++;
+            printf("Capturaste un Premio! Puntos: %d\n", jugador->puntos);
+            cas->tipo = '.';
+            break;
+        case 'V':
+            jugador->vidas++;
+            printf("Capturaste una Vida Extra! Vidas: %d\n", jugador->vidas);
+            cas->tipo = '.';
+            break;
+        case 'O':
+            if(!oasisUsado)
+            {
+                jugador->protegido = 1;
+                printf("Llegaste a un Oasis! Estas protegido el proximo turno.\n");
+            }
+            break;
+        case 'T':
+            if (jugador->protegido)
+            {
+                printf("Tormenta de Arena! Pero el Oasis te protegio.\n");
+                jugador->protegido = 0;
+            }
+            else
+            {
+                jugador->pierdeTurno = 1;
+                printf("Tormenta de Arena! Perdes el proximo turno.\n");
+            }
+            break;
+        case 'S':
+            printf("Llegaste a la Salida! Sobreviviste al desierto.\n");
+            resultado = GAME_OVER;
+            break;
+    }
+
 
     system("pause");
     return resultado;
@@ -331,18 +367,8 @@ tNodoD* moverJugador(tNodoD *nodo, int pasos, char dir)
         }
         else
         {
-            if (((tCasilla*)(nodo->ant->dato))->tipo == 'S')
-            {
-                // reboto: los pasos restantes van hacia adelante
-                printf("Llegaste/estas en el Inicio! No podes retroceder mas.\n");
-                tope = 1;
-            }
-            else
-            {
-                nodo = nodo->ant;
-                i++;
-            }
-
+            nodo = nodo->ant;
+            i++;
         }
     }
 
@@ -491,6 +517,20 @@ tBandido* buscarBandidoPorPosicion(tBandido* bandidos, int cantB, tNodoD* posBus
     return bandidoEncontrado;
 }
 
+int calcularDistanciaAlInicio(tNodoD *nodoJugador)
+{
+    int distancia = 0;
+    tNodoD *actual = nodoJugador;
+
+
+    while (actual != NULL && ((tCasilla*)(actual->dato))->tipo != 'I')
+    {
+        distancia++;
+        actual = actual->ant;
+    }
+
+    return distancia;
+}
 ///----------------------------
 
 void registrarMovimientoEnHistorial(tCola* historialMov, int pasos, char direccion)
@@ -526,8 +566,6 @@ int mostrarHistorialMovimientos(tCola* historialMov)
    return cantMov;
 
 }
-
-
 
 
 int iniciarCaracteristicasJugador(tJugador *jugador,tConfig *conf)
@@ -662,4 +700,193 @@ void mostrarPuntosJugadores(const void* n)
     printf("%d%-d\n", jug->id_jugador, jug->puntaje); ///MODIFICAR ESTO, SOLO LO PUSE ASI PARA QUE FUNCIONE
 }
 
-
+/// OTRA IMPLEMENTACION -->JUGADOR SE MUEVE PRIMERO
+//void iniciarPartida(tConfig *c)
+//{
+//    tCola colaMovimiento, historialMov;
+//    tJugador jugador;
+//    tMovimiento movimiento;
+//    /*implementacion TXT*/
+//    tListaD ruta;
+//    tNodoD *nodoJugador = NULL, *nodoCampamento;
+//    int dado,game_over = 1,turno =1,enter;
+//    char dir;
+//    tBandido bandidos[c->maximo_bandidos];
+//
+//    iniciarCaracteristicasJugador(&jugador,c);
+//
+//    crearListaD(&ruta);
+//    crearCola(&colaMovimiento);
+//    crearCola(&historialMov);
+//
+//    if(!generarTablero(c, &ruta))
+//        printf("no se pudo generar el tablero\n");
+//
+//
+//    posicionarBandidosEnRuta(bandidos,&ruta); //guarda la direccion de cada bandido en la ruta
+//
+//    nodoJugador = posicionarJugadorEnInicio(&ruta); //poner a jugador en I --> poner [I J]
+//    nodoCampamento = nodoJugador;
+//
+//    while(jugador.vidas != 0 && game_over)
+//    {
+//        printf("\n");
+//        printf("+===========================================================+\n");
+//        printf("|              CARAVANA DEL DESIERTO  ~  Dia %-2d             |\n", turno);
+//        printf("+===========================================================+\n");
+//        printf("Vidas: %d | Puntos: %d | Protegido: %s\n",
+//               jugador.vidas, jugador.puntos, jugador.protegido ? "Si" : "No");
+//        printf("\n");
+//        recorrerListaDobleIzqADer(&ruta,mostrarTablero);
+//        printf("\n");
+//
+//        if(jugador.pierdeTurno)
+//        {
+//            printf("Perdes este turno por la Tormenta de Arena!\n");
+//            jugador.pierdeTurno = 0;
+//            printf("Presiona 0 para continuar...");
+//            scanf(" %d",&enter);
+//            system("cls");
+//            printf("+===========================================================+\n");
+//            printf("|          CARAVANA DEL DESIERTO  ~  Resultado Dia %-2d      |\n", turno);
+//            printf("+===========================================================+\n\n");
+//            printf("Una lagartija te alquilo la cueva por 2 monedas de oro\n");
+//            turno++;
+//        }
+//        else
+//        {
+//            //TURNO JUGADOR
+//            dado = tirarDado();
+//            printf("Tiraste el dado: %d\n", dado);
+//            printf("+===========================================================+\n");
+//            printf("|                  Tiraste el dado:          %d              |\n", dado);
+//            printf("+===========================================================+\n\n");
+//            if(calcularDistanciaAlInicio(nodoJugador) >= dado)
+//            {
+//                printf("Hacia donde queres moverte? (A = Avanzar / R = Retroceder): ");
+//                scanf(" %c", &dir);
+//                while(dir != 'A' && dir != 'R')
+//                {
+//                printf("Direccion invalida. Ingresa A o R: ");
+//                scanf(" %c", &dir);
+//                }
+//            }
+//            else
+//            {
+//                printf("Solo puedes avanzar. Ingresa A (A = Avanzar): ");
+//                scanf(" %c", &dir);
+//                while(dir != 'A')
+//                {
+//                printf("Direccion invalida. Ingresa A: ");
+//                scanf(" %c", &dir);
+//                }
+//
+//            }
+//
+//            guardarMovimiento(&movimiento,nodoJugador,dir,dado,'J');
+//            encolar(&colaMovimiento,&movimiento,sizeof(tMovimiento));
+//
+//            //TURNO DE LOS BANDIDOS
+//            printf("+===========================================================+\n");
+//            printf("|   Los bandidos se mueven.Cuidado, trataran de atraparte.   |\n");
+//            printf("+===========================================================+\n\n");
+//            determinarMovimientosBandidos(bandidos,c->maximo_bandidos,nodoJugador,&colaMovimiento);
+//
+//            int paso_animacion = 1;
+//
+//
+//            while(colaVacia(&colaMovimiento) == COLA_NOVACIA)
+//            {
+//                desencolar(&colaMovimiento,&movimiento,sizeof(tMovimiento));
+//                system("cls");
+//                printf("+===========================================================+\n");
+//                printf("|          RESOLVIENDO MOVIMIENTOS - ACCION %-2d              |\n", paso_animacion++);
+//                printf("+===========================================================+\n\n");
+//
+//                if(movimiento.tipoJugador == 'J' )
+//                {
+//                    nodoJugador = moverJugador(nodoJugador, movimiento.pasos, movimiento.direccion);
+//                    printf(" -> El JUGADOR se desplazo %d espacio/s hacia %s.\n\n",
+//                            movimiento.pasos,
+//                            (movimiento.direccion == 'A') ? "Adelante" : "Atras");
+//                    registrarMovimientoEnHistorial(&historialMov,movimiento.pasos,movimiento.direccion);
+//                }
+//                else
+//                {
+//                    moverBandidos(bandidos,&movimiento, c->maximo_bandidos);
+//                    printf(" -> Un BANDIDO se desplazo %d espacio/s hacia %s.\n\n",
+//                            movimiento.pasos,
+//                            (movimiento.direccion == 'A') ? "Adelante" : "Atras");
+//                }
+//
+//                recorrerListaDobleIzqADer(&ruta, mostrarTablero);
+//                printf("\n\n");
+//
+//                Sleep(2000);
+//            }
+//
+//            system("cls");
+//            printf("+===========================================================+\n");
+//            printf("|          CARAVANA DEL DESIERTO  ~  Resultado Dia %-2d       |\n", turno);
+//            printf("+===========================================================+\n\n");
+//
+//            recorrerListaDobleIzqADer(&ruta, mostrarTablero);
+//            printf("\n\n");
+//            system("pause");
+//
+//            if(analizarJuego(nodoJugador, &jugador, nodoCampamento, &nodoJugador,bandidos, c->maximo_bandidos) == GAME_OVER)
+//                game_over = 0;
+//
+//            turno++;
+//        }
+//
+//    }
+//    system("cls");
+//    if(jugador.vidas == 0)
+//        printf("Perdiste! Puntos finales: %d\n", jugador.puntos);
+//    else
+//    {
+//        printf("=== VICTORIA! ===\n");
+//        printf("Puntos conseguidos: %d | Vidas sobrantes: %d\n", jugador.puntos, jugador.vidas);
+//    }
+//
+//    mostrarHistorialMovimientos(&historialMov); //mostrar los movimientos hechos durante la partida
+//    //guardarPartida(); // en partidas.dat
+//
+//}
+//
+//void moverBandidos(tBandido* bandidos, tMovimiento* movimiento, int cantB)
+//{
+//    tNodoD* actual = movimiento->pos;
+//    int i = 0;
+//
+//    tBandido* bandidoEncontrado = buscarBandidoPorPosicion(bandidos, cantB, movimiento->pos);
+//
+//    if (bandidoEncontrado != NULL)
+//    {
+//        if (((tCasilla*)(actual->dato))->tieneB > 0)
+//            ((tCasilla*)(actual->dato))->tieneB--;
+//
+//        i = 0;
+//
+//        if (movimiento->direccion == 'A')
+//        {
+//            while (i < movimiento->pasos)
+//            {
+//                actual = actual->sig;
+//                i++;
+//            }
+//        }
+//        else
+//        {
+//            while (i < movimiento->pasos)
+//            {
+//                actual = actual->ant;
+//                i++;
+//            }
+//        }
+//
+//        bandidoEncontrado->pos = actual;
+//        ((tCasilla*)(actual->dato))->tieneB++;
+//    }
+//}

@@ -59,6 +59,7 @@ int iniciarCaracteristicasJugador(tJugador *jugador,tConfig *conf);
 
 void iniciarPartida(tConfig *c); //maquetado
 int tirarDado();
+int calcularDistanciaAlInicio(tNodoD *nodoJugador);
 
 //MOV BANDIDOS
 void posicionarBandidosEnRuta(tBandido* bandidos,tListaD* ruta);
@@ -68,6 +69,7 @@ void calcularDistanciaMinima(tNodoD* posB,tNodoD* posJ,char* dir);
 void eliminarBandido(tBandido* bandidos, int cantB, tNodoD* nodoColision);
 tBandido* buscarBandidoPorPosicion(tBandido* bandidos, int cantB, tNodoD* posBuscada);
 void moverBandidos(tBandido* bandidos,tMovimiento* movimiento, int cantB);
+
 
 //GUARDAR HISTORIAL DE MOVIMIENTOS
 void registrarMovimientoEnHistorial(tCola* historialMov, int pasos, char direccion);
