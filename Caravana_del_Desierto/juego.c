@@ -77,7 +77,7 @@ void ejecutarOpcion(unsigned opcion,tConfig* c, tArbol* idx)
 void registrarJugador(tArbol* idx)
 {
     char aliasJugador[MAX_BUF];
-    printf("\nIngrese su alias (distingue mayusculas de minusculas: ");
+    printf("\nIngrese su alias (distingue mayusculas de minusculas): ");
     scanf(" %[^\n]",aliasJugador); // [^\n] permite leer espacios hasta presionar Enter y El espacio antes de % es limpia cualquier '\n' pendiente en el buffer
     identificarJugador(aliasJugador, idx); //funcion de jugador.h donde se hace la gestion de jugadores(no seria lo mismo que el jugador del juego)
 
@@ -120,14 +120,14 @@ void mostrarDatosYValidar(tArchJug* datosJugador, tArbol* idx)
     while ((getchar()) != '\n');
     scanf("%c", &opcion);
 
-    while(toupper(opcion) != 'S' || toupper(opcion) != 'N')
+    while(toupper(opcion) != 'S' && toupper(opcion) != 'N')
     {
         printf("Opcion invalida\n");
         printf("Presione 'S' si es correcto, o 'N' si no lo es, para cargar nuevamente el alias:\n");
         scanf("%c", &opcion);
     }
 
-    if(toupper(opcion) != 'N')
+    if(toupper(opcion) == 'N')
         registrarJugador(idx); // habria que hacer sino que la funcion retorne un estado y en base a eso volvemos al principio, vez de volver a llamar a esta
 
     printf("\nBienvenido/a %s\nIniciando partida...", datosJugador->alias);
@@ -169,7 +169,7 @@ void iniciarPartida(tConfig *c)
     /*implementacion TXT*/
     tListaD ruta;
     tNodoD *nodoJugador = NULL, *nodoCampamento;
-    int dado,game_over = 1,turno =1,enter;
+    int dado,game_over = 1,turno =1, enter, salir = 0;
     char dir;
     tBandido bandidos[c->maximo_bandidos];
 
@@ -188,7 +188,7 @@ void iniciarPartida(tConfig *c)
     nodoJugador = posicionarJugadorEnInicio(&ruta); //poner a jugador en I --> poner [I J]
     nodoCampamento = nodoJugador;
 
-    while(jugador.vidas != 0 && game_over)
+    while(jugador.vidas != 0 && game_over && !salir) /// esta invertida la logica del game_over
     {
         printf("\n");
         printf("+===========================================================+\n");
@@ -199,6 +199,7 @@ void iniciarPartida(tConfig *c)
         printf("\n");
         recorrerListaDobleIzqADer(&ruta,mostrarTablero);
         printf("\n");
+        printf("Presione X para salir del juego\n\n");
 
         if(jugador.pierdeTurno)
         {
@@ -248,8 +249,11 @@ void iniciarPartida(tConfig *c)
             {
                 printf("Hacia donde queres moverte? (A = Avanzar / R = Retroceder): ");
                 scanf(" %c", &dir);
-                while(dir != 'A' && dir != 'R')
+                while(toupper(dir) != 'A' && toupper(dir) != 'R')
                 {
+                    if(toupper(dir) == 'X')
+                        salir = 1;
+
                     printf("Direccion invalida. Ingresa A o R: ");
                     scanf(" %c", &dir);
                 }
@@ -258,11 +262,14 @@ void iniciarPartida(tConfig *c)
             {
                 printf("Solo puedes avanzar. Ingresa A (A = Avanzar): ");
                 scanf(" %c", &dir);
-                while(dir != 'A')
+                while(toupper(dir) != 'A' && toupper(dir) != 'X')
                 {
                     printf("Direccion invalida. Ingresa A: ");
                     scanf(" %c", &dir);
                 }
+
+                if(toupper(dir) == 'X')
+                    salir = 1;
 
             }
 
@@ -296,6 +303,13 @@ void iniciarPartida(tConfig *c)
     }
 
     system("cls");
+
+    if(salir)
+    {
+        printf("Saliendo... La partida no se guardara\n\n");
+        return;
+    }
+
     if(jugador.vidas == 0)
         printf("Perdiste! Puntos finales: %d\n", jugador.puntos);
     else
