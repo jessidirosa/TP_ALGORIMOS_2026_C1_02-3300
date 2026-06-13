@@ -203,7 +203,7 @@ int eliminarDeListaDobleOrd(tListaD* l, unsigned tam, void* dato, int cmp(const 
 
 void vaciarListaD(tListaD* l)
 {
-    tNodoD* act = *l;
+    tNodoD* act = (*l);
     tNodoD* auxSig;
 
     if(!act)
@@ -211,11 +211,10 @@ void vaciarListaD(tListaD* l)
 
     auxSig = act->sig;
 
-    while(auxSig != *l)
+    while(auxSig != (*l))
     {
         act = auxSig;
-
-        auxSig = auxSig->sig;
+        auxSig = act->sig;
 
         free(act->dato);
         free(act);

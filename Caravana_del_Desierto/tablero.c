@@ -78,7 +78,16 @@ int generarTablero(tConfig* c, tListaD* l)
     cas.tieneB = 0;
 
     unsigned i = 0, cantInsertados = 0;
-    unsigned vacias = c->cantidad_posiciones - c->maximo_bandidos - c->maximo_oasis - c->maximo_premios - c->maximo_tormentas - c->maximo_vidas_extra - 2;
+    unsigned vacias;
+    unsigned casillasEspeciales = c->maximo_bandidos + c->maximo_oasis + c->maximo_premios + c->maximo_tormentas + c->maximo_vidas_extra + 2;
+
+    if(c->cantidad_posiciones < casillasEspeciales) //verificamos que la cantidad de posiciones no sea menor a las casillas especiales, y hacemos que el tablero sea jugable
+    {
+        vacias = casillasEspeciales;
+        c->cantidad_posiciones = casillasEspeciales + vacias;
+    }
+    else
+        vacias = c->cantidad_posiciones - casillasEspeciales;
 
     cas.tipo = '.';
     while(i<vacias && insertarEnPosicRelListaD(l, &cas, sizeof(tCasilla), rand() % (cantInsertados + 1)))

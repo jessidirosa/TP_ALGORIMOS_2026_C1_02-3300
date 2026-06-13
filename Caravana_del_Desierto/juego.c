@@ -14,7 +14,7 @@ void menu(tConfig *c)
         printf("1 - Iniciar partida\n");
         printf("2 - Ver ranking\n");
         printf("3 - Salir\n");
-        //4 - configurar partida
+        //4 - configurar partida (lo agregamos al menu y solicitamos una "contraseña", la comparamos con la de la funcion y accedemos al menu de config para cargar el archivo config.txt
 
         opcion = ingresar(TAM_OP);
 
@@ -229,7 +229,7 @@ void iniciarPartida(tConfig *c)
 
     mostrarHistorialMovimientos(&historialMov); //mostrar los movimientos hechos durante la partida
     //guardarPartida(); // en partidas.dat
-    //vaciarListaD(&ruta);
+    vaciarListaD(&ruta);
 
 }
 
