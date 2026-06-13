@@ -76,21 +76,28 @@ void ejecutarOpcion(unsigned opcion,tConfig* c, tArbol* idx)
 
 void registrarJugador(tArbol* idx)
 {
-    char aliasJugador[MAX_BUF], nombreJugador[MAX_BUF];
-    printf("\nIngrese su nombre: ");
-    scanf(" %[^\n]",nombreJugador); // [^\n] permite leer espacios hasta presionar Enter y El espacio antes de % es limpia cualquier '\n' pendiente en el buffer
+    char aliasJugador[MAX_BUF];
+    printf("\nIngrese su alias: ");
+    scanf(" %[^\n]",aliasJugador); // [^\n] permite leer espacios hasta presionar Enter y El espacio antes de % es limpia cualquier '\n' pendiente en el buffer
 
-    identificarJugador(nombreJugador, idx); //funcion de jugador.h donde se hace la gestion de jugadores(no seria lo mismo que el jugador del juego)
+    identificarJugador(aliasJugador, idx); //funcion de jugador.h donde se hace la gestion de jugadores(no seria lo mismo que el jugador del juego)
 
-    printf("\nBienvenido/a %s\n", nombreJugador);
+    printf("\nBienvenido/a %s\n", aliasJugador);
 
 }
 
-void identificarJugador(const char* nombreJugador, tArbol* idx)
+void identificarJugador(const char* aliasJugador, tArbol* idx)
 {
+    tIndice jugador;
+    tArchJug datosJugador;
 
-    ///me faltó implementar
-
+    if(!buscarEnIndice(idx, aliasJugador, &jugador)) ///implementar: buscamos por clave alias en el arbol, y lo traemos en jugador
+        altaJugador(idx, aliasJugador); ///implementar: vemos cantReg para el id, pedimos el nombre y cargamos en idx y en archivo
+    else
+    {
+        buscarEnArchivo(&jugador, ARCH_JUGADORES, &datosJugador); ///implementar: buscamos el jugador por indice en el archivo, y traemos todo el registro en datosJugador
+        mostrarDatosYValidar(&datosJugador); ///implementar: ¿es usted? S | N
+    }
 }
 
 void iniciarPartida(tConfig *c)

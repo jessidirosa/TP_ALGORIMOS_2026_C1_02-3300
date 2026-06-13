@@ -53,17 +53,12 @@ void destruirArbol(tArbol* a)
     }
 }
 
-int compararClaves(const void* clave1, const void* clave2)
+int compararClave(const void* clave1, const void* clave2)
 {
-    tClave* c1 = (tClave*)clave1;
-    tClave* c2 = (tClave*)clave2;
+    tIndice* c1 = (tIndice*)clave1;
+    tIndice* c2 = (tIndice*)clave2;
 
-    if(c1->id == c2->id)
-    {
-        return strcmp(c1->nombre, c2->nombre);
-    }
-    else
-        return c1->id - c2->id;
+    return strcmp(c1->clave.alias, c2->clave.alias);
 }
 
 
@@ -81,9 +76,8 @@ int indexarArchivoDesordenadoJugadores(tArbol* arbol, const char* nombreArch)
     fread(&jug, sizeof(tArchJug), 1, pf);
     while(!feof(pf) && insertado == 1)
     {
-        indice.claves.id = jug.id;
-        strcpy(indice.claves.nombre, jug.nombre);
-        insertado = ponerEnArbol(arbol, &indice, sizeof(tIndice), compararClaves);
+        strcpy(indice.clave.alias, jug.nombre);
+        insertado = ponerEnArbol(arbol, &indice, sizeof(tIndice), compararClave);
         fread(&jug, sizeof(tArchJug), 1, pf);
         indice.pos++;
     }
@@ -173,8 +167,8 @@ void cargarArbolAArchivoIndicePreorden(const tArbol* arbol, tIndice* idx, FILE* 
 
     memcpy(idx, (*arbol)->dato, sizeof(tIndice));
     fwrite(idx, sizeof(tIndice), 1, pf);
-    cargarArbolAArchivoIndiceOrdenado(&(*arbol)->izq, idx, pf);
-    cargarArbolAArchivoIndiceOrdenado(&(*arbol)->der, idx, pf);
+    cargarArbolAArchivoIndicePreorden(&(*arbol)->izq, idx, pf);
+    cargarArbolAArchivoIndicePreorden(&(*arbol)->der, idx, pf);
 }
 
 void recorrerPreorden(const tArbol* arbol, void accion(void*))
@@ -195,4 +189,21 @@ void recorrerInorden(const tArbol* arbol, void accion(void*))
     recorrerInorden(&(*arbol)->izq, accion);
     accion((*arbol)->dato);
     recorrerInorden(&(*arbol)->der, accion);
+}
+
+int indiceArchivoJugadores(tArbol* arbol, const char* archJug, const char* archIdx)
+{
+    if(!indexarArchivoDesordenadoJugadores(arbol, ARCH_JUGADORES))// bajamos el archivo a un arbol
+        return ERR_ARCH;
+
+    if(!cargarArchivoIndiceJugadores(arbol, ARCH_INDICE))//con el mismo arbol cargamos el archivo indice
+        return ERR_ARCH;
+
+    destruirArbol(arbol);
+    crearArbol(arbol);
+
+    if(!cargarArchIndiceAArbolBalanceado(arbol, ARCH_INDICE)) //bajamos el archivo indice ordenado por clave, a un arbol
+        return ERR_ARCH;
+
+    return TODO_OK;
 }

@@ -16,14 +16,13 @@ typedef tNodoA* tArbol;
 
 typedef struct
 {
-    int id;
-    char nombre[MAX_NOMBRE];
+    char alias[MAX_ALIAS];
 
 }tClave;
 
 typedef struct
 {
-    tClave claves;
+    tClave clave;
     int pos;
 
 }tIndice;
@@ -47,7 +46,9 @@ int insertarIdxEnArbolBalanceado(tArbol* arbol, FILE* pf, int inicio, int fin);
 void cargarArbolAArchivoIndicePreorden(const tArbol* arbol, tIndice* idx, FILE* pf);
 void recorrerPreorden(const tArbol* arbol, void accion(void*));
 void recorrerInorden(const tArbol* arbol, void accion(void*));
+int indiceArchivoJugadores(tArbol* arbol, const char* archJug, const char* archIdx);
 
-int compararClaves(const void* clave1, const void* clave2);
+
+int compararClave(const void* clave1, const void* clave2);
 
 #endif // ARBOL_H_INCLUDED
