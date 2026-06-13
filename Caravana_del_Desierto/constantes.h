@@ -9,6 +9,7 @@
 
 #define ERR_ARCH 0
 #define MAX_BUF 128
+#define MAX_NOMBRE 30
 #define TODO_OK 1
 #define VACIA 0
 #define DUPLICADO 3
@@ -25,5 +26,7 @@
 #define ARCH_TABLERO "caravana.txt"
 #define ARCH_PARTIDAS "partidas.dat"
 #define ARCH_JUGADORES "jugadores.dat"
+#define ARCH_INDICE "indiceJugadores.dat"
+#define FIN_CARGA 1
 
 #endif // CONSTANTES_H_INCLUDED

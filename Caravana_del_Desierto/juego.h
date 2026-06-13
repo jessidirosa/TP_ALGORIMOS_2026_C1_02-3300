@@ -1,6 +1,7 @@
 #ifndef JUEGO_H_INCLUDED
 #define JUEGO_H_INCLUDED
 
+#include "arbol.h"
 #include "constantes.h"
 #include "cola.h"
 #include "config.h"
@@ -40,8 +41,9 @@ typedef struct {
 } tRegistroPartida; //se ultiliza para gurdar el contenido del archivo binario "ARCH_PARTIDAS" y mostrar el ranking
 
 
-void menu(tConfig *c);
-void registrarJugador();
+void menu(tConfig *c, tArbol* idx);
+void registrarJugador(tArbol* idx);
+void identificarJugador(const char* nombreJugador, tArbol* idx);
 void mostrarRanking(const char* archivo);
 int casoPruebaBIN(const char* archivo);
 int compararPuntosJugadores(const void* a, const void* b);
@@ -51,7 +53,7 @@ void acumularDuplicados(void* datoLista, const void* datoAInsertar);
 void mostrarTop(tLista *pLista,int top);
 int ingresar(unsigned tam);
 int opcionValida(unsigned opcion);
-void ejecutarOpcion(unsigned opcion,tConfig* c);
+void ejecutarOpcion(unsigned opcion,tConfig* c, tArbol* idx);
 tNodoD* posicionarJugadorEnInicio(tListaD *l);
 tNodoD* moverJugador(tNodoD *jugador, int pasos, char dir);
 int analizarJuego(tNodoD *nodo, tJugador *jugador, tNodoD *nodoInicio,tNodoD** nodoJugador, tBandido* bandidos, int cantB);

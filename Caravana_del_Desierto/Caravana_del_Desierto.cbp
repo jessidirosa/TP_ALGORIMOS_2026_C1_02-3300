@@ -35,6 +35,10 @@
 			<Option compilerVar="CC" />
 		</Unit>
 		<Unit filename="animacion.h" />
+		<Unit filename="arbol.c">
+			<Option compilerVar="CC" />
+		</Unit>
+		<Unit filename="arbol.h" />
 		<Unit filename="cola.c">
 			<Option compilerVar="CC" />
 		</Unit>

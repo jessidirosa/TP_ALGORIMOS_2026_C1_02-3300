@@ -2,8 +2,10 @@
 #include "tablero.h"
 #include "lista.h"
 #include "animacion.h"
+
+
 //----------Manejo del MENU----------
-void menu(tConfig *c)
+void menu(tConfig *c, tArbol* idx)
 {
     unsigned opcion;
 
@@ -24,7 +26,7 @@ void menu(tConfig *c)
             opcion = ingresar(TAM_OP);
         }
 
-        ejecutarOpcion(opcion,c);
+        ejecutarOpcion(opcion, c, idx);
 
         system("pause");
         system("cls");
@@ -49,13 +51,13 @@ int ingresar(unsigned tam)
     return atoi(ingreso);
 }
 
-void ejecutarOpcion(unsigned opcion,tConfig* c)
+void ejecutarOpcion(unsigned opcion,tConfig* c, tArbol* idx)
 {
    switch (opcion)
     {
     case 1:
         system("cls");
-        registrarJugador();
+        registrarJugador(idx);
         iniciarPartida(c);
         break;
 
@@ -72,15 +74,22 @@ void ejecutarOpcion(unsigned opcion,tConfig* c)
 
 //------------JUEGO--------------
 
-void registrarJugador()
+void registrarJugador(tArbol* idx)
 {
-    char nombreJugador[100];
+    char aliasJugador[MAX_BUF], nombreJugador[MAX_BUF];
     printf("\nIngrese su nombre: ");
     scanf(" %[^\n]",nombreJugador); // [^\n] permite leer espacios hasta presionar Enter y El espacio antes de % es limpia cualquier '\n' pendiente en el buffer
 
-    // identificarJugador(); //funcion de jugador.h donde se hace la gestion de jugadores(no seria lo mismo que el jugador del juego)
+    identificarJugador(nombreJugador, idx); //funcion de jugador.h donde se hace la gestion de jugadores(no seria lo mismo que el jugador del juego)
 
     printf("\nBienvenido/a %s\n", nombreJugador);
+
+}
+
+void identificarJugador(const char* nombreJugador, tArbol* idx)
+{
+
+    ///me faltó implementar
 
 }
 
@@ -399,7 +408,8 @@ void posicionarBandidosEnRuta(tBandido* bandidos,tListaD* ruta)
 
     do
     {
-        if(((tCasilla*)(actual->dato))->tipo == 'B'){
+        if(((tCasilla*)(actual->dato))->tipo == 'B')
+        {
             ((tCasilla*)(actual->dato))->tieneB = 1;
             ((tCasilla*)(actual->dato))->tipo = '.';
             bandidos->pos = actual;
