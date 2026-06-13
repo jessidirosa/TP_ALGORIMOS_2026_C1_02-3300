@@ -53,7 +53,7 @@ void destruirArbol(tArbol* a)
     }
 }
 
-int compararClave(const void* clave1, const void* clave2)
+int compararIdx(const void* clave1, const void* clave2)
 {
     tIndice* c1 = (tIndice*)clave1;
     tIndice* c2 = (tIndice*)clave2;
@@ -77,7 +77,7 @@ int indexarArchivoDesordenadoJugadores(tArbol* arbol, const char* nombreArch)
     while(!feof(pf) && insertado == 1)
     {
         strcpy(indice.clave.alias, jug.nombre);
-        insertado = ponerEnArbol(arbol, &indice, sizeof(tIndice), compararClave);
+        insertado = ponerEnArbol(arbol, &indice, sizeof(tIndice), compararIdx);
         fread(&jug, sizeof(tArchJug), 1, pf);
         indice.pos++;
     }
@@ -206,4 +206,27 @@ int indiceArchivoJugadores(tArbol* arbol, const char* archJug, const char* archI
         return ERR_ARCH;
 
     return TODO_OK;
+}
+
+int compararClave(const void* alias, const void* idx)
+{
+    char* a = (char*)alias;
+    tIndice* i = (tIndice*)idx;
+
+    return strcmp(a, i->clave.alias);
+}
+
+
+int buscarEnIndice(tArbol* idx, const char* aliasJugador, tIndice* dato, int cmp(const void*, const void*))
+{
+    if(!(*idx))
+        return NO_ENCONTRADO;
+
+    if(!cmp(aliasJugador, (*idx)->dato))
+    {
+        memcpy(dato, (*idx)->dato, sizeof(tIndice));
+        return ENCONTRADO;
+    }
+
+    return (buscarEnIndice((*idx)->izq, aliasJugador, dato, cmp) + buscarEnIndice((*idx)->izq, aliasJugador, dato, cmp));
 }

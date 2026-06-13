@@ -47,8 +47,11 @@ void cargarArbolAArchivoIndicePreorden(const tArbol* arbol, tIndice* idx, FILE* 
 void recorrerPreorden(const tArbol* arbol, void accion(void*));
 void recorrerInorden(const tArbol* arbol, void accion(void*));
 int indiceArchivoJugadores(tArbol* arbol, const char* archJug, const char* archIdx);
+int buscarEnIndice(tArbol* idx, const char* aliasJugador, tIndice* dato, int cmp(const void*, const void*));
 
 
-int compararClave(const void* clave1, const void* clave2);
+
+int compararIdx(const void* clave1, const void* clave2);
+int compararClave(const void* alias, const void* idx);
 
 #endif // ARBOL_H_INCLUDED

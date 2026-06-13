@@ -53,7 +53,7 @@ int ingresar(unsigned tam)
 
 void ejecutarOpcion(unsigned opcion,tConfig* c, tArbol* idx)
 {
-   switch (opcion)
+    switch (opcion)
     {
     case 1:
         system("cls");
@@ -79,10 +79,7 @@ void registrarJugador(tArbol* idx)
     char aliasJugador[MAX_BUF];
     printf("\nIngrese su alias: ");
     scanf(" %[^\n]",aliasJugador); // [^\n] permite leer espacios hasta presionar Enter y El espacio antes de % es limpia cualquier '\n' pendiente en el buffer
-
     identificarJugador(aliasJugador, idx); //funcion de jugador.h donde se hace la gestion de jugadores(no seria lo mismo que el jugador del juego)
-
-    printf("\nBienvenido/a %s\n", aliasJugador);
 
 }
 
@@ -91,14 +88,76 @@ void identificarJugador(const char* aliasJugador, tArbol* idx)
     tIndice jugador;
     tArchJug datosJugador;
 
-    if(!buscarEnIndice(idx, aliasJugador, &jugador)) ///implementar: buscamos por clave alias en el arbol, y lo traemos en jugador
-        altaJugador(idx, aliasJugador); ///implementar: vemos cantReg para el id, pedimos el nombre y cargamos en idx y en archivo
+    if(!buscarEnIndice(idx, aliasJugador, &jugador, compararClave)) //buscamos por clave alias en el arbol, y lo traemos en jugador
+        altaJugador(idx, aliasJugador, ARCH_JUGADORES); //vemos cantReg para el id, pedimos el nombre y cargamos en idx y en archivo
     else
     {
-        buscarEnArchivo(&jugador, ARCH_JUGADORES, &datosJugador); ///implementar: buscamos el jugador por indice en el archivo, y traemos todo el registro en datosJugador
-        mostrarDatosYValidar(&datosJugador); ///implementar: ¿es usted? S | N
+        buscarEnArchivo(&jugador, ARCH_JUGADORES, &datosJugador); //buscamos el jugador por indice en el archivo, y traemos todo el registro en datosJugador
+        mostrarDatosYValidar(&datosJugador, idx); //¿es usted? S | N
     }
 }
+
+void buscarEnArchivo(tIndice* jugador, const char* archJug, tArchJug* datosJugador)
+{
+    FILE* pf = fopen(archJug, "rb");
+    if(!pf)
+        return;
+
+    fseek(pf, jugador->pos * sizeof(tArchJug), SEEK_SET);
+    fread(datosJugador, sizeof(tArchJug), 1, pf);
+
+    fclose(pf);
+}
+
+void mostrarDatosYValidar(tArchJug* datosJugador, tArbol* idx)
+{
+    char opcion;
+
+    printf("¿Es usted?\n");
+    printf("ID: %d\nNombre: %s\nAlias: %s\n\n", datosJugador->id, datosJugador->nombre, datosJugador->alias);
+    printf("Presione 'S' si es correcto, o 'N' si no lo es, para cargar nuevamente el alias:\n");
+    scanf("%c", &opcion);
+
+    while(toupper(opcion) != 'S' || toupper(opcion) != 'N')
+    {
+        printf("Opcion invalida\n")
+        printf("Presione 'S' si es correcto, o 'N' si no lo es, para cargar nuevamente el alias:\n");
+        scanf("%c", &opcion);
+    }
+
+    if(toupper(opcion) != 'N')
+        registrarJugador(idx); // habria que hacer sino que retorne un estado y en base a eso volvemos al principio
+
+    printf("\nBienvenido/a %s\nIniciando partida...", aliasJugador);
+    return;
+
+}
+
+void altaJugador(tArbol* idx, const char* alias, const char* archJug)
+{
+    tArchJug jugador;
+    tIndice i;
+    FILE* pf = fopen(archJug, "ab");
+    if(!pf)
+        return;
+
+    printf("Ingrese su nombre completo: ");
+    scanf(" %[^\n]", jugador.nombre);
+    jugador.id = (ftell(pf) / sizeof(tArchJug)) - 1;
+    strcpy(jugador.alias, alias);
+
+    strcpy(i.clave.alias, alias);
+    i.pos = jugador.id;
+
+    fwrite(&jugador, sizeof(tArchJug), 1, pf);
+    ponerEnArbol(idx, &i, sizeof(tIndice), compararIdx);
+
+    fclose(pf);
+
+    printf("\n\nRegistrado correctamente\n");
+    system("pause");
+}
+
 
 void iniciarPartida(tConfig *c)
 {
@@ -189,8 +248,8 @@ void iniciarPartida(tConfig *c)
                 scanf(" %c", &dir);
                 while(dir != 'A' && dir != 'R')
                 {
-                printf("Direccion invalida. Ingresa A o R: ");
-                scanf(" %c", &dir);
+                    printf("Direccion invalida. Ingresa A o R: ");
+                    scanf(" %c", &dir);
                 }
             }
             else
@@ -199,8 +258,8 @@ void iniciarPartida(tConfig *c)
                 scanf(" %c", &dir);
                 while(dir != 'A')
                 {
-                printf("Direccion invalida. Ingresa A: ");
-                scanf(" %c", &dir);
+                    printf("Direccion invalida. Ingresa A: ");
+                    scanf(" %c", &dir);
                 }
 
             }
@@ -309,45 +368,45 @@ int analizarJuego(tNodoD *nodo, tJugador *jugador, tNodoD *nodoInicio,tNodoD** n
     // Solo si sobrevivio y sigue en la casilla
     switch (cas->tipo)
     {
-        case '.':
-            printf("Fue un dia tranquilo como para tomar mates y comer chipas...\n");
-            break;
-        case 'P':
-            jugador->puntos++;
-            //printf("Capturaste un Premio! Puntos: %d\n", jugador->puntos);
-            escena_premio(jugador->vidas,1);
-            cas->tipo = '.';
-            break;
-        case 'V':
-            jugador->vidas++;
-            printf("Capturaste una Vida Extra! Vidas: %d\n", jugador->vidas);
-            cas->tipo = '.';
-            break;
-        case 'O':
-            if(!oasisUsado)
-            {
-                jugador->protegido = 1;
-                escena_oasis(1,1);
-                //printf("Llegaste a un Oasis! Estas protegido el proximo turno.\n");
-            }
-            break;
-        case 'T':
-            if (jugador->protegido)
-            {
-                //printf("Tormenta de Arena! Pero el Oasis te protegio.\n");
-                jugador->protegido = 0;
-            }
-            else
-            {
-                jugador->pierdeTurno = 1;
-                //printf("Tormenta de Arena! Perdes el proximo turno.\n");
-                escena_tormenta(1,1);
-            }
-            break;
-        case 'S':
-            printf("Llegaste a la Salida! Sobreviviste al desierto.\n");
-            resultado = GAME_OVER;
-            break;
+    case '.':
+        printf("Fue un dia tranquilo como para tomar mates y comer chipas...\n");
+        break;
+    case 'P':
+        jugador->puntos++;
+        //printf("Capturaste un Premio! Puntos: %d\n", jugador->puntos);
+        escena_premio(jugador->vidas,1);
+        cas->tipo = '.';
+        break;
+    case 'V':
+        jugador->vidas++;
+        printf("Capturaste una Vida Extra! Vidas: %d\n", jugador->vidas);
+        cas->tipo = '.';
+        break;
+    case 'O':
+        if(!oasisUsado)
+        {
+            jugador->protegido = 1;
+            escena_oasis(1,1);
+            //printf("Llegaste a un Oasis! Estas protegido el proximo turno.\n");
+        }
+        break;
+    case 'T':
+        if (jugador->protegido)
+        {
+            //printf("Tormenta de Arena! Pero el Oasis te protegio.\n");
+            jugador->protegido = 0;
+        }
+        else
+        {
+            jugador->pierdeTurno = 1;
+            //printf("Tormenta de Arena! Perdes el proximo turno.\n");
+            escena_tormenta(1,1);
+        }
+        break;
+    case 'S':
+        printf("Llegaste a la Salida! Sobreviviste al desierto.\n");
+        resultado = GAME_OVER;
+        break;
     }
 
 
@@ -383,8 +442,8 @@ tNodoD* moverJugador(tNodoD *nodo, int pasos, char dir)
             }
             else
             {
-               nodo = nodo->sig;
-               i++;
+                nodo = nodo->sig;
+                i++;
             }
 
         }
@@ -424,7 +483,8 @@ void posicionarBandidosEnRuta(tBandido* bandidos,tListaD* ruta)
             bandidos++;
         }
         actual = actual->sig;
-    } while(actual != *ruta);
+    }
+    while(actual != *ruta);
 }
 
 void guardarMovimiento(tMovimiento* movimiento,tNodoD* nodo,char dir,int dado,char tipo)
@@ -441,8 +501,10 @@ void determinarMovimientosBandidos(tBandido* bandidos, int cantB, tNodoD* nodoJu
     char dir;
     tMovimiento movimiento;
 
-    for(i = 0; i < cantB; i++){
-        if(bandidos->activo){
+    for(i = 0; i < cantB; i++)
+    {
+        if(bandidos->activo)
+        {
             calcularDistanciaMinima(bandidos->pos, nodoJugador, &dir);
             pasosAleatorios = (rand() % 3) + 1; //movimientos aleatorios por cada bandido
             guardarMovimiento(&movimiento, bandidos->pos, dir, pasosAleatorios, 'B');
@@ -559,7 +621,7 @@ int calcularDistanciaAlInicio(tNodoD *nodoJugador)
 
 void registrarMovimientoEnHistorial(tCola* historialMov, int pasos, char direccion)
 {
-   char hmov[5];
+    char hmov[5];
     char dirFormateada;
 
     if (direccion == 'A')
@@ -574,20 +636,20 @@ void registrarMovimientoEnHistorial(tCola* historialMov, int pasos, char direcci
 
 int mostrarHistorialMovimientos(tCola* historialMov)
 {
-   char hmov[5];
-   int i = 1, cantMov = 0;
+    char hmov[5];
+    int i = 1, cantMov = 0;
     printf("+===========================================================+\n");
     printf("|            Historial de movimientos del Jugador            |\n");
     printf("+===========================================================+\n\n");
-   while(colaVacia(historialMov) == COLA_NOVACIA)
-   {
+    while(colaVacia(historialMov) == COLA_NOVACIA)
+    {
         desencolar(historialMov,hmov,sizeof(hmov));
         printf("%.2d: %s\n",i,hmov);
         cantMov += atoi(hmov + 1); //para guardar en partidas.dat
         i++;
-   }
+    }
 
-   return cantMov;
+    return cantMov;
 
 }
 
@@ -649,7 +711,7 @@ void mostrarRanking(const char* archivo) // le pasamos el archivo de partidas
 
     crearLista(&lista);
 
-     fread(&partida, sizeof(tRegistroPartida), 1, pf);
+    fread(&partida, sizeof(tRegistroPartida), 1, pf);
     while(!feof(pf))
     {
         //inserta en una lista los registros del archivo de partidas, acumulando por jugador los puntos y movimientos
@@ -684,7 +746,7 @@ void mostrarTop(tLista *pLista,int top)
     while(actual != NULL && top > 0)
     {
         tRegistroPartida* reg = (tRegistroPartida*)actual->dato; //casteo el void dato
-         printf("\n %-10d | %-13d | %-11d",reg->id_jugador,reg->puntaje,reg->movimientos);
+        printf("\n %-10d | %-13d | %-11d",reg->id_jugador,reg->puntaje,reg->movimientos);
         top--;
         actual = actual->sig;
     }
