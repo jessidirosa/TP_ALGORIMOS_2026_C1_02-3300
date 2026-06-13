@@ -45,7 +45,7 @@ void menu(tConfig *c, tArbol* idx);
 void registrarJugador(tArbol* idx);
 void identificarJugador(const char* nombreJugador, tArbol* idx);
 void altaJugador(tArbol* idx, const char* alias, const char* archJug);
-void mostrarDatosYValidar(tArchJug* datosJugador);
+void mostrarDatosYValidar(tArchJug* datosJugador, tArbol* idx);
 void mostrarRanking(const char* archivo);
 int casoPruebaBIN(const char* archivo);
 int compararPuntosJugadores(const void* a, const void* b);

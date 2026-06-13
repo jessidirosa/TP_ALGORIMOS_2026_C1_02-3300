@@ -16,7 +16,7 @@ typedef tNodoA* tArbol;
 
 typedef struct
 {
-    char alias[MAX_ALIAS];
+    char alias[MAX_BUF];
 
 }tClave;
 
@@ -48,7 +48,8 @@ void recorrerPreorden(const tArbol* arbol, void accion(void*));
 void recorrerInorden(const tArbol* arbol, void accion(void*));
 int indiceArchivoJugadores(tArbol* arbol, const char* archJug, const char* archIdx);
 int buscarEnIndice(tArbol* idx, const char* aliasJugador, tIndice* dato, int cmp(const void*, const void*));
-
+void buscarEnArchivo(tIndice* jugador, const char* archJug, tArchJug* datosJugador);
+void actualizarIndice(tArbol* a);
 
 
 int compararIdx(const void* clave1, const void* clave2);

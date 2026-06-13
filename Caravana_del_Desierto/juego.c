@@ -77,7 +77,7 @@ void ejecutarOpcion(unsigned opcion,tConfig* c, tArbol* idx)
 void registrarJugador(tArbol* idx)
 {
     char aliasJugador[MAX_BUF];
-    printf("\nIngrese su alias: ");
+    printf("\nIngrese su alias (distingue mayusculas de minusculas: ");
     scanf(" %[^\n]",aliasJugador); // [^\n] permite leer espacios hasta presionar Enter y El espacio antes de % es limpia cualquier '\n' pendiente en el buffer
     identificarJugador(aliasJugador, idx); //funcion de jugador.h donde se hace la gestion de jugadores(no seria lo mismo que el jugador del juego)
 
@@ -113,22 +113,24 @@ void mostrarDatosYValidar(tArchJug* datosJugador, tArbol* idx)
 {
     char opcion;
 
-    printf("¿Es usted?\n");
+    printf("Es usted?\n");
     printf("ID: %d\nNombre: %s\nAlias: %s\n\n", datosJugador->id, datosJugador->nombre, datosJugador->alias);
     printf("Presione 'S' si es correcto, o 'N' si no lo es, para cargar nuevamente el alias:\n");
+
+    while ((getchar()) != '\n');
     scanf("%c", &opcion);
 
     while(toupper(opcion) != 'S' || toupper(opcion) != 'N')
     {
-        printf("Opcion invalida\n")
+        printf("Opcion invalida\n");
         printf("Presione 'S' si es correcto, o 'N' si no lo es, para cargar nuevamente el alias:\n");
         scanf("%c", &opcion);
     }
 
     if(toupper(opcion) != 'N')
-        registrarJugador(idx); // habria que hacer sino que retorne un estado y en base a eso volvemos al principio
+        registrarJugador(idx); // habria que hacer sino que la funcion retorne un estado y en base a eso volvemos al principio, vez de volver a llamar a esta
 
-    printf("\nBienvenido/a %s\nIniciando partida...", aliasJugador);
+    printf("\nBienvenido/a %s\nIniciando partida...", datosJugador->alias);
     return;
 
 }
@@ -143,7 +145,7 @@ void altaJugador(tArbol* idx, const char* alias, const char* archJug)
 
     printf("Ingrese su nombre completo: ");
     scanf(" %[^\n]", jugador.nombre);
-    jugador.id = (ftell(pf) / sizeof(tArchJug)) - 1;
+    jugador.id = (ftell(pf) / sizeof(tArchJug));
     strcpy(jugador.alias, alias);
 
     strcpy(i.clave.alias, alias);

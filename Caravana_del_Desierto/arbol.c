@@ -76,7 +76,7 @@ int indexarArchivoDesordenadoJugadores(tArbol* arbol, const char* nombreArch)
     fread(&jug, sizeof(tArchJug), 1, pf);
     while(!feof(pf) && insertado == 1)
     {
-        strcpy(indice.clave.alias, jug.nombre);
+        strcpy(indice.clave.alias, jug.alias);
         insertado = ponerEnArbol(arbol, &indice, sizeof(tIndice), compararIdx);
         fread(&jug, sizeof(tArchJug), 1, pf);
         indice.pos++;
@@ -160,6 +160,18 @@ int insertarIdxEnArbolBalanceado(tArbol* arbol, FILE* pf, int inicio, int fin)
 
 }
 
+void actualizarIndice(tArbol* a)
+{
+    tIndice idx;
+    FILE* pf = fopen(ARCH_INDICE, "wb");
+    if(!pf)
+        return;
+
+    cargarArbolAArchivoIndicePreorden(a, &idx, pf);
+    fclose(pf);
+    destruirArbol(a);
+}
+
 void cargarArbolAArchivoIndicePreorden(const tArbol* arbol, tIndice* idx, FILE* pf)
 {
     if(!(*arbol))
@@ -193,16 +205,15 @@ void recorrerInorden(const tArbol* arbol, void accion(void*))
 
 int indiceArchivoJugadores(tArbol* arbol, const char* archJug, const char* archIdx)
 {
-    if(!indexarArchivoDesordenadoJugadores(arbol, ARCH_JUGADORES))// bajamos el archivo a un arbol
+    if(!indexarArchivoDesordenadoJugadores(arbol, archJug))// bajamos el archivo a un arbol
         return ERR_ARCH;
 
-    if(!cargarArchivoIndiceJugadores(arbol, ARCH_INDICE))//con el mismo arbol cargamos el archivo indice
+    if(!cargarArchivoIndiceJugadores(arbol, archIdx))//con el mismo arbol cargamos el archivo indice
         return ERR_ARCH;
 
-    destruirArbol(arbol);
     crearArbol(arbol);
 
-    if(!cargarArchIndiceAArbolBalanceado(arbol, ARCH_INDICE)) //bajamos el archivo indice ordenado por clave, a un arbol
+    if(!cargarArchIndiceAArbolBalanceado(arbol, archIdx)) //bajamos el archivo indice ordenado por clave, a un arbol
         return ERR_ARCH;
 
     return TODO_OK;
@@ -228,5 +239,5 @@ int buscarEnIndice(tArbol* idx, const char* aliasJugador, tIndice* dato, int cmp
         return ENCONTRADO;
     }
 
-    return (buscarEnIndice((*idx)->izq, aliasJugador, dato, cmp) + buscarEnIndice((*idx)->izq, aliasJugador, dato, cmp));
+    return (buscarEnIndice(&(*idx)->izq, aliasJugador, dato, cmp) + buscarEnIndice(&(*idx)->izq, aliasJugador, dato, cmp));
 }
