@@ -270,6 +270,17 @@ int ReducirAUnolosDuplicados(tLista* lista, int cmp(const void*,const void*), vo
     return TODO_OK;
 }
 
+void vaciarLista(tLista* lista)
+{
+    tNodo* elim;
 
+    while(*lista != NULL)
+    {
+        elim = *lista;
+        *lista = (*lista)->sig;
+        free(elim->dato);
+        free(elim);
+    }
+}
 
 

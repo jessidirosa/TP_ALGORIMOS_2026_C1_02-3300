@@ -24,4 +24,5 @@ int ordenarLista(tLista* pl, int cmp(const void*, const void*));
 int insertarOrdenado(tLista* pl, const void* dato, unsigned tam, int sinDup, void accion(void*, const void*), int cmp(const void*, const void*));
 void mostrarLista(tLista* l, void accion(const void* dato));
 int ReducirAUnolosDuplicados(tLista* lista, int cmp(const void*,const void*), void accion (void*, const void*));
+void vaciarLista(tLista* lista);
 #endif // LISTA_H_INCLUDED

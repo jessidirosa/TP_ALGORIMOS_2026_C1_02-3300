@@ -57,7 +57,7 @@ tNodoD* moverJugador(tNodoD *jugador, int pasos, char dir);
 int analizarJuego(tNodoD *nodo, tJugador *jugador, tNodoD *nodoInicio,tNodoD** nodoJugador, tBandido* bandidos, int cantB);
 int iniciarCaracteristicasJugador(tJugador *jugador,tConfig *conf);
 
-void iniciarPartida(tConfig *c); //maquetado
+void iniciarPartida(tConfig *c);
 int tirarDado();
 int calcularDistanciaAlInicio(tNodoD *nodoJugador);
 

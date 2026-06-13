@@ -129,8 +129,6 @@ int insertarAlFinalListaD(tListaD* l, const void* dato, unsigned tam)
 
 }
 
-
-
 void recorrerListaDobleDerAIzq(const tListaD* l, void accion(const void*))
 {
    tNodoD* act = *l;
@@ -201,4 +199,29 @@ int eliminarDeListaDobleOrd(tListaD* l, unsigned tam, void* dato, int cmp(const 
     free(act);
 
     return TODO_OK;
+}
+
+void vaciarListaD(tListaD* l)
+{
+    tNodoD* act = *l;
+    tNodoD* auxSig;
+
+    if(!act)
+        return;
+
+    auxSig = act->sig;
+
+    while(auxSig != *l)
+    {
+        act = auxSig;
+
+        auxSig = auxSig->sig;
+
+        free(act->dato);
+        free(act);
+    }
+    free((*l)->dato);
+    free(*l);
+
+    *l = NULL;
 }

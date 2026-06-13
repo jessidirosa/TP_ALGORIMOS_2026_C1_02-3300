@@ -229,6 +229,7 @@ void iniciarPartida(tConfig *c)
 
     mostrarHistorialMovimientos(&historialMov); //mostrar los movimientos hechos durante la partida
     //guardarPartida(); // en partidas.dat
+    //vaciarListaD(&ruta);
 
 }
 
@@ -279,9 +280,12 @@ int analizarJuego(tNodoD *nodo, tJugador *jugador, tNodoD *nodoInicio,tNodoD** n
                     ((tCasilla*)nodoInicio->dato)->tieneJ = 1;
                     *nodoJugador = nodoInicio;
 
-                    printf("Un Bandido te atrapo! Perdes una vida. Vidas: %d. Volviste al Campamento Inicial.\n", jugador->vidas);
+                    escena_bandido(1,1);
+                    system("pause");
+                    //printf("Un Bandido te atrapo! Perdes una vida. Vidas: %d. Volviste al Campamento Inicial.\n", jugador->vidas);
                     return EXITO;
                 }
+
             }
         }
     }
@@ -294,7 +298,8 @@ int analizarJuego(tNodoD *nodo, tJugador *jugador, tNodoD *nodoInicio,tNodoD** n
             break;
         case 'P':
             jugador->puntos++;
-            printf("Capturaste un Premio! Puntos: %d\n", jugador->puntos);
+            //printf("Capturaste un Premio! Puntos: %d\n", jugador->puntos);
+            escena_premio(jugador->vidas,1);
             cas->tipo = '.';
             break;
         case 'V':
@@ -306,19 +311,21 @@ int analizarJuego(tNodoD *nodo, tJugador *jugador, tNodoD *nodoInicio,tNodoD** n
             if(!oasisUsado)
             {
                 jugador->protegido = 1;
-                printf("Llegaste a un Oasis! Estas protegido el proximo turno.\n");
+                escena_oasis(1,1);
+                //printf("Llegaste a un Oasis! Estas protegido el proximo turno.\n");
             }
             break;
         case 'T':
             if (jugador->protegido)
             {
-                printf("Tormenta de Arena! Pero el Oasis te protegio.\n");
+                //printf("Tormenta de Arena! Pero el Oasis te protegio.\n");
                 jugador->protegido = 0;
             }
             else
             {
                 jugador->pierdeTurno = 1;
-                printf("Tormenta de Arena! Perdes el proximo turno.\n");
+                //printf("Tormenta de Arena! Perdes el proximo turno.\n");
+                escena_tormenta(1,1);
             }
             break;
         case 'S':
@@ -640,6 +647,7 @@ void mostrarRanking(const char* archivo) // le pasamos el archivo de partidas
     printf("\n---JUGADOR--- ---PUNTAJE---\n");
     mostrarTop(&lista,TOP);
     fclose(pf);
+    vaciarLista(&lista);
 }
 
 void mostrarTop(tLista *pLista,int top)
