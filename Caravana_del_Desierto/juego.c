@@ -53,12 +53,13 @@ int ingresar(unsigned tam)
 
 void ejecutarOpcion(unsigned opcion,tConfig* c, tArbol* idx)
 {
+    char alias[MAX_BUF];
     switch (opcion)
     {
     case 1:
         system("cls");
-        registrarJugador(idx);
-        iniciarPartida(c);
+        registrarJugador(idx, alias);
+        iniciarPartida(c, alias);
         break;
 
     case 2:
@@ -74,13 +75,11 @@ void ejecutarOpcion(unsigned opcion,tConfig* c, tArbol* idx)
 
 //------------JUEGO--------------
 
-void registrarJugador(tArbol* idx)
+void registrarJugador(tArbol* idx, char* aliasJugador)
 {
-    char aliasJugador[MAX_BUF];
     printf("\nIngrese su alias (distingue mayusculas de minusculas): ");
     scanf(" %[^\n]",aliasJugador); // [^\n] permite leer espacios hasta presionar Enter y El espacio antes de % es limpia cualquier '\n' pendiente en el buffer
     identificarJugador(aliasJugador, idx); //funcion de jugador.h donde se hace la gestion de jugadores(no seria lo mismo que el jugador del juego)
-
 }
 
 void identificarJugador(const char* aliasJugador, tArbol* idx)
@@ -113,7 +112,7 @@ void mostrarDatosYValidar(tArchJug* datosJugador, tArbol* idx)
 {
     char opcion;
 
-    printf("Es usted?\n");
+    printf("Este alias ya esta en uso. Es usted?\n");
     printf("ID: %d\nNombre: %s\nAlias: %s\n\n", datosJugador->id, datosJugador->nombre, datosJugador->alias);
     printf("Presione 'S' si es correcto, o 'N' si no lo es, para cargar nuevamente el alias:\n");
 
@@ -128,7 +127,7 @@ void mostrarDatosYValidar(tArchJug* datosJugador, tArbol* idx)
     }
 
     if(toupper(opcion) == 'N')
-        registrarJugador(idx); // habria que hacer sino que la funcion retorne un estado y en base a eso volvemos al principio, vez de volver a llamar a esta
+        registrarJugador(idx, datosJugador->alias);
 
     printf("\nBienvenido/a %s\nIniciando partida...", datosJugador->alias);
     return;
@@ -145,11 +144,12 @@ void altaJugador(tArbol* idx, const char* alias, const char* archJug)
 
     printf("Ingrese su nombre completo: ");
     scanf(" %[^\n]", jugador.nombre);
-    jugador.id = (ftell(pf) / sizeof(tArchJug));
+    fseek(pf, 0L, SEEK_END);
+    jugador.id = (ftell(pf) / sizeof(tArchJug)) + 1;
     strcpy(jugador.alias, alias);
 
     strcpy(i.clave.alias, alias);
-    i.pos = jugador.id;
+    i.pos = (ftell(pf) / sizeof(tArchJug));
 
     fwrite(&jugador, sizeof(tArchJug), 1, pf);
     ponerEnArbol(idx, &i, sizeof(tIndice), compararIdx);
@@ -160,8 +160,9 @@ void altaJugador(tArbol* idx, const char* alias, const char* archJug)
     system("pause");
 }
 
+/// ////////////////INICIAR PARTIDA///////////// ///
 
-void iniciarPartida(tConfig *c)
+void iniciarPartida(tConfig *c, const char* alias)
 {
     tCola colaMovimiento, historialMov;
     tJugador jugador;
@@ -247,59 +248,64 @@ void iniciarPartida(tConfig *c)
             printf("+===========================================================+\n\n");
             if(calcularDistanciaAlInicio(nodoJugador) >= dado)
             {
-                printf("Hacia donde queres moverte? (A = Avanzar / R = Retroceder): ");
+                printf("Hacia donde queres moverte? (A = Avanzar / R = Retroceder / X = Salir: ");
                 scanf(" %c", &dir);
-                while(toupper(dir) != 'A' && toupper(dir) != 'R')
+                dir = toupper(dir);
+                while(dir != 'A' && dir != 'R' && dir != 'X')
                 {
-                    if(toupper(dir) == 'X')
-                        salir = 1;
-
-                    printf("Direccion invalida. Ingresa A o R: ");
+                    printf("Direccion invalida. Ingresa A o R (o X para salir): ");
                     scanf(" %c", &dir);
+                    dir = toupper(dir);
                 }
             }
             else
             {
-                printf("Solo puedes avanzar. Ingresa A (A = Avanzar): ");
+                printf("Solo puedes avanzar. Ingresa A (A = Avanzar) o X (X = Salir): ");
                 scanf(" %c", &dir);
-                while(toupper(dir) != 'A' && toupper(dir) != 'X')
+                dir = toupper(dir);
+                while(dir != 'A' && dir != 'X')
                 {
-                    printf("Direccion invalida. Ingresa A: ");
+                    printf("Direccion invalida. Ingresa A (o X para salir): ");
                     scanf(" %c", &dir);
+                    dir = toupper(dir);
+                }
+            }
+
+            if(dir == 'X')
+            {
+                ///funcion de vaciar y destruir
+                salir = 1;
+            }
+
+            if(!salir)
+            {
+                //movemos al jugador
+                guardarMovimiento(&movimiento,nodoJugador,dir,dado,'J');
+                encolar(&colaMovimiento,&movimiento,sizeof(tMovimiento));
+
+                while(colaVacia(&colaMovimiento) == COLA_NOVACIA)
+                {
+                    desencolar(&colaMovimiento,&movimiento,sizeof(tMovimiento));
+                    nodoJugador = moverJugador(nodoJugador, movimiento.pasos, movimiento.direccion);
+                    registrarMovimientoEnHistorial(&historialMov,movimiento.pasos,movimiento.direccion);
                 }
 
-                if(toupper(dir) == 'X')
-                    salir = 1;
+                // 3. RESULTADOS DEL DÍA
+                system("cls");
+                printf("+===========================================================+\n");
+                printf("|          CARAVANA DEL DESIERTO  ~  Resultado Dia %-2d       |\n", turno);
+                printf("+===========================================================+\n\n");
 
+                // Opcional: Mostrar cómo quedó todo tras tu movimiento antes de analizar
+                recorrerListaDobleIzqADer(&ruta, mostrarTablero);
+                printf("\n\n");
+
+                if(analizarJuego(nodoJugador, &jugador, nodoCampamento, &nodoJugador,bandidos, c->maximo_bandidos) == GAME_OVER)
+                    game_over = 0;
+
+                turno++;
             }
-
-            //movemos al jugador
-            guardarMovimiento(&movimiento,nodoJugador,dir,dado,'J');
-            encolar(&colaMovimiento,&movimiento,sizeof(tMovimiento));
-
-            while(colaVacia(&colaMovimiento) == COLA_NOVACIA)
-            {
-                desencolar(&colaMovimiento,&movimiento,sizeof(tMovimiento));
-                nodoJugador = moverJugador(nodoJugador, movimiento.pasos, movimiento.direccion);
-                registrarMovimientoEnHistorial(&historialMov,movimiento.pasos,movimiento.direccion);
-            }
-
-            // 3. RESULTADOS DEL DÍA
-            system("cls");
-            printf("+===========================================================+\n");
-            printf("|          CARAVANA DEL DESIERTO  ~  Resultado Dia %-2d       |\n", turno);
-            printf("+===========================================================+\n\n");
-
-            // Opcional: Mostrar cómo quedó todo tras tu movimiento antes de analizar
-            recorrerListaDobleIzqADer(&ruta, mostrarTablero);
-            printf("\n\n");
-
-            if(analizarJuego(nodoJugador, &jugador, nodoCampamento, &nodoJugador,bandidos, c->maximo_bandidos) == GAME_OVER)
-                game_over = 0;
-
-            turno++;
         }
-
     }
 
     system("cls");
@@ -311,17 +317,35 @@ void iniciarPartida(tConfig *c)
     }
 
     if(jugador.vidas == 0)
-        printf("Perdiste! Puntos finales: %d\n", jugador.puntos);
+        printf("Perdiste! \nPuntos finales: %d\n\n", jugador.puntos);
     else
     {
         printf("=== VICTORIA! ===\n");
         printf("Puntos conseguidos: %d | Vidas sobrantes: %d\n", jugador.puntos, jugador.vidas);
     }
 
-    mostrarHistorialMovimientos(&historialMov); //mostrar los movimientos hechos durante la partida
-    //guardarPartida(); // en partidas.dat
+//    mostrarHistorialMovimientos(&historialMov); // mostrar los movimientos hechos durante la partida
+    guardarPartida(alias, jugador.puntos, mostrarHistorialMovimientos(&historialMov)); // en partidas.dat
     vaciarListaD(&ruta);
+}
 
+int guardarPartida(const char* alias, int puntos, int cantMov)
+{
+    tRegistroPartida partida;
+    FILE* pf = fopen(ARCH_PARTIDAS, "ab");
+    if(!pf)
+        return ERR_ARCH;
+
+    strcpy(partida.alias, alias);
+    fseek(pf, 0L, SEEK_END);
+    partida.id_partida = (ftell(pf) / sizeof(tRegistroPartida)) + 1;
+    partida.movimientos = cantMov;
+    partida.puntaje = puntos;
+
+    fwrite(&partida, sizeof(tRegistroPartida), 1, pf);
+
+    fclose(pf);
+    return TODO_OK;
 }
 
 int tirarDado()
@@ -666,7 +690,6 @@ int mostrarHistorialMovimientos(tCola* historialMov)
     }
 
     return cantMov;
-
 }
 
 
@@ -681,43 +704,9 @@ int iniciarCaracteristicasJugador(tJugador *jugador,tConfig *conf)
     return EXITO;
 }
 
-//
-//int casoPruebaBIN(const char* archivo) ///ELIMINAR ESTA FUNCION ES SOLO DE PRUEBA
-//{
-//    tRegistroPartida partidas[10] = {
-//        {1, 1, 150, 45},
-//        {2, 2, 200, 80},
-//        {1, 3, 120, 30},
-//        {3, 4, 250, 30},
-//        {4, 5, 20, 30},
-//        {5, 6, 400, 80},
-//        {1, 7, 400, 80},
-//        {2, 8, 100, 10},
-//        {3, 9, 100, 5},
-//        {1, 10, 400, 80},
-//    };
-//    FILE *pf = fopen(archivo, "wb");
-//
-//    if (pf == NULL) {
-//        perror("Error al abrir el archivo de prueba de carga de datos en arcivo bin");
-//        return 1;
-//    }
-//
-//    size_t escritos = fwrite(partidas, sizeof(tRegistroPartida), 10, pf);
-//
-//    if (escritos == 10) {
-//        printf("Éxito: Se guardaron %zu registros correctamente.\n", escritos);
-//    } else {
-//        printf("Error: Solo se guardaron %zu registros.\n", escritos);
-//    }
-//
-//    fclose(pf);
-//    return 0;
-//}
 
 void mostrarRanking(const char* archivo) // le pasamos el archivo de partidas
 {
-
     FILE* pf = fopen(archivo, "rb");
     if(!pf)
         return;
@@ -731,38 +720,46 @@ void mostrarRanking(const char* archivo) // le pasamos el archivo de partidas
     while(!feof(pf))
     {
         //inserta en una lista los registros del archivo de partidas, acumulando por jugador los puntos y movimientos
-        insertarOrdenado(&lista, &partida, sizeof(tRegistroPartida), 0, acumularDuplicados, compararIDJugadores);
+        insertarOrdenado(&lista, &partida, sizeof(tRegistroPartida), 0, acumularDuplicados, compararAlias);
         fread(&partida, sizeof(tRegistroPartida), 1, pf);
     }
 
 
     printf("\n---JUGADOR--- ---PUNTAJE---\n");
     mostrarLista(&lista, mostrarPuntosJugadores);
-    //deberiamos hacer una funcion si queremos gurdar el ranking en la estructura tRanking, por ahora solo se muestra por consola
-    printf("\n---JUGADOR--- ---PUNTAJE---\n");
+
     mostrarTop(&lista,TOP);
     fclose(pf);
     vaciarLista(&lista);
 }
 
-void mostrarTop(tLista *pLista,int top)
+int compararAlias(const void* s1, const void* s2)
 {
+    char* alias1 = (char*)s1;
+    char* alias2 = (char*)s2;
+
+    return strcmp(alias1, alias2);
+}
+
+void mostrarTop(tLista *pLista, int top)
+{
+    tRegistroPartida* reg;
     ordenarLista(pLista,compararPuntosJugadores);
 
     // Mostramos por pantalla el encabezado
     printf("\n=============================================");
     printf("\n   TOP %d MEJORES PUNTAJES", top);
     printf("\n=============================================");
-    printf("\n ID JUGADOR | PUNTAJE TOTAL | MOVIMIENTOS");
-    printf("\n------------|---------------|-------------");
+    printf("\n ALIAS JUGADOR | PUNTAJE TOTAL | MOVIMIENTOS");
+    printf("\n---------------|---------------|-------------");
 
 
     tNodo* actual = *pLista;// para no perder referencia de pLista
 
     while(actual != NULL && top > 0)
     {
-        tRegistroPartida* reg = (tRegistroPartida*)actual->dato; //casteo el void dato
-        printf("\n %-10d | %-13d | %-11d",reg->id_jugador,reg->puntaje,reg->movimientos);
+        reg = (tRegistroPartida*)actual->dato; //casteo el void dato
+        printf("\n %-10s | %-13d | %-11d",reg->alias,reg->puntaje,reg->movimientos);
         top--;
         actual = actual->sig;
     }
@@ -781,14 +778,6 @@ void acumularDuplicados(void* datoLista, const void* datoAInsertar)
 
 }
 
-int compararIDJugadores(const void* a, const void* b)
-{
-    tRegistroPartida* jug1 = (tRegistroPartida*)a;
-    tRegistroPartida* jug2 = (tRegistroPartida*)b;
-
-    return jug2->id_jugador - jug1->id_jugador;
-}
-
 int compararPuntosJugadores(const void* a, const void* b)
 {
     tRegistroPartida* jug1 = (tRegistroPartida*)a;//tRanking* jug1 = (tRanking*)a;
@@ -800,196 +789,5 @@ int compararPuntosJugadores(const void* a, const void* b)
 void mostrarPuntosJugadores(const void* n)
 {
     tRegistroPartida* jug = (tRegistroPartida*)n;
-    printf("%d%-d\n", jug->id_jugador, jug->puntaje); ///MODIFICAR ESTO, SOLO LO PUSE ASI PARA QUE FUNCIONE
+    printf("%s\t%-d\n", jug->alias, jug->puntaje);
 }
-
-/// OTRA IMPLEMENTACION -->JUGADOR SE MUEVE PRIMERO
-//void iniciarPartida(tConfig *c)
-//{
-//    tCola colaMovimiento, historialMov;
-//    tJugador jugador;
-//    tMovimiento movimiento;
-//    /*implementacion TXT*/
-//    tListaD ruta;
-//    tNodoD *nodoJugador = NULL, *nodoCampamento;
-//    int dado,game_over = 1,turno =1,enter;
-//    char dir;
-//    tBandido bandidos[c->maximo_bandidos];
-//
-//    iniciarCaracteristicasJugador(&jugador,c);
-//
-//    crearListaD(&ruta);
-//    crearCola(&colaMovimiento);
-//    crearCola(&historialMov);
-//
-//    if(!generarTablero(c, &ruta))
-//        printf("no se pudo generar el tablero\n");
-//
-//
-//    posicionarBandidosEnRuta(bandidos,&ruta); //guarda la direccion de cada bandido en la ruta
-//
-//    nodoJugador = posicionarJugadorEnInicio(&ruta); //poner a jugador en I --> poner [I J]
-//    nodoCampamento = nodoJugador;
-//
-//    while(jugador.vidas != 0 && game_over)
-//    {
-//        printf("\n");
-//        printf("+===========================================================+\n");
-//        printf("|              CARAVANA DEL DESIERTO  ~  Dia %-2d             |\n", turno);
-//        printf("+===========================================================+\n");
-//        printf("Vidas: %d | Puntos: %d | Protegido: %s\n",
-//               jugador.vidas, jugador.puntos, jugador.protegido ? "Si" : "No");
-//        printf("\n");
-//        recorrerListaDobleIzqADer(&ruta,mostrarTablero);
-//        printf("\n");
-//
-//        if(jugador.pierdeTurno)
-//        {
-//            printf("Perdes este turno por la Tormenta de Arena!\n");
-//            jugador.pierdeTurno = 0;
-//            printf("Presiona 0 para continuar...");
-//            scanf(" %d",&enter);
-//            system("cls");
-//            printf("+===========================================================+\n");
-//            printf("|          CARAVANA DEL DESIERTO  ~  Resultado Dia %-2d      |\n", turno);
-//            printf("+===========================================================+\n\n");
-//            printf("Una lagartija te alquilo la cueva por 2 monedas de oro\n");
-//            turno++;
-//        }
-//        else
-//        {
-//            //TURNO JUGADOR
-//            dado = tirarDado();
-//            printf("Tiraste el dado: %d\n", dado);
-//            printf("+===========================================================+\n");
-//            printf("|                  Tiraste el dado:          %d              |\n", dado);
-//            printf("+===========================================================+\n\n");
-//            if(calcularDistanciaAlInicio(nodoJugador) >= dado)
-//            {
-//                printf("Hacia donde queres moverte? (A = Avanzar / R = Retroceder): ");
-//                scanf(" %c", &dir);
-//                while(dir != 'A' && dir != 'R')
-//                {
-//                printf("Direccion invalida. Ingresa A o R: ");
-//                scanf(" %c", &dir);
-//                }
-//            }
-//            else
-//            {
-//                printf("Solo puedes avanzar. Ingresa A (A = Avanzar): ");
-//                scanf(" %c", &dir);
-//                while(dir != 'A')
-//                {
-//                printf("Direccion invalida. Ingresa A: ");
-//                scanf(" %c", &dir);
-//                }
-//
-//            }
-//
-//            guardarMovimiento(&movimiento,nodoJugador,dir,dado,'J');
-//            encolar(&colaMovimiento,&movimiento,sizeof(tMovimiento));
-//
-//            //TURNO DE LOS BANDIDOS
-//            printf("+===========================================================+\n");
-//            printf("|   Los bandidos se mueven.Cuidado, trataran de atraparte.   |\n");
-//            printf("+===========================================================+\n\n");
-//            determinarMovimientosBandidos(bandidos,c->maximo_bandidos,nodoJugador,&colaMovimiento);
-//
-//            int paso_animacion = 1;
-//
-//
-//            while(colaVacia(&colaMovimiento) == COLA_NOVACIA)
-//            {
-//                desencolar(&colaMovimiento,&movimiento,sizeof(tMovimiento));
-//                system("cls");
-//                printf("+===========================================================+\n");
-//                printf("|          RESOLVIENDO MOVIMIENTOS - ACCION %-2d              |\n", paso_animacion++);
-//                printf("+===========================================================+\n\n");
-//
-//                if(movimiento.tipoJugador == 'J' )
-//                {
-//                    nodoJugador = moverJugador(nodoJugador, movimiento.pasos, movimiento.direccion);
-//                    printf(" -> El JUGADOR se desplazo %d espacio/s hacia %s.\n\n",
-//                            movimiento.pasos,
-//                            (movimiento.direccion == 'A') ? "Adelante" : "Atras");
-//                    registrarMovimientoEnHistorial(&historialMov,movimiento.pasos,movimiento.direccion);
-//                }
-//                else
-//                {
-//                    moverBandidos(bandidos,&movimiento, c->maximo_bandidos);
-//                    printf(" -> Un BANDIDO se desplazo %d espacio/s hacia %s.\n\n",
-//                            movimiento.pasos,
-//                            (movimiento.direccion == 'A') ? "Adelante" : "Atras");
-//                }
-//
-//                recorrerListaDobleIzqADer(&ruta, mostrarTablero);
-//                printf("\n\n");
-//
-//                Sleep(2000);
-//            }
-//
-//            system("cls");
-//            printf("+===========================================================+\n");
-//            printf("|          CARAVANA DEL DESIERTO  ~  Resultado Dia %-2d       |\n", turno);
-//            printf("+===========================================================+\n\n");
-//
-//            recorrerListaDobleIzqADer(&ruta, mostrarTablero);
-//            printf("\n\n");
-//            system("pause");
-//
-//            if(analizarJuego(nodoJugador, &jugador, nodoCampamento, &nodoJugador,bandidos, c->maximo_bandidos) == GAME_OVER)
-//                game_over = 0;
-//
-//            turno++;
-//        }
-//
-//    }
-//    system("cls");
-//    if(jugador.vidas == 0)
-//        printf("Perdiste! Puntos finales: %d\n", jugador.puntos);
-//    else
-//    {
-//        printf("=== VICTORIA! ===\n");
-//        printf("Puntos conseguidos: %d | Vidas sobrantes: %d\n", jugador.puntos, jugador.vidas);
-//    }
-//
-//    mostrarHistorialMovimientos(&historialMov); //mostrar los movimientos hechos durante la partida
-//    //guardarPartida(); // en partidas.dat
-//
-//}
-//
-//void moverBandidos(tBandido* bandidos, tMovimiento* movimiento, int cantB)
-//{
-//    tNodoD* actual = movimiento->pos;
-//    int i = 0;
-//
-//    tBandido* bandidoEncontrado = buscarBandidoPorPosicion(bandidos, cantB, movimiento->pos);
-//
-//    if (bandidoEncontrado != NULL)
-//    {
-//        if (((tCasilla*)(actual->dato))->tieneB > 0)
-//            ((tCasilla*)(actual->dato))->tieneB--;
-//
-//        i = 0;
-//
-//        if (movimiento->direccion == 'A')
-//        {
-//            while (i < movimiento->pasos)
-//            {
-//                actual = actual->sig;
-//                i++;
-//            }
-//        }
-//        else
-//        {
-//            while (i < movimiento->pasos)
-//            {
-//                actual = actual->ant;
-//                i++;
-//            }
-//        }
-//
-//        bandidoEncontrado->pos = actual;
-//        ((tCasilla*)(actual->dato))->tieneB++;
-//    }
-//}

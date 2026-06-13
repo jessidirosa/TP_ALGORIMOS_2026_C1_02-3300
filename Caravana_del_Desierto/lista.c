@@ -209,7 +209,7 @@ int insertarOrdenado(tLista* pl, const void* dato, unsigned tam, int sinDup, voi
         return DUPLICADO;
     }
 
-    nue = malloc(sizeof(tNodo*));
+    nue = malloc(sizeof(tNodo));
     if(!nue)
         return SIN_MEM;
 

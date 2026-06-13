@@ -239,5 +239,5 @@ int buscarEnIndice(tArbol* idx, const char* aliasJugador, tIndice* dato, int cmp
         return ENCONTRADO;
     }
 
-    return (buscarEnIndice(&(*idx)->izq, aliasJugador, dato, cmp) + buscarEnIndice(&(*idx)->izq, aliasJugador, dato, cmp));
+    return (buscarEnIndice(&(*idx)->izq, aliasJugador, dato, cmp) + buscarEnIndice(&(*idx)->der, aliasJugador, dato, cmp));
 }

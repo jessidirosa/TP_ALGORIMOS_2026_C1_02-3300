@@ -34,7 +34,7 @@ typedef struct
 } tMovimiento;
 
 typedef struct {
-    int id_jugador;
+    char alias[MAX_BUF];
     int id_partida;
     int puntaje;
     int movimientos;
@@ -42,7 +42,7 @@ typedef struct {
 
 
 void menu(tConfig *c, tArbol* idx);
-void registrarJugador(tArbol* idx);
+void registrarJugador(tArbol* idx, char* aliasJugador);
 void identificarJugador(const char* nombreJugador, tArbol* idx);
 void altaJugador(tArbol* idx, const char* alias, const char* archJug);
 void mostrarDatosYValidar(tArchJug* datosJugador, tArbol* idx);
@@ -51,6 +51,7 @@ int casoPruebaBIN(const char* archivo);
 int compararPuntosJugadores(const void* a, const void* b);
 void mostrarPuntosJugadores(const void* n);
 int compararIDJugadores(const void* a, const void* b);
+int compararAlias(const void* s1, const void* s2);
 void acumularDuplicados(void* datoLista, const void* datoAInsertar);
 void mostrarTop(tLista *pLista,int top);
 int ingresar(unsigned tam);
@@ -61,9 +62,10 @@ tNodoD* moverJugador(tNodoD *jugador, int pasos, char dir);
 int analizarJuego(tNodoD *nodo, tJugador *jugador, tNodoD *nodoInicio,tNodoD** nodoJugador, tBandido* bandidos, int cantB);
 int iniciarCaracteristicasJugador(tJugador *jugador,tConfig *conf);
 
-void iniciarPartida(tConfig *c);
+void iniciarPartida(tConfig *c, const char* alias);
 int tirarDado();
 int calcularDistanciaAlInicio(tNodoD *nodoJugador);
+int guardarPartida(const char* alias, int puntos, int cantMov);
 
 //MOV BANDIDOS
 void posicionarBandidosEnRuta(tBandido* bandidos,tListaD* ruta);
