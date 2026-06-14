@@ -212,6 +212,7 @@ void iniciarPartida(tConfig *c, const char* alias)
             printf("+===========================================================+\n\n");
             printf("Una lagartija te alquilo la cueva por 2 monedas de oro\n");
             turno++;
+            jugador.puntos -= 2;
             printf("Presiona 0 para continuar...");
             scanf(" %d",&enter);
             system("cls");
@@ -357,6 +358,7 @@ int analizarJuego(tNodoD *nodo, tJugador *jugador, tNodoD *nodoInicio,tNodoD** n
 {
     tCasilla *cas = (tCasilla*)nodo->dato;
     int resultado = EXITO;
+    int puntosRand;
     int oasisUsado = 0;
 
     if (cas->tieneB > 0)
@@ -383,6 +385,9 @@ int analizarJuego(tNodoD *nodo, tJugador *jugador, tNodoD *nodoInicio,tNodoD** n
                 {
 
                     printf("Un Bandido te atrapo! No tenes mas vidas. Fin de la partida.\n");
+                    printf("Pero tu valentia en el desierto no pasara desapercibida: obtenes 1 punto de honor.\n");
+                    jugador->puntos++;
+                    system("pause");
                     return GAME_OVER;
                 }
                 else
@@ -395,7 +400,7 @@ int analizarJuego(tNodoD *nodo, tJugador *jugador, tNodoD *nodoInicio,tNodoD** n
                     ((tCasilla*)nodoInicio->dato)->tieneJ = 1;
                     *nodoJugador = nodoInicio;
 
-                    escena_bandido(1,1);
+                    escena_bandido(jugador->vidas);
                     system("pause");
                     //printf("Un Bandido te atrapo! Perdes una vida. Vidas: %d. Volviste al Campamento Inicial.\n", jugador->vidas);
                     return EXITO;
@@ -412,9 +417,10 @@ int analizarJuego(tNodoD *nodo, tJugador *jugador, tNodoD *nodoInicio,tNodoD** n
         printf("Fue un dia tranquilo como para tomar mates y comer chipas...\n");
         break;
     case 'P':
-        jugador->puntos++;
+        puntosRand = rand() % 5 + 1;
+        jugador->puntos += puntosRand; // puntos aleatorios del 1 al 5
         //printf("Capturaste un Premio! Puntos: %d\n", jugador->puntos);
-        escena_premio(jugador->vidas,1);
+        escena_premio(puntosRand);
         cas->tipo = '.';
         break;
     case 'V':
@@ -426,25 +432,26 @@ int analizarJuego(tNodoD *nodo, tJugador *jugador, tNodoD *nodoInicio,tNodoD** n
         if(!oasisUsado)
         {
             jugador->protegido = 1;
-            escena_oasis(1,1);
+            escena_oasis();
             //printf("Llegaste a un Oasis! Estas protegido el proximo turno.\n");
         }
         break;
     case 'T':
         if (jugador->protegido)
         {
-            //printf("Tormenta de Arena! Pero el Oasis te protegio.\n");
+            escena_tormenta_protegido();
             jugador->protegido = 0;
         }
         else
         {
             jugador->pierdeTurno = 1;
             //printf("Tormenta de Arena! Perdes el proximo turno.\n");
-            escena_tormenta(1,1);
+            escena_tormenta();
         }
         break;
     case 'S':
         printf("Llegaste a la Salida! Sobreviviste al desierto.\n");
+        jugador->puntos += PUNTOS_GANADOR;
         resultado = GAME_OVER;
         break;
     }
@@ -588,7 +595,7 @@ void moverBandidos(tBandido* bandidos, tMovimiento* movimiento, int cantB)
             while (i < movimiento->pasos)
             {
                 // para que los bandidos no se muevan al final ni a la casilla que esta el jugador
-                if (actual->sig == NULL || actual->sig->sig == NULL || ((tCasilla*)(actual->sig->dato))->tieneJ == 1)
+                if (actual->sig == NULL || actual->sig->sig == NULL || ((tCasilla*)(actual->sig->dato))->tieneJ == 1) /// VER!
                 {
                     break;
                 }
@@ -725,7 +732,7 @@ void mostrarRanking(const char* archivo) // le pasamos el archivo de partidas
     }
 
 
-    printf("\n---JUGADOR--- ---PUNTAJE---\n");
+    printf("\n---JUGADOR---\t---PUNTAJE---\n");
     mostrarLista(&lista, mostrarPuntosJugadores);
 
     mostrarTop(&lista,TOP);
@@ -759,7 +766,7 @@ void mostrarTop(tLista *pLista, int top)
     while(actual != NULL && top > 0)
     {
         reg = (tRegistroPartida*)actual->dato; //casteo el void dato
-        printf("\n %-10s | %-13d | %-11d",reg->alias,reg->puntaje,reg->movimientos);
+        printf("\n %-10s    | %-13d | %-11d",reg->alias,reg->puntaje,reg->movimientos);
         top--;
         actual = actual->sig;
     }
@@ -789,5 +796,5 @@ int compararPuntosJugadores(const void* a, const void* b)
 void mostrarPuntosJugadores(const void* n)
 {
     tRegistroPartida* jug = (tRegistroPartida*)n;
-    printf("%s\t%-d\n", jug->alias, jug->puntaje);
+    printf("%s\t\t\t%-d\n", jug->alias, jug->puntaje);
 }

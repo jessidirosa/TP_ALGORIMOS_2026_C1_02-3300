@@ -205,10 +205,18 @@ void recorrerInorden(const tArbol* arbol, void accion(void*))
 
 int indiceArchivoJugadores(tArbol* arbol, const char* archJug, const char* archIdx)
 {
+    FILE* pf = fopen(archIdx, "rb");
+    if(pf)
+    {
+        fclose(pf);
+        cargarArchIndiceAArbolBalanceado(arbol, archIdx);
+        return TODO_OK;
+    }
+
     if(!indexarArchivoDesordenadoJugadores(arbol, archJug))// bajamos el archivo a un arbol
         return ERR_ARCH;
 
-    if(!cargarArchivoIndiceJugadores(arbol, archIdx))//con el mismo arbol cargamos el archivo indice
+    if(!cargarArchivoIndiceJugadores(arbol, archIdx))//con el mismo arbol cargamos el archivo indice (abre archivo en modo escritura)
         return ERR_ARCH;
 
     crearArbol(arbol);
@@ -218,6 +226,7 @@ int indiceArchivoJugadores(tArbol* arbol, const char* archJug, const char* archI
 
     return TODO_OK;
 }
+
 
 int compararClave(const void* alias, const void* idx)
 {
@@ -240,4 +249,36 @@ int buscarEnIndice(tArbol* idx, const char* aliasJugador, tIndice* dato, int cmp
     }
 
     return (buscarEnIndice(&(*idx)->izq, aliasJugador, dato, cmp) + buscarEnIndice(&(*idx)->der, aliasJugador, dato, cmp));
+}
+
+
+void mostrarIndice(void* elem)
+{
+    tIndice* idx = (tIndice*)elem;
+    printf("%s  %d\n", idx->clave.alias, idx->pos);
+}
+
+void mostrarArchivoBin(char* nombre, void* elem, size_t tam, void mostrar(void* elem))
+{
+    FILE* pf = fopen(nombre, "rb");
+    if(!pf)
+    {
+        printf("no se pudo abrir el archivo");
+        return;
+    }
+
+    fread(elem, tam, 1, pf);
+    while(!feof(pf))
+    {
+        mostrar(elem);
+        fread(elem, tam, 1, pf);
+    }
+
+    fclose(pf);
+}
+
+void mostrarJugador(void* jug)
+{
+    tArchJug* j = (tArchJug*)jug;
+    printf("ID: %d\nNombre: %s\nAlias: %s\n\n", j->id, j->nombre, j->alias);
 }

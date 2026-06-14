@@ -126,23 +126,8 @@ int insertarAlFinalListaD(tListaD* l, const void* dato, unsigned tam)
     nue->sig = pAct;
 
     return TODO_OK;
-
 }
 
-void recorrerListaDobleDerAIzq(const tListaD* l, void accion(const void*))
-{
-   tNodoD* act = *l;
-    tNodoD* ini = act;
-
-    accion(act->dato);
-    act = act->ant;
-
-    while(act != ini)
-    {
-        accion(act->dato);
-        act = act->ant;
-    }
-}
 
 void recorrerListaDobleIzqADer(const tListaD* l, void accion(const void*,int))
 {
@@ -163,42 +148,6 @@ void recorrerListaDobleIzqADer(const tListaD* l, void accion(const void*,int))
         act = act->sig;
         num++;
     }
-}
-
-int eliminarDeListaDobleOrd(tListaD* l, unsigned tam, void* dato, int cmp(const void*, const void*))
-{
-    tNodoD* act = *l;
-    tNodoD* auxAnt, *auxSig;
-
-    while(cmp(dato, act->dato) > 0 && act->sig)
-        act = act->sig;
-
-    while(cmp(dato, act->dato) < 0 && act->ant)
-        act = act->ant;
-
-    if(act && cmp(dato, act->dato))
-        return NO_ENCONTRADO;
-
-    auxAnt = act->ant;
-    auxSig = act->sig;
-
-    if(auxSig)
-        auxSig->ant = auxAnt;
-
-    if(auxAnt)
-        auxAnt->sig = auxSig;
-
-    if(auxSig)
-        (*l) = auxSig;
-    else
-        (*l) = auxAnt;
-
-    memcpy(dato, act->dato, tam);
-
-    free(act->dato);
-    free(act);
-
-    return TODO_OK;
 }
 
 void vaciarListaD(tListaD* l)

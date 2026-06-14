@@ -11,14 +11,7 @@ typedef struct {
 
 int generarTablero(tConfig* c, tListaD* l);
 void mostrarTablero(const void* l,int num);
-//int tableroTieneSolucion();
-// int guardarTablero(); //en caravana.txt
-
-/*generar tablero solucion facil y tempotal TXT*/
-void colocarElemAleatorios_solucionTXT(char tablero[], int n, char elemento, int cantidad);
-int guardarTablero_solucionTXT(char tablero[], int n);
-void generarTablero_solucionTXT(tConfig *c);
-int mostrarTablero_solucionTXT();
+int cargarArchCaravana(const char* nombreArch, tListaD* l);
 
 
 #endif // TABLERO_H_INCLUDED

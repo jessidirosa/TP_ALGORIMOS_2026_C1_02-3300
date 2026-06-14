@@ -29,5 +29,6 @@
 #define ARCH_INDICE "indiceJugadores.dat"
 #define FIN_CARGA 1
 #define ENCONTRADO 1
+#define PUNTOS_GANADOR 3
 
 #endif // CONSTANTES_H_INCLUDED

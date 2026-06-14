@@ -37,7 +37,6 @@ typedef struct {
 void destruirArbol(tArbol* a);
 int ponerEnArbol(tArbol* a, void* dato, unsigned tam, int cmp(const void*, const void*));
 void crearArbol(tArbol* arbol);
-int compararEnteros(const void* a, const void* b);
 int indexarArchivoDesordenadoJugadores(tArbol* arbol, const char* nombreArch);
 int cargarArchivoIndiceJugadores(tArbol* arbol, const char* archIdx);
 void cargarArbolAArchivoIndiceOrdenado(const tArbol* arbol, tIndice* idx, FILE* pf);
@@ -51,8 +50,14 @@ int buscarEnIndice(tArbol* idx, const char* aliasJugador, tIndice* dato, int cmp
 void buscarEnArchivo(tIndice* jugador, const char* archJug, tArchJug* datosJugador);
 void actualizarIndice(tArbol* a);
 
+//FUNCIONES AUXILIARES
+void mostrarIndice(void* elem);
+void mostrarArchivoBin(char* nombre, void* elem, size_t tam, void mostrar(void* elem));
+void mostrarJugador(void* jug);
 
+//FUNCIONES DE COMPARACION
 int compararIdx(const void* clave1, const void* clave2);
 int compararClave(const void* alias, const void* idx);
+int compararEnteros(const void* a, const void* b);
 
 #endif // ARBOL_H_INCLUDED
