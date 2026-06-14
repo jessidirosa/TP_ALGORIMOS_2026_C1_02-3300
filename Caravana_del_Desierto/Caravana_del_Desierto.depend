@@ -37,27 +37,28 @@
 1777240584 c:\users\user\documents\github\tp_algorimos_2026_c1_02-3300\caravana_del_desierto\config.h
 	"constantes.h"
 
-1779666591 c:\users\user\documents\github\tp_algorimos_2026_c1_02-3300\caravana_del_desierto\constantes.h
+1781400628 c:\users\user\documents\github\tp_algorimos_2026_c1_02-3300\caravana_del_desierto\constantes.h
 	<stdio.h>
 	<stdlib.h>
 	<string.h>
 	<time.h>
 	<windows.h>
 
-1781308540 source:c:\users\user\documents\github\tp_algorimos_2026_c1_02-3300\caravana_del_desierto\juego.c
+1781410336 source:c:\users\user\documents\github\tp_algorimos_2026_c1_02-3300\caravana_del_desierto\juego.c
 	"juego.h"
 	"tablero.h"
 	"lista.h"
 	"animacion.h"
 
-1781308528 c:\users\user\documents\github\tp_algorimos_2026_c1_02-3300\caravana_del_desierto\juego.h
+1781391071 c:\users\user\documents\github\tp_algorimos_2026_c1_02-3300\caravana_del_desierto\juego.h
+	"arbol.h"
 	"constantes.h"
 	"cola.h"
 	"config.h"
 	"lista.h"
 	"lista_doble.h"
 
-1779666472 source:c:\users\user\documents\github\tp_algorimos_2026_c1_02-3300\caravana_del_desierto\main.c
+1781410219 source:c:\users\user\documents\github\tp_algorimos_2026_c1_02-3300\caravana_del_desierto\main.c
 	"config.h"
 	"juego.h"
 	"tablero.h"
@@ -70,7 +71,7 @@
 	<stdlib.h>
 	<string.h>
 
-1779760221 source:c:\users\user\documents\github\tp_algorimos_2026_c1_02-3300\caravana_del_desierto\tablero.c
+1781400628 source:c:\users\user\documents\github\tp_algorimos_2026_c1_02-3300\caravana_del_desierto\tablero.c
 	"tablero.h"
 	"config.h"
 	"constantes.h"
@@ -203,15 +204,15 @@
 1778110877 source:c:\repos\tp_algorimos_2026_c1_02-3300\caravana_del_desierto\lista.c
 	"lista.h"
 
-1781306480 c:\users\user\documents\github\tp_algorimos_2026_c1_02-3300\caravana_del_desierto\lista.h
+1781400628 c:\users\user\documents\github\tp_algorimos_2026_c1_02-3300\caravana_del_desierto\lista.h
 	"cola.h"
 	"constantes.h"
 
-1779666472 c:\users\user\documents\github\tp_algorimos_2026_c1_02-3300\caravana_del_desierto\tablero.h
+1781400628 c:\users\user\documents\github\tp_algorimos_2026_c1_02-3300\caravana_del_desierto\tablero.h
 	"config.h"
 	"lista_doble.h"
 
-1781306469 source:c:\users\user\documents\github\tp_algorimos_2026_c1_02-3300\caravana_del_desierto\lista.c
+1781400628 source:c:\users\user\documents\github\tp_algorimos_2026_c1_02-3300\caravana_del_desierto\lista.c
 	"lista.h"
 
 1781393781 c:\users\jessica\documents\unlam\1c2026\algoritmos y estructuras de datos\tp\caravana_del_desierto\lista_doble.h
@@ -287,15 +288,15 @@
 	"animacion.h"
 	"juego.h"
 
-1779640368 source:c:\users\user\documents\github\tp_algorimos_2026_c1_02-3300\caravana_del_desierto\animacion.c
+1781409269 source:c:\users\user\documents\github\tp_algorimos_2026_c1_02-3300\caravana_del_desierto\animacion.c
 	"animacion.h"
 	"juego.h"
 
-1779640368 c:\users\user\documents\github\tp_algorimos_2026_c1_02-3300\caravana_del_desierto\animacion.h
+1781408896 c:\users\user\documents\github\tp_algorimos_2026_c1_02-3300\caravana_del_desierto\animacion.h
 
-1781308528 c:\users\user\documents\github\tp_algorimos_2026_c1_02-3300\caravana_del_desierto\lista_doble.h
+1781400628 c:\users\user\documents\github\tp_algorimos_2026_c1_02-3300\caravana_del_desierto\lista_doble.h
 
-1781308528 source:c:\users\user\documents\github\tp_algorimos_2026_c1_02-3300\caravana_del_desierto\lista_doble.c
+1781400628 source:c:\users\user\documents\github\tp_algorimos_2026_c1_02-3300\caravana_del_desierto\lista_doble.c
 	"lista_doble.h"
 	"constantes.h"
 
@@ -378,5 +379,11 @@
 	"constantes.h"
 
 1781397817 source:c:\users\jessica\documents\unlam\1c2026\algoritmos y estructuras de datos\tp\caravana_del_desierto\arbol.c
+	"arbol.h"
+
+1781400628 c:\users\user\documents\github\tp_algorimos_2026_c1_02-3300\caravana_del_desierto\arbol.h
+	"constantes.h"
+
+1781400628 source:c:\users\user\documents\github\tp_algorimos_2026_c1_02-3300\caravana_del_desierto\arbol.c
 	"arbol.h"
 

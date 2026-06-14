@@ -11,11 +11,14 @@ void menu(tConfig *c, tArbol* idx)
 
     do
     {
-        printf("------CARAVANA DEL DESIERTO------\n\n");
-        printf("Seleccione la opcion deseada:\n");
-        printf("1 - Iniciar partida\n");
-        printf("2 - Ver ranking\n");
-        printf("3 - Salir\n");
+        printf("+======================================================+\n");
+        printf("|              CARAVANA DEL DESIERTO                   |\n");
+        printf("+======================================================+\n");
+        printf("|Seleccione la opcion deseada:                         |\n");
+        printf("|1 - Iniciar partida                                   |\n");
+        printf("|2 - Ver ranking                                       |\n");
+        printf("|3 - Salir                                             |\n");
+        printf("+======================================================+\n");
         //4 - configurar partida (lo agregamos al menu y solicitamos una "contraseña", la comparamos con la de la funcion y accedemos al menu de config para cargar el archivo config.txt
 
         opcion = ingresar(TAM_OP);
@@ -73,7 +76,7 @@ void ejecutarOpcion(unsigned opcion,tConfig* c, tArbol* idx)
     }
 }
 
-//------------JUEGO--------------
+//------------REGISTRO DE USUARIO--------------
 
 void registrarJugador(tArbol* idx, char* aliasJugador)
 {
@@ -167,10 +170,9 @@ void iniciarPartida(tConfig *c, const char* alias)
     tCola colaMovimiento, historialMov;
     tJugador jugador;
     tMovimiento movimiento;
-    /*implementacion TXT*/
     tListaD ruta;
     tNodoD *nodoJugador = NULL, *nodoCampamento;
-    int dado,game_over = 1,turno =1, enter, salir = 0;
+    int dado,game_over = 1,turno =1, salir = 0;
     char dir;
     tBandido bandidos[c->maximo_bandidos];
 
@@ -210,11 +212,10 @@ void iniciarPartida(tConfig *c, const char* alias)
             printf("+===========================================================+\n");
             printf("|          CARAVANA DEL DESIERTO  ~  Resultado Dia %-2d      |\n", turno);
             printf("+===========================================================+\n\n");
-            printf("Una lagartija te alquilo la cueva por 2 monedas de oro\n");
-            turno++;
             jugador.puntos -= 2;
-            printf("Presiona 0 para continuar...");
-            scanf(" %d",&enter);
+            escena_perdida_turno(jugador.puntos);
+            turno++;
+            system("pause");
             system("cls");
         }
         else
@@ -226,7 +227,6 @@ void iniciarPartida(tConfig *c, const char* alias)
             printf("Cuidado, se estan moviendo a distintas velocidades para atraparte!\n");
             system("pause");
 
-            //sacamos argumento "dado" ya qe calculamos aleatorio por cada bandido
             determinarMovimientosBandidos(bandidos, c->maximo_bandidos, nodoJugador, &colaMovimiento);
             while(colaVacia(&colaMovimiento) == COLA_NOVACIA)
             {
@@ -365,7 +365,7 @@ int analizarJuego(tNodoD *nodo, tJugador *jugador, tNodoD *nodoInicio,tNodoD** n
     {
         if (cas->tipo == 'O' && cas->tieneB == 1)
         {
-            printf("Llegaste a un Oasis con un Bandido! El Oasis te protegio al instante.\n");
+            escena_defensa_oasis();
             cas->tieneB--;
             eliminarBandido(bandidos, cantB, nodo);
             oasisUsado = 1;
@@ -377,6 +377,8 @@ int analizarJuego(tNodoD *nodo, tJugador *jugador, tNodoD *nodoInicio,tNodoD** n
                 jugador->protegido = 0; // Se consume el escudo
                 cas->tieneB--;
                 eliminarBandido(bandidos, cantB, nodo);
+                escena_defensa_oasis();
+                system("pause");
             }
             if (cas->tieneB > 0) //si hay otro badnido en la casilla,MUERO
             {
@@ -384,8 +386,7 @@ int analizarJuego(tNodoD *nodo, tJugador *jugador, tNodoD *nodoInicio,tNodoD** n
                 if (jugador->vidas == 0)
                 {
 
-                    printf("Un Bandido te atrapo! No tenes mas vidas. Fin de la partida.\n");
-                    printf("Pero tu valentia en el desierto no pasara desapercibida: obtenes 1 punto de honor.\n");
+                    escena_game_over();
                     jugador->puntos++;
                     system("pause");
                     return GAME_OVER;
@@ -402,7 +403,6 @@ int analizarJuego(tNodoD *nodo, tJugador *jugador, tNodoD *nodoInicio,tNodoD** n
 
                     escena_bandido(jugador->vidas);
                     system("pause");
-                    //printf("Un Bandido te atrapo! Perdes una vida. Vidas: %d. Volviste al Campamento Inicial.\n", jugador->vidas);
                     return EXITO;
                 }
 
@@ -414,18 +414,17 @@ int analizarJuego(tNodoD *nodo, tJugador *jugador, tNodoD *nodoInicio,tNodoD** n
     switch (cas->tipo)
     {
     case '.':
-        printf("Fue un dia tranquilo como para tomar mates y comer chipas...\n");
+        escena_dia_normal();
         break;
     case 'P':
         puntosRand = rand() % 5 + 1;
         jugador->puntos += puntosRand; // puntos aleatorios del 1 al 5
-        //printf("Capturaste un Premio! Puntos: %d\n", jugador->puntos);
         escena_premio(puntosRand);
         cas->tipo = '.';
         break;
     case 'V':
         jugador->vidas++;
-        printf("Capturaste una Vida Extra! Vidas: %d\n", jugador->vidas);
+        escena_vida_extra();
         cas->tipo = '.';
         break;
     case 'O':
@@ -433,7 +432,6 @@ int analizarJuego(tNodoD *nodo, tJugador *jugador, tNodoD *nodoInicio,tNodoD** n
         {
             jugador->protegido = 1;
             escena_oasis();
-            //printf("Llegaste a un Oasis! Estas protegido el proximo turno.\n");
         }
         break;
     case 'T':
@@ -445,12 +443,11 @@ int analizarJuego(tNodoD *nodo, tJugador *jugador, tNodoD *nodoInicio,tNodoD** n
         else
         {
             jugador->pierdeTurno = 1;
-            //printf("Tormenta de Arena! Perdes el proximo turno.\n");
             escena_tormenta();
         }
         break;
     case 'S':
-        printf("Llegaste a la Salida! Sobreviviste al desierto.\n");
+        escena_victoria(PUNTOS_GANADOR);
         jugador->puntos += PUNTOS_GANADOR;
         resultado = GAME_OVER;
         break;
@@ -754,11 +751,11 @@ void mostrarTop(tLista *pLista, int top)
     ordenarLista(pLista,compararPuntosJugadores);
 
     // Mostramos por pantalla el encabezado
-    printf("\n=============================================");
+    printf("\n=================================");
     printf("\n   TOP %d MEJORES PUNTAJES", top);
-    printf("\n=============================================");
-    printf("\n ALIAS JUGADOR | PUNTAJE TOTAL | MOVIMIENTOS");
-    printf("\n---------------|---------------|-------------");
+    printf("\n=================================");
+    printf("\n ALIAS JUGADOR | PUNTAJE TOTAL ");
+    printf("\n---------------|---------------");
 
 
     tNodo* actual = *pLista;// para no perder referencia de pLista
@@ -766,7 +763,7 @@ void mostrarTop(tLista *pLista, int top)
     while(actual != NULL && top > 0)
     {
         reg = (tRegistroPartida*)actual->dato; //casteo el void dato
-        printf("\n %-10s    | %-13d | %-11d",reg->alias,reg->puntaje,reg->movimientos);
+        printf("\n %-10s    | %-13d",reg->alias,reg->puntaje);
         top--;
         actual = actual->sig;
     }

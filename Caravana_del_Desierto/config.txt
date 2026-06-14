@@ -1,7 +1,7 @@
-cantidad_posiciones:15
-vidas_inicio:9
-maximo_bandidos:11
-maximo_premios:0
-maximo_vidas_extra:0
-maximo_oasis:0
-maximo_tormentas:0
+cantidad_posiciones:25
+vidas_inicio:5
+maximo_bandidos:5
+maximo_premios:4
+maximo_vidas_extra:2
+maximo_oasis:3
+maximo_tormentas:3

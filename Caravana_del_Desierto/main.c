@@ -1,7 +1,6 @@
 #include "config.h"
 #include "juego.h"
 #include "tablero.h"
-
 int main()
 {
     tConfig config;
@@ -9,8 +8,6 @@ int main()
     tArbol arbol;
 
     crearArbol(&arbol);
-
-    printf("\n");
 
     if(!indiceArchivoJugadores(&arbol, ARCH_JUGADORES, ARCH_INDICE))
         printf("No se pudo crear el indice."); /// prueba para ver estado de creacion del idx (despues lo borramos)
