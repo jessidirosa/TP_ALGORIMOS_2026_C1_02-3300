@@ -79,6 +79,7 @@ void registrarJugador(tArbol* idx, char* aliasJugador)
 {
     printf("\nIngrese su alias (distingue mayusculas de minusculas): ");
     scanf(" %[^\n]",aliasJugador);
+    while ((getchar()) != '\n');
     identificarJugador(aliasJugador, idx);
 }
 
@@ -116,18 +117,23 @@ void mostrarDatosYValidar(tArchJug* datosJugador, tArbol* idx)
     printf("ID: %d\nNombre: %s\nAlias: %s\n\n", datosJugador->id, datosJugador->nombre, datosJugador->alias);
     printf("Presione 'S' si es correcto, o 'N' si no lo es, para cargar nuevamente el alias:\n");
 
+    scanf(" %c", &opcion);
     while ((getchar()) != '\n');
-    scanf("%c", &opcion);
 
     while(toupper(opcion) != 'S' && toupper(opcion) != 'N')
     {
         printf("Opcion invalida\n");
         printf("Presione 'S' si es correcto, o 'N' si no lo es, para cargar nuevamente el alias:\n");
-        scanf("%c", &opcion);
+        scanf(" %c", &opcion);
+        while ((getchar()) != '\n');
     }
 
     if(toupper(opcion) == 'N')
+    {
         registrarJugador(idx, datosJugador->alias);
+        return;
+    }
+
 
     printf("\nBienvenido/a %s\nIniciando partida...", datosJugador->alias);
     return;
@@ -158,6 +164,7 @@ void altaJugador(tArbol* idx, const char* alias, const char* archJug)
 
     printf("\n\nRegistrado correctamente\n");
     system("pause");
+    printf("\nBienvenido/a %s\nIniciando partida...", jugador.alias);
 }
 
 //------------INICIAR LA PARTIDA--------------
@@ -661,7 +668,6 @@ int calcularDistanciaAlInicio(tNodoD *nodoJugador)
 
     return distancia;
 }
-///----------------------------
 
 void registrarMovimientoEnHistorial(tCola* historialMov, int pasos, char direccion)
 {
@@ -786,7 +792,7 @@ int compararPuntosJugadores(const void* a, const void* b)
     tRegistroPartida* jug2 = (tRegistroPartida*)b;
 
     return jug2->puntaje - jug1->puntaje;
-
+}
 void mostrarPuntosJugadores(const void* n)
 {
     tRegistroPartida* jug = (tRegistroPartida*)n;
