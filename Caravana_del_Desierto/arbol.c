@@ -252,7 +252,6 @@ int buscarEnIndice(tArbol* idx, const char* aliasJugador, tIndice* dato, int cmp
 }
 
 
-
 void mostrarIndice(void* elem)
 {
     tIndice* idx = (tIndice*)elem;
