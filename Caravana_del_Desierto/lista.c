@@ -48,11 +48,10 @@ int insertarOrdenado(tLista* pl, const void* dato, unsigned tam, int sinDup, voi
     while((*pl) && cmp((*pl)->dato, dato) < 0)
         pl = &(*pl)->sig;
 
-//    if((*pl) && !cmp((*pl)->dato, dato) && sinDup)
 
     if((*pl) && cmp((*pl)->dato, dato) == 0 && sinDup == 0)
     {
-        if(accion) //accion != NULL
+        if(accion)
             accion((*pl)->dato,dato);
 
         return DUPLICADO;

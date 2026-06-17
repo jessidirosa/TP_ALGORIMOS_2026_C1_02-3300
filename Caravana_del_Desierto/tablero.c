@@ -12,7 +12,7 @@ int generarTablero(tConfig* c, tListaD* l)
     unsigned vacias;
     unsigned casillasEspeciales = c->maximo_bandidos + c->maximo_oasis + c->maximo_premios + c->maximo_tormentas + c->maximo_vidas_extra + 2;
 
-    if(c->cantidad_posiciones < casillasEspeciales) //verificamos que la cantidad de posiciones no sea menor a las casillas especiales, y hacemos que el tablero sea jugable
+    if(c->cantidad_posiciones < casillasEspeciales)
     {
         vacias = casillasEspeciales;
         c->cantidad_posiciones = casillasEspeciales + vacias;
@@ -98,8 +98,6 @@ int generarTablero(tConfig* c, tListaD* l)
     if(!insertarAlFinalListaD(l, &cas, sizeof(tCasilla)))
         return SIN_MEM;
 
-
-    ///implementar:
     cargarArchCaravana(ARCH_TABLERO, l);
 
     return TODO_OK;

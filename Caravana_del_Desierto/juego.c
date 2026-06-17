@@ -19,8 +19,6 @@ void menu(tConfig *c, tArbol* idx)
         printf("|2 - Ver ranking                                       |\n");
         printf("|3 - Salir                                             |\n");
         printf("+======================================================+\n");
-        //4 - configurar partida (lo agregamos al menu y solicitamos una "contraseña", la comparamos con la de la funcion y accedemos al menu de config para cargar el archivo config.txt
-
         opcion = ingresar(TAM_OP);
 
         while(!opcionValida(opcion))
@@ -80,8 +78,8 @@ void ejecutarOpcion(unsigned opcion,tConfig* c, tArbol* idx)
 void registrarJugador(tArbol* idx, char* aliasJugador)
 {
     printf("\nIngrese su alias (distingue mayusculas de minusculas): ");
-    scanf(" %[^\n]",aliasJugador); // [^\n] permite leer espacios hasta presionar Enter y El espacio antes de % es limpia cualquier '\n' pendiente en el buffer
-    identificarJugador(aliasJugador, idx); //funcion de jugador.h donde se hace la gestion de jugadores(no seria lo mismo que el jugador del juego)
+    scanf(" %[^\n]",aliasJugador);
+    identificarJugador(aliasJugador, idx);
 }
 
 void identificarJugador(const char* aliasJugador, tArbol* idx)
@@ -162,7 +160,7 @@ void altaJugador(tArbol* idx, const char* alias, const char* archJug)
     system("pause");
 }
 
-/// ////////////////INICIAR PARTIDA///////////// ///
+//------------INICIAR LA PARTIDA--------------
 
 void iniciarPartida(tConfig *c, const char* alias)
 {
@@ -185,12 +183,12 @@ void iniciarPartida(tConfig *c, const char* alias)
         printf("no se pudo generar el tablero\n");
 
 
-    posicionarBandidosEnRuta(bandidos,&ruta); //guarda la direccion de cada bandido en la ruta
+    posicionarBandidosEnRuta(bandidos,&ruta);
 
-    nodoJugador = posicionarJugadorEnInicio(&ruta); //poner a jugador en I --> poner [I J]
+    nodoJugador = posicionarJugadorEnInicio(&ruta);
     nodoCampamento = nodoJugador;
 
-    while(jugador.vidas != 0 && game_over && !salir) /// esta invertida la logica del game_over
+    while(jugador.vidas != 0 && game_over && !salir)
     {
         printf("\n");
         printf("+===========================================================+\n");
@@ -273,8 +271,10 @@ void iniciarPartida(tConfig *c, const char* alias)
 
             if(dir == 'X')
             {
-                ///funcion de vaciar y destruir
                 salir = 1;
+                vaciarCola(&colaMovimiento);
+                vaciarCola(&historialMov);
+                vaciarListaD(&ruta);
             }
 
             if(!salir)
@@ -290,7 +290,7 @@ void iniciarPartida(tConfig *c, const char* alias)
                     registrarMovimientoEnHistorial(&historialMov,movimiento.pasos,movimiento.direccion);
                 }
 
-                // 3. RESULTADOS DEL DÍA
+                // RESULTADOS DEL DÍA
                 system("cls");
                 printf("+===========================================================+\n");
                 printf("|          CARAVANA DEL DESIERTO  ~  Resultado Dia %-2d       |\n", turno);
@@ -374,13 +374,13 @@ int analizarJuego(tNodoD *nodo, tJugador *jugador, tNodoD *nodoInicio,tNodoD** n
         {
             if (jugador->protegido && cas->tipo != 'T')
             {
-                jugador->protegido = 0; // Se consume el escudo
+                jugador->protegido = 0;
                 cas->tieneB--;
                 eliminarBandido(bandidos, cantB, nodo);
                 escena_defensa_oasis();
                 system("pause");
             }
-            if (cas->tieneB > 0) //si hay otro badnido en la casilla,MUERO
+            if (cas->tieneB > 0)
             {
                 jugador->vidas--;
                 if (jugador->vidas == 0)
@@ -418,7 +418,7 @@ int analizarJuego(tNodoD *nodo, tJugador *jugador, tNodoD *nodoInicio,tNodoD** n
         break;
     case 'P':
         puntosRand = rand() % 5 + 1;
-        jugador->puntos += puntosRand; // puntos aleatorios del 1 al 5
+        jugador->puntos += puntosRand;
         escena_premio(puntosRand);
         cas->tipo = '.';
         break;
@@ -474,7 +474,7 @@ tNodoD* moverJugador(tNodoD *nodo, int pasos, char dir)
     {
         if (dir == 'A')
         {
-            // chequeo si el siguiente es Inicio
+
             if (((tCasilla*)(nodo->sig->dato))->tipo == 'I')
             {
                 // reboto
@@ -550,7 +550,7 @@ void determinarMovimientosBandidos(tBandido* bandidos, int cantB, tNodoD* nodoJu
         if(bandidos->activo)
         {
             calcularDistanciaMinima(bandidos->pos, nodoJugador, &dir);
-            pasosAleatorios = (rand() % 3) + 1; //movimientos aleatorios por cada bandido
+            pasosAleatorios = (rand() % 3) + 1;
             guardarMovimiento(&movimiento, bandidos->pos, dir, pasosAleatorios, 'B');
             encolar(colaMovimiento, &movimiento, sizeof(tMovimiento));
         }
@@ -587,12 +587,12 @@ void moverBandidos(tBandido* bandidos, tMovimiento* movimiento, int cantB)
 
         i = 0;
 
-        if (movimiento->direccion == 'A') // El bandido avanza
+        if (movimiento->direccion == 'A')
         {
             while (i < movimiento->pasos)
             {
-                // para que los bandidos no se muevan al final ni a la casilla que esta el jugador
-                if (/*actual->sig == NULL || actual->sig->sig == NULL || */((tCasilla*)(actual->sig->dato))->tieneJ == 1) /// VER!
+
+                if (((tCasilla*)(actual->sig->dato))->tieneJ == 1)
                 {
                     break;
                 }
@@ -604,8 +604,8 @@ void moverBandidos(tBandido* bandidos, tMovimiento* movimiento, int cantB)
         {
             while (i < movimiento->pasos)
             {
-                // para que los bandidos no se muevan al inicio ni a la casilla que esta el jugador
-                if (/*actual->ant == NULL || actual->ant->ant == NULL ||*/ ((tCasilla*)(actual->ant->dato))->tieneJ == 1)
+
+                if (((tCasilla*)(actual->ant->dato))->tieneJ == 1)
                 {
                     break;
                 }
@@ -689,7 +689,7 @@ int mostrarHistorialMovimientos(tCola* historialMov)
     {
         desencolar(historialMov,hmov,sizeof(hmov));
         printf("%.2d: %s\n",i,hmov);
-        cantMov += atoi(hmov + 1); //para guardar en partidas.dat
+        cantMov += atoi(hmov + 1);
         i++;
     }
 
@@ -709,7 +709,7 @@ int iniciarCaracteristicasJugador(tJugador *jugador,tConfig *conf)
 }
 
 
-void mostrarRanking(const char* archivo) // le pasamos el archivo de partidas
+void mostrarRanking(const char* archivo)
 {
     FILE* pf = fopen(archivo, "rb");
     if(!pf)
@@ -723,7 +723,7 @@ void mostrarRanking(const char* archivo) // le pasamos el archivo de partidas
     fread(&partida, sizeof(tRegistroPartida), 1, pf);
     while(!feof(pf))
     {
-        //inserta en una lista los registros del archivo de partidas, acumulando por jugador los puntos y movimientos
+
         insertarOrdenado(&lista, &partida, sizeof(tRegistroPartida), 0, acumularDuplicados, compararAlias);
         fread(&partida, sizeof(tRegistroPartida), 1, pf);
     }
@@ -758,11 +758,11 @@ void mostrarTop(tLista *pLista, int top)
     printf("\n---------------|---------------");
 
 
-    tNodo* actual = *pLista;// para no perder referencia de pLista
+    tNodo* actual = *pLista;
 
     while(actual != NULL && top > 0)
     {
-        reg = (tRegistroPartida*)actual->dato; //casteo el void dato
+        reg = (tRegistroPartida*)actual->dato;
         printf("\n %-10s    | %-13d",reg->alias,reg->puntaje);
         top--;
         actual = actual->sig;
@@ -775,20 +775,17 @@ void acumularDuplicados(void* datoLista, const void* datoAInsertar)
 {
     tRegistroPartida* dI = (tRegistroPartida*)datoAInsertar;
     tRegistroPartida* dL = (tRegistroPartida*)datoLista;
-    //acumulo puntaje
     dL->puntaje += dI->puntaje;
-    //acumuo movimientos
     dL->movimientos += dI->movimientos;
 
 }
 
 int compararPuntosJugadores(const void* a, const void* b)
 {
-    tRegistroPartida* jug1 = (tRegistroPartida*)a;//tRanking* jug1 = (tRanking*)a;
-    tRegistroPartida* jug2 = (tRegistroPartida*)b;//tRanking* jug2 = (tRanking*)b;
+    tRegistroPartida* jug1 = (tRegistroPartida*)a;
+    tRegistroPartida* jug2 = (tRegistroPartida*)b;
 
-    return jug2->puntaje - jug1->puntaje;//return jug2->puntos - jug1->puntos;
-}
+    return jug2->puntaje - jug1->puntaje;
 
 void mostrarPuntosJugadores(const void* n)
 {

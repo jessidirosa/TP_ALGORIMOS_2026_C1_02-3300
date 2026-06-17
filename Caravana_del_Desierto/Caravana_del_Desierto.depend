@@ -242,7 +242,7 @@
 	<time.h>
 	<windows.h>
 
-1781719948 source:c:\users\paulanyszta\documents\github\tp_algorimos_2026_c1_02-3300\caravana_del_desierto\juego.c
+1781720478 source:c:\users\paulanyszta\documents\github\tp_algorimos_2026_c1_02-3300\caravana_del_desierto\juego.c
 	"juego.h"
 	"tablero.h"
 	"lista.h"
@@ -391,6 +391,6 @@
 1781716167 c:\users\paulanyszta\documents\github\tp_algorimos_2026_c1_02-3300\caravana_del_desierto\arbol.h
 	"constantes.h"
 
-1781719948 source:c:\users\paulanyszta\documents\github\tp_algorimos_2026_c1_02-3300\caravana_del_desierto\arbol.c
+1781720133 source:c:\users\paulanyszta\documents\github\tp_algorimos_2026_c1_02-3300\caravana_del_desierto\arbol.c
 	"arbol.h"
 

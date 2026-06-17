@@ -213,15 +213,15 @@ int indiceArchivoJugadores(tArbol* arbol, const char* archJug, const char* archI
         return TODO_OK;
     }
 
-    if(!indexarArchivoDesordenadoJugadores(arbol, archJug))// bajamos el archivo a un arbol
+    if(!indexarArchivoDesordenadoJugadores(arbol, archJug))
         return ERR_ARCH;
 
-    if(!cargarArchivoIndiceJugadores(arbol, archIdx))//con el mismo arbol cargamos el archivo indice (abre archivo en modo escritura)
+    if(!cargarArchivoIndiceJugadores(arbol, archIdx))
         return ERR_ARCH;
 
     crearArbol(arbol);
 
-    if(!cargarArchIndiceAArbolBalanceado(arbol, archIdx)) //bajamos el archivo indice ordenado por clave, a un arbol
+    if(!cargarArchIndiceAArbolBalanceado(arbol, archIdx))
         return ERR_ARCH;
 
     return TODO_OK;

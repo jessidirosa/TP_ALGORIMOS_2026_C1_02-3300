@@ -38,7 +38,7 @@ typedef struct {
     int id_partida;
     int puntaje;
     int movimientos;
-} tRegistroPartida; //se ultiliza para gurdar el contenido del archivo binario "ARCH_PARTIDAS" y mostrar el ranking
+} tRegistroPartida;
 
 
 void menu(tConfig *c, tArbol* idx);
