@@ -67,7 +67,6 @@ void ejecutarOpcion(unsigned opcion,tConfig* c, tArbol* idx)
 
     case 2:
         system("cls");
-//        casoPruebaBIN(ARCH_PARTIDAS);///ELMINAR ESTE ARCHIVO, ES SOLO PARA PROBAR EL RANKING
         mostrarRanking(ARCH_PARTIDAS);
         break;
 
@@ -297,12 +296,14 @@ void iniciarPartida(tConfig *c, const char* alias)
                 printf("|          CARAVANA DEL DESIERTO  ~  Resultado Dia %-2d       |\n", turno);
                 printf("+===========================================================+\n\n");
 
-                // Opcional: Mostrar cómo quedó todo tras tu movimiento antes de analizar
+                // Mostrar cómo quedó todo tras tu movimiento antes de analizar
                 recorrerListaDobleIzqADer(&ruta, mostrarTablero);
                 printf("\n\n");
 
                 if(analizarJuego(nodoJugador, &jugador, nodoCampamento, &nodoJugador,bandidos, c->maximo_bandidos) == GAME_OVER)
                     game_over = 0;
+                if(jugador.protegido > 0)
+                    jugador.protegido--;
 
                 turno++;
             }
@@ -325,7 +326,6 @@ void iniciarPartida(tConfig *c, const char* alias)
         printf("Puntos conseguidos: %d | Vidas sobrantes: %d\n", jugador.puntos, jugador.vidas);
     }
 
-//    mostrarHistorialMovimientos(&historialMov); // mostrar los movimientos hechos durante la partida
     guardarPartida(alias, jugador.puntos, mostrarHistorialMovimientos(&historialMov)); // en partidas.dat
     vaciarListaD(&ruta);
 }
@@ -430,7 +430,7 @@ int analizarJuego(tNodoD *nodo, tJugador *jugador, tNodoD *nodoInicio,tNodoD** n
     case 'O':
         if(!oasisUsado)
         {
-            jugador->protegido = 1;
+            jugador->protegido = 2;
             escena_oasis();
         }
         break;

@@ -10,7 +10,7 @@ int main()
     crearArbol(&arbol);
 
     if(!indiceArchivoJugadores(&arbol, ARCH_JUGADORES, ARCH_INDICE))
-        printf("No se pudo crear el indice."); /// prueba para ver estado de creacion del idx (despues lo borramos)
+        printf("No se pudo crear el indice.");
 
     cargarConfig(ARCH_CONFIG, &config);
     menu(&config, &arbol);

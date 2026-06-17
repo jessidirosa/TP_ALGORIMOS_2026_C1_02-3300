@@ -25,12 +25,6 @@ typedef struct
 }tConfig;
 
 
-///podemos pedir la configuracion tambien por pantalla agregando en el menu
-///la opcion configuracion, y que cargue el archivo. No lo dice en el enunciado
-///pero puede sumarnos y es relativamente facil. hice la carga de config para que
-///no interese el orden en el que se indiquen los parametros para usarlo en ese caso.
-
-//int crearArchConfig(const char* nombreArch, tConfig* config); //si pedimos por pantalla los parametros
 int cargarConfig(const char* nombreArch, tConfig* c);
 void trozarConfig(char* buffer, tConfig* c);
 

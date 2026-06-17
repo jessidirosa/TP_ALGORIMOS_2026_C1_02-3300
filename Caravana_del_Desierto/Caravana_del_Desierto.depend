@@ -221,7 +221,7 @@
 	"lista_doble.h"
 	"constantes.h"
 
-1779194382 source:c:\users\paulanyszta\documents\github\tp_algorimos_2026_c1_02-3300\caravana_del_desierto\cola.c
+1780148407 source:c:\users\paulanyszta\documents\github\tp_algorimos_2026_c1_02-3300\caravana_del_desierto\cola.c
 	"cola.h"
 
 1779194382 c:\users\paulanyszta\documents\github\tp_algorimos_2026_c1_02-3300\caravana_del_desierto\cola.h
@@ -232,10 +232,10 @@
 1779194382 source:c:\users\paulanyszta\documents\github\tp_algorimos_2026_c1_02-3300\caravana_del_desierto\config.c
 	"config.h"
 
-1779194382 c:\users\paulanyszta\documents\github\tp_algorimos_2026_c1_02-3300\caravana_del_desierto\config.h
+1781717698 c:\users\paulanyszta\documents\github\tp_algorimos_2026_c1_02-3300\caravana_del_desierto\config.h
 	"constantes.h"
 
-1779567241 c:\users\paulanyszta\documents\github\tp_algorimos_2026_c1_02-3300\caravana_del_desierto\constantes.h
+1781716167 c:\users\paulanyszta\documents\github\tp_algorimos_2026_c1_02-3300\caravana_del_desierto\constantes.h
 	<stdio.h>
 	<stdlib.h>
 	<string.h>
@@ -248,43 +248,44 @@
 	"lista.h"
 	"animacion.h"
 
-1779564028 c:\users\paulanyszta\documents\github\tp_algorimos_2026_c1_02-3300\caravana_del_desierto\juego.h
+1781716167 c:\users\paulanyszta\documents\github\tp_algorimos_2026_c1_02-3300\caravana_del_desierto\juego.h
+	"arbol.h"
 	"constantes.h"
 	"cola.h"
 	"config.h"
 	"lista.h"
 	"lista_doble.h"
 
-1779194382 c:\users\paulanyszta\documents\github\tp_algorimos_2026_c1_02-3300\caravana_del_desierto\lista.h
+1781716167 c:\users\paulanyszta\documents\github\tp_algorimos_2026_c1_02-3300\caravana_del_desierto\lista.h
 	"cola.h"
 	"constantes.h"
 
-1779224741 c:\users\paulanyszta\documents\github\tp_algorimos_2026_c1_02-3300\caravana_del_desierto\lista_doble.h
+1781716167 c:\users\paulanyszta\documents\github\tp_algorimos_2026_c1_02-3300\caravana_del_desierto\lista_doble.h
 
-1779555286 c:\users\paulanyszta\documents\github\tp_algorimos_2026_c1_02-3300\caravana_del_desierto\tablero.h
+1781716167 c:\users\paulanyszta\documents\github\tp_algorimos_2026_c1_02-3300\caravana_del_desierto\tablero.h
 	"config.h"
 	"lista_doble.h"
 
-1779194382 source:c:\users\paulanyszta\documents\github\tp_algorimos_2026_c1_02-3300\caravana_del_desierto\lista.c
+1781716167 source:c:\users\paulanyszta\documents\github\tp_algorimos_2026_c1_02-3300\caravana_del_desierto\lista.c
 	"lista.h"
 
-1779562766 source:c:\users\paulanyszta\documents\github\tp_algorimos_2026_c1_02-3300\caravana_del_desierto\lista_doble.c
+1781716167 source:c:\users\paulanyszta\documents\github\tp_algorimos_2026_c1_02-3300\caravana_del_desierto\lista_doble.c
 	"lista_doble.h"
 	"constantes.h"
 
-1779555986 source:c:\users\paulanyszta\documents\github\tp_algorimos_2026_c1_02-3300\caravana_del_desierto\tablero.c
+1781716167 source:c:\users\paulanyszta\documents\github\tp_algorimos_2026_c1_02-3300\caravana_del_desierto\tablero.c
 	"tablero.h"
 	"config.h"
 	"constantes.h"
 
-1779555986 source:c:\users\paulanyszta\documents\github\tp_algorimos_2026_c1_02-3300\caravana_del_desierto\main.c
+1781716167 source:c:\users\paulanyszta\documents\github\tp_algorimos_2026_c1_02-3300\caravana_del_desierto\main.c
 	"config.h"
 	"juego.h"
 	"tablero.h"
 
-1779566756 c:\users\paulanyszta\documents\github\tp_algorimos_2026_c1_02-3300\caravana_del_desierto\animacion.h
+1781716167 c:\users\paulanyszta\documents\github\tp_algorimos_2026_c1_02-3300\caravana_del_desierto\animacion.h
 
-1779566800 source:c:\users\paulanyszta\documents\github\tp_algorimos_2026_c1_02-3300\caravana_del_desierto\animacion.c
+1781716167 source:c:\users\paulanyszta\documents\github\tp_algorimos_2026_c1_02-3300\caravana_del_desierto\animacion.c
 	"animacion.h"
 	"juego.h"
 
@@ -385,5 +386,11 @@
 	"constantes.h"
 
 1781400628 source:c:\users\user\documents\github\tp_algorimos_2026_c1_02-3300\caravana_del_desierto\arbol.c
+	"arbol.h"
+
+1781716167 c:\users\paulanyszta\documents\github\tp_algorimos_2026_c1_02-3300\caravana_del_desierto\arbol.h
+	"constantes.h"
+
+1781716167 source:c:\users\paulanyszta\documents\github\tp_algorimos_2026_c1_02-3300\caravana_del_desierto\arbol.c
 	"arbol.h"
 
