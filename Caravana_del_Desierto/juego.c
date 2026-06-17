@@ -365,7 +365,6 @@ int analizarJuego(tNodoD *nodo, tJugador *jugador, tNodoD *nodoInicio,tNodoD** n
 {
     tCasilla *cas = (tCasilla*)nodo->dato;
     int resultado = EXITO;
-    int puntosRand;
     int oasisUsado = 0;
 
     if (cas->tieneB > 0)
@@ -424,8 +423,7 @@ int analizarJuego(tNodoD *nodo, tJugador *jugador, tNodoD *nodoInicio,tNodoD** n
         escena_dia_normal();
         break;
     case 'P':
-        puntosRand = rand() % 5 + 1;
-        jugador->puntos += puntosRand;
+        jugador->puntos += 1;
         escena_premio(puntosRand);
         cas->tipo = '.';
         break;
