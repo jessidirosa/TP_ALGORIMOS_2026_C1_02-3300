@@ -85,7 +85,7 @@ void escena_bandido(int vidas) {
     printf("|         _| |_                                             |\n");
     printf("|                                                           |\n");
     printf("+-----------------------------------------------------------+\n");
-    printf("| >> Un bandido emboscó tu caravana!                        |\n");
+    printf("| >> Un bandido embosco tu caravana!                        |\n");
     if(vidas > 1)
         printf("| >> Perdiste 1 vida, te quedan %d vidas.                    |\n", vidas);
     else

@@ -89,12 +89,12 @@ void identificarJugador(const char* aliasJugador, tArbol* idx)
     tIndice jugador;
     tArchJug datosJugador;
 
-    if(!buscarEnIndice(idx, aliasJugador, &jugador, compararClave)) //buscamos por clave alias en el arbol, y lo traemos en jugador
-        altaJugador(idx, aliasJugador, ARCH_JUGADORES); //vemos cantReg para el id, pedimos el nombre y cargamos en idx y en archivo
+    if(!buscarEnIndice(idx, aliasJugador, &jugador, compararClave))
+        altaJugador(idx, aliasJugador, ARCH_JUGADORES);
     else
     {
-        buscarEnArchivo(&jugador, ARCH_JUGADORES, &datosJugador); //buscamos el jugador por indice en el archivo, y traemos todo el registro en datosJugador
-        mostrarDatosYValidar(&datosJugador, idx); //¿es usted? S | N
+        buscarEnArchivo(&jugador, ARCH_JUGADORES, &datosJugador);
+        mostrarDatosYValidar(&datosJugador, idx);
     }
 }
 
@@ -592,7 +592,7 @@ void moverBandidos(tBandido* bandidos, tMovimiento* movimiento, int cantB)
             while (i < movimiento->pasos)
             {
                 // para que los bandidos no se muevan al final ni a la casilla que esta el jugador
-                if (actual->sig == NULL || actual->sig->sig == NULL || ((tCasilla*)(actual->sig->dato))->tieneJ == 1) /// VER!
+                if (/*actual->sig == NULL || actual->sig->sig == NULL || */((tCasilla*)(actual->sig->dato))->tieneJ == 1) /// VER!
                 {
                     break;
                 }
@@ -605,7 +605,7 @@ void moverBandidos(tBandido* bandidos, tMovimiento* movimiento, int cantB)
             while (i < movimiento->pasos)
             {
                 // para que los bandidos no se muevan al inicio ni a la casilla que esta el jugador
-                if (actual->ant == NULL || actual->ant->ant == NULL || ((tCasilla*)(actual->ant->dato))->tieneJ == 1)
+                if (/*actual->ant == NULL || actual->ant->ant == NULL ||*/ ((tCasilla*)(actual->ant->dato))->tieneJ == 1)
                 {
                     break;
                 }
